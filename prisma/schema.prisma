@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Product {
+  id              Int              @id @default(autoincrement())
+  productId       String           @unique
+  name            String
+  categoryId      String
+  price           Float
+  description     String?
+  createdDate     DateTime         @default(now())
+  updatedDate     DateTime         @updatedAt
+  recommend       Int              @default(0)
+  images          ProductImage[]
+  nutritionalInfo NutritionalInfo[]
+  category        Category  @relation(fields: [categoryId], references: [categoryId])
+  option          Option?
+}
+
+model ProductImage {
+  id            Int      @id @default(autoincrement())
+  productId     String   @unique
+  thumbnailUrl  String
+  imageUrl_1    String?
+  imageUrl_2    String?
+  imageUrl_3    String?
+  imageUrl_4    String?
+  imageUrl_5    String?
+  imageUrl_6    String?
+  product       Product  @relation(fields: [productId], references: [productId])
+}
+
+model NutritionalInfo {
+  id             Int      @id @default(autoincrement())
+  productId      String   @unique
+  energy         Float?
+  protein        Float?
+  fat            Float?
+  carbohydrates  Float?
+  saltEquivalent Float?
+  allergen       String?
+  product        Product  @relation(fields: [productId], references: [productId])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  categoryId  String   @unique
+  name        String
+  products    Product[]
+}
+
+model Option {
+  id               Int      @id @default(autoincrement())
+  productId        String   @unique
+  takeoutAvailable Boolean  @default(false)
+  seasonal         Boolean  @default(false)
+  bulkPurchase     Boolean  @default(false)
+  couponAvailable  Boolean  @default(false)
+  product          Product  @relation(fields: [productId], references: [productId])
+}
+
+
