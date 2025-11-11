@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,7 +19,19 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+
+      // 互換: 旧インポート表記を暫定で生かす
+      "@/*": ["./*"],
+
+      // 明示的にフォルダ別エイリアスも用意（好み）
+      "@/cards/*": ["./cards/*"],
+      "@/components/*": ["./components/*"],
+      "@/lib/*": ["./lib/*"],
+      "@/providers/*": ["./providers/*"],
+      "@/ui/*": ["./ui/*"],
+      // ルートの app も（ページ/ルートは引き続き app にあるため）
+      "@/routes/*": ["./app/*"]
     }
   },
   "include": [

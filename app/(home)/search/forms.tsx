@@ -2,11 +2,11 @@
 "use client";
 
 import useSWR from "swr";
-import InputTerm from "@/app/ui/control/term";
-import SelectCategory from "@/app/ui/control/category";
-import SelectPrice from "@/app/ui/control/price";
-import CheackdOptions from "@/app/ui/control/options";
-import Spinner from "@/app/ui/spinner";
+import InputTerm from "@/ui/control/term";
+import SelectCategory from "@/ui/control/category";
+import SelectPrice from "@/ui/control/price";
+import CheackdOptions from "@/ui/control/options";
+import Spinner from "@/ui/spinner";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 

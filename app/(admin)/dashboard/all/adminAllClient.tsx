@@ -5,12 +5,12 @@ import React from "react";
 import useSWR from "swr";
 import Image from "next/image";
 import Link from "next/link";
-import SearchFroms from "@/app/(home)/search/forms";
-import Spinner from "@/app/ui/spinner";
-import HitNumber from "@/app/ui/search/hit";
+import SearchFroms from "@/(home)/search/forms";
+import Spinner from "@/ui/spinner";
+import HitNumber from "@/ui/search/hit";
 import { useSearchParams } from "next/navigation";
 import { Virtuoso } from "react-virtuoso";
-import { EditButton } from "@/app/ui/dashboard/control/button";
+import { EditButton } from "@/ui/dashboard/control/button";
 
 type Product = {
   productId: string;

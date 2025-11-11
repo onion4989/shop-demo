@@ -1,6 +1,6 @@
 // app/components/detail/detail-info.tsx
 import Image from "next/image";
-import { getProductDetailCached } from "@/app/lib/data";
+import { getProductDetailCached } from "@/lib/data";
 
 export default async function ProductDetailInfo(params: { productid: string }) {
   const product = await getProductDetailCached(params.productid);

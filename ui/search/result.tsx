@@ -3,8 +3,8 @@
 
 import React, { forwardRef } from "react";
 import { VirtuosoGrid } from "react-virtuoso";
-import ProductDesignCard from "@/app/components/card/card";
-import type { SearchProductsProps } from "@/app/lib/definitions";
+import ProductDesignCard from "@/components/card/card";
+import type { SearchProductsProps } from "@/lib/definitions";
 
 /**
  * 仮想化されたグリッド一覧

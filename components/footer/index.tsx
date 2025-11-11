@@ -1,5 +1,5 @@
-import FooterInfo from "@/app/components/footer/footer-info";
-import FooterImages from "@/app/components/footer/footer-images";
+import FooterInfo from "@/components/footer/footer-info";
+import FooterImages from "@/components/footer/footer-images";
 
 export default function Footer() {
   return (

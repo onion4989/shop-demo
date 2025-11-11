@@ -4,10 +4,10 @@
 import React, { useEffect, useRef } from "react";
 import useSWR, { mutate as swrMutate } from "swr";
 import { useSearchParams } from "next/navigation";
-import Spinner from "@/app/ui/spinner";
-import SearchFroms from "@/app/(home)/search/forms";
-import ResultsTable from "@/app/ui/search/result";
-import HitNumber from "@/app/ui/search/hit";
+import Spinner from "@/ui/spinner";
+import SearchFroms from "@/(home)/search/forms";
+import ResultsTable from "@/ui/search/result";
+import HitNumber from "@/ui/search/hit";
 
 /** 型定義 */
 type Product = {

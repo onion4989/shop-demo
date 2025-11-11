@@ -3,7 +3,7 @@
 
 import React, { useMemo, useCallback, useTransition } from "react";
 import { Select, SelectItem, type Selection } from "@nextui-org/react";
-import { CategoryProps } from "@/app/lib/definitions";
+import { CategoryProps } from "@/lib/definitions";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 /**

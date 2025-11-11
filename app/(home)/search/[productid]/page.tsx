@@ -1,5 +1,5 @@
-import ProductDetailInfo from "@/app/components/detail/detail-info";
-import NutritionalTable from "@/app/components/detail/nutritional";
+import ProductDetailInfo from "@/components/detail/detail-info";
+import NutritionalTable from "@/components/detail/nutritional";
 
 type ProductID = {
   params: {

@@ -1,6 +1,6 @@
 // app/(admin)/dashboard/page.tsx
-import SignOutButton from "@/app/components/(dashboard)/login/signOutButton";
-import SideNav from "@/app/ui/dashboard/sidenav";
+import SignOutButton from "@/components/(dashboard)/login/signOutButton";
+import SideNav from "@/ui/dashboard/sidenav";
 
 
 export default function DashboardPage() {

@@ -1,4 +1,4 @@
-/* import { ProductsSkeleton } from "@/app/ui/skeletons";
+/* import { ProductsSkeleton } from "@/ui/skeletons";
 
 export default function Loading() {
   return <ProductsSkeleton />;

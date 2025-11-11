@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { CheckboxGroup, Checkbox } from "@nextui-org/react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { OptionProps } from "@/app/lib/definitions";
+import { OptionProps } from "@/lib/definitions";
 
 export default function EditCheackdOptions({ option }: { option: OptionProps }) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);

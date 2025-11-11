@@ -2,10 +2,10 @@
 export const revalidate = 300; // 5分ごと再生成（任意）
 
 import { Suspense } from "react";
-import { ProductsSkeleton } from "@/app/ui/skeletons";
-import ProductsItems from "@/app/cards/product-items";
-import Hero from "@/app/components/hero/hero";
-import Banner from "@/app/components/banner/banner";
+import { ProductsSkeleton } from "@/ui/skeletons";
+import ProductsItems from "@/cards/product-items";
+import Hero from "@/components/hero/hero";
+import Banner from "@/components/banner/banner";
 
 export default function Home() {
   return (
