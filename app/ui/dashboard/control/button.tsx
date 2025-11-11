@@ -1,3 +1,4 @@
+// app/ui/dashboard/control/button.tsx
 import { Link, Button } from "@nextui-org/react";
 
 export function EditButton({ productid }: { productid: string }) {

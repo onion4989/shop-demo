@@ -1,49 +1,36 @@
-import SearchFroms from "@/app/ui/search/forms";
-import HitNumber from "@/app/ui/search/hit";
-import ResultsTable from "@/app/ui/search/result";
-import { Suspense } from "react";
-import Spinner from "@/app/ui/spinner";
+// app/(home)/search/page.tsx
+import dynamic from "next/dynamic";
+import { PrismaClient } from "@prisma/client";
+import { SWRConfig } from "swr";
 
-import { fetchFilteredProducts } from "@/app/lib/data";
-//import { fetchAllProducts } from "@/app/lib/data";
+const ClientSearch = dynamic(() => import("./clientSearch"), { ssr: false });
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    category?: string;
-    price?: string;
-    options?: string;
-  };
-}) {
-  const query = searchParams?.query || "";
-  const category = searchParams?.category || "";
-  const price = searchParams?.price || "";
-  const options = searchParams?.options || "";
+export default async function Page() {
+  // 初回は全件（= /api/search と同じ SELECT）を取得しておく
+  const prisma = new PrismaClient();
+  const [products, total] = await prisma.$transaction([
+    prisma.product.findMany({
+      orderBy: { recommend: "asc" },
+      select: {
+        productId: true, name: true, price: true,
+        category: { select: { name: true } },
+        images: { select: { thumbnailUrl: true } },
+        option: true,
+      },
+    }),
+    prisma.product.count(),
+  ]);
 
-  //const max = await fetchAllProducts();
-  const { products, total } = await fetchFilteredProducts(query, category, Number(price), options);
-  console.log(products);
+  // SWR のキーとデータを一致させる（クエリなし=全件）
+  const initialKey = "/api/search";
+  const initialData = { products, total };
 
   return (
     <main className="w-[100%] lg:w-[1200px] m-auto">
       <section className="my-24">
-        <div className="grid grid-cols-12 gap-6 my-24">
-          <div className="col-span-10 grid grid-cols-4 gap-4">
-            <SearchFroms />
-          </div>
-          <div className="col-span-2">
-            <Suspense fallback={<Spinner />}>
-              <HitNumber max={total} search={products.length} />
-            </Suspense>
-          </div>
-        </div>
-        <div>
-          <Suspense fallback={<Spinner />}>
-            <ResultsTable result={products} />
-          </Suspense>
-        </div>
+        <SWRConfig value={{ fallback: { [initialKey]: initialData } }}>
+          <ClientSearch />
+        </SWRConfig>
       </section>
     </main>
   );

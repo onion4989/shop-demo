@@ -1,7 +1,8 @@
+// app/ui/control/price.tsx
 "use client";
 
-import React from "react";
-import { Select, SelectItem } from "@nextui-org/react";
+import React, { useMemo } from "react";
+import { Select, SelectItem, type Selection } from "@nextui-org/react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 const price = [
@@ -15,25 +16,37 @@ export default function SelectPrice() {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  function handlePriceChange(item: string) {
+  // 現在のURLのpriceパラメータを反映
+  const selectedKeys = useMemo<Selection>(() => {
+    const v = searchParams.get("price");
+    return v ? new Set([v]) : new Set([]);
+  }, [searchParams]);
+
+  // 選択変更時にURLクエリを更新
+  const handleSelectionChange = (keys: Selection) => {
+    const val = Array.from(keys as Set<string>)[0] ?? "";
     const params = new URLSearchParams(searchParams);
 
-    if (item) {
-      params.set("price", item);
+    if (val) {
+      params.set("price", val);
     } else {
       params.delete("price");
     }
-    replace(`${pathname}?${params.toString()}`);
-  }
 
-  // ここにSelectItemの値を e.targtで 取得
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
-    <Select label="価格帯" className="max-w-xs" onChange={(e) => handlePriceChange(e.target.value)}>
-      {price?.map((item) => (
-        <SelectItem key={item.key} value={item.label}>
-          {item.label}
-        </SelectItem>
+    <Select
+      label="価格帯"
+      className="max-w-xs"
+      selectedKeys={selectedKeys}
+      onSelectionChange={handleSelectionChange}
+      selectionMode="single"
+      disallowEmptySelection={false}
+    >
+      {price.map((item) => (
+        <SelectItem key={item.key}>{item.label}</SelectItem>
       ))}
     </Select>
   );

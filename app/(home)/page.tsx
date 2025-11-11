@@ -1,3 +1,6 @@
+// app/(home)/page.tsx
+export const revalidate = 300; // 5分ごと再生成（任意）
+
 import { Suspense } from "react";
 import { ProductsSkeleton } from "@/app/ui/skeletons";
 import ProductsItems from "@/app/cards/product-items";
@@ -10,11 +13,13 @@ export default function Home() {
       <section className="my-24">
         <Hero />
       </section>
+
       <section className="mb-24">
         <Suspense fallback={<ProductsSkeleton />}>
           <ProductsItems />
         </Suspense>
       </section>
+
       <section className="mb-24">
         <Banner />
       </section>

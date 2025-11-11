@@ -66,7 +66,7 @@ export type SearchProductsProps = {
   }[];
 };
 
-export type fetchDashboardSearchProductProps = {
+export type FetchDashboardSearchProductProps = {
   productId: string;
   name: string;
   price: number;
@@ -82,6 +82,7 @@ export type fetchDashboardSearchProductProps = {
   }[];
   category: {
     name: string;
+    categoryId: string;
   };
   option: {
     bulkPurchase: boolean;
@@ -90,28 +91,3 @@ export type fetchDashboardSearchProductProps = {
     takeoutAvailable: boolean;
   } | null;
 };
-
-/* export interface Product {
-  productId: string;
-  name: string;
-  price: number;
-  description: string | null;
-  images: {
-    thumbnailUrl: string;
-    imageUrl_1: string | null;
-    imageUrl_2: string | null;
-    imageUrl_3: string | null;
-    imageUrl_4: string | null;
-    imageUrl_5: string | null;
-    imageUrl_6: string | null;
-  }[];
-  category: {
-    name: string;
-  };
-  option: {
-    bulkPurchase: boolean;
-    couponAvailable: boolean;
-    seasonal: boolean;
-    takeoutAvailable: boolean;
-  } | null;
-} */

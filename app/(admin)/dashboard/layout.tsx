@@ -1,9 +1,18 @@
+// app/(admin)/dashboard/layout.tsx などサーバー側での認可ガード
 // app/(admin)/dashboard/layout.tsx
-import React from "react";
 import "@/app/globals.css";
-import ClientProviders from "../../components/(dashboard)/clientProviders";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/providers/nextauth";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  // 注意: ここはネストされた layout なので <html> と <body> は書かない
-  return <ClientProviders>{children}</ClientProviders>;
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect(`/api/auth/signin?callbackUrl=${encodeURIComponent("/dashboard")}`);
+  }
+  return (
+    <html lang="ja">
+      <body>{children}</body>
+    </html>
+  );
 }

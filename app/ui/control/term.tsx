@@ -1,4 +1,6 @@
+// /app/ui/control/term.tsx
 "use client";
+
 import { Input } from "@nextui-org/input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
@@ -12,11 +14,9 @@ export default function InputTerm() {
   const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchParams);
     params.delete("query");
-    if (term) {
-      params.set("query", term);
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 500);
+    if (term) params.set("query", term);
+    replace(`${pathname}?${params.toString()}`, { scroll:false });
+  }, 300);
 
   return (
     <Input

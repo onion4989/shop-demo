@@ -1,4 +1,5 @@
-import React from "react";
+{
+  /*import React from "react";
 import InputTerm from "@/app/ui/control/term";
 import SelectCategory from "@/app/ui/control/category";
 import SelectPrice from "@/app/ui/control/price";
@@ -26,3 +27,4 @@ export default async function SearchFroms() {
     </>
   );
 }
+*/}

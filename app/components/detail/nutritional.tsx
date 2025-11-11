@@ -1,7 +1,8 @@
-import { fetchNutritionalInfo } from "@/app/lib/data";
+// app/components/detail/nutritional.tsx
+import { getNutritionalInfoCached } from "@/app/lib/data";
 
 export default async function NutritionalTable(params: { productid: string }) {
-  const nutritional = await fetchNutritionalInfo(params.productid);
+  const nutritional = await getNutritionalInfoCached(params.productid);
   return (
     <table className="block whitespace-nowrap">
       <thead>

@@ -1,3 +1,5 @@
+// app/ui/dashboard/sidenav.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -7,7 +9,7 @@ import { AiFillProduct } from "react-icons/ai";
 
 const links = [
   { name: "TOP", href: "/dashboard", icon: "icon" },
-  { name: "製品一覧（変更 / 削除）", href: "/dashboard/all", icon: "icon" },
+  { name: "製品一覧 / 変更 / 削除", href: "/dashboard/all", icon: "icon" },
   { name: "新規登録", href: "/dashboard/registration", icon: "icon" },
 ];
 

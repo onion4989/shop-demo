@@ -1,3 +1,4 @@
+// app/(admin)/dashboard/top/page.tsx
 import React from "react";
 
 const backGroundStyles = "text-slate-300 bg-slate-700 rounded-lg";
