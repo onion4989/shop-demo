@@ -1,6 +1,6 @@
 // app/(admin)/dashboard/edit/page.tsx
 import { notFound } from "next/navigation";
-import EditProductForm from "@/app/components/(dashboard)/edit/edit-forms";
+import EditProductForm from "@/components/(dashboard)/edit/edit-forms";
 
 // ※ data.ts 側は、以下の ID ごとキャッシュ関数を用意してある想定：
 //   - getDashboardProductCached(productId: string)
@@ -10,7 +10,7 @@ import {
   getDashboardProductCached,
   getCategoriesCached,
   getOptionsCached,
-} from "@/app/lib/data";
+} from "@/lib/data";
 
 // 管理画面は“いつでも最新”が理想ですが、すでに data.ts 側で
 // 5分キャッシュの ID 別キーにしているため、ここでは dynamic 指定は不要。

@@ -2,8 +2,8 @@
 "use client";
 
 import { Input, Textarea, Select, SelectItem, Image } from "@nextui-org/react";
-import type { FetchDashboardSearchProductProps, OptionProps, CategoryProps } from "@/app/lib/definitions";
-import EditCheackdOptions from "@/app/ui/dashboard/control/options";
+import type { FetchDashboardSearchProductProps, OptionProps, CategoryProps } from "@/lib/definitions";
+import EditCheackdOptions from "@/ui/dashboard/control/options";
 
 export default function EditProductForm({
   product,

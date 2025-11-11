@@ -1,6 +1,6 @@
 // app/(admin)/dashboard/top/layout.tsx
 import React from "react";
-import SideNav from "@/app/ui/dashboard/sidenav";
+import SideNav from "@/ui/dashboard/sidenav";
 
 import { Metadata } from "next";
 

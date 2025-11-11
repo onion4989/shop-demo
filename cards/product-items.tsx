@@ -1,5 +1,5 @@
 // app/cards/product-items.tsx
-import { getTopProducts } from "@/app/lib/data";
+import { getTopProducts } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
