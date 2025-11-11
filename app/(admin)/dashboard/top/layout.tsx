@@ -1,3 +1,4 @@
+// app/(admin)/dashboard/top/layout.tsx
 import React from "react";
 import SideNav from "@/app/ui/dashboard/sidenav";
 

@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import { z } from "zod";
 
-// フォームデータの型チェック（任意ですが推奨）
+// フォームデータの型チェック
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),

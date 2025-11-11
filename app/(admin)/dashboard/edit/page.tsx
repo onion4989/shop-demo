@@ -1,20 +1,38 @@
-import { fetchDashboardSearchProducts, fetchCategory, fetchOptions } from "@/app/lib/data";
+// app/(admin)/dashboard/edit/page.tsx
+import { notFound } from "next/navigation";
 import EditProductForm from "@/app/components/(dashboard)/edit/edit-forms";
 
-export default async function EditProduct({
-  searchParams,
-}: {
-  searchParams: {
-    productid: string;
-  };
-}) {
-  const productid = searchParams?.productid || "";
-  //const product = await fetchDashboardSearchProducts(productid);
+// ※ data.ts 側は、以下の ID ごとキャッシュ関数を用意してある想定：
+//   - getDashboardProductCached(productId: string)
+//   - fetchCategory()  …固定キーでキャッシュ（カテゴリは変化が少ない）
+//   - getOptionsCached(productId: string)
+import {
+  getDashboardProductCached,
+  getCategoriesCached,
+  getOptionsCached,
+} from "@/app/lib/data";
+
+// 管理画面は“いつでも最新”が理想ですが、すでに data.ts 側で
+// 5分キャッシュの ID 別キーにしているため、ここでは dynamic 指定は不要。
+// 更新後に最新へ即反映したい場合は、更新API側で revalidateTag を呼ぶのがベスト。
+// export const dynamic = "force-dynamic"; // ←基本は不要
+
+type Props = {
+  searchParams?: { productid?: string };
+};
+
+export default async function EditProduct({ searchParams }: Props) {
+  const productid = searchParams?.productid?.trim();
+  if (!productid) notFound();
+
+  // 並行取得：編集フォームに必要な最小データのみ
   const [product, category, option] = await Promise.all([
-    fetchDashboardSearchProducts(productid),
-    fetchCategory(),
-    fetchOptions(productid),
+    getDashboardProductCached(productid),
+    getCategoriesCached(),                 // 変化少ないのでキャッシュ
+    getOptionsCached(productid),
   ]);
+
+  if (!product) notFound();
 
   return (
     <>

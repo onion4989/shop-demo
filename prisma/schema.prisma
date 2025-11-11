@@ -28,6 +28,8 @@ model Product {
   nutritionalInfo NutritionalInfo[]
   category        Category  @relation(fields: [categoryId], references: [categoryId])
   option          Option?
+  @@index([recommend])
+  @@index([categoryId])
 }
 
 model ProductImage {

@@ -1,8 +1,9 @@
+// app/components/detail/detail-info.tsx
 import Image from "next/image";
-import { fetchAProductDetail } from "@/app/lib/data";
+import { getProductDetailCached } from "@/app/lib/data";
 
 export default async function ProductDetailInfo(params: { productid: string }) {
-  const product = await fetchAProductDetail(params.productid);
+  const product = await getProductDetailCached(params.productid);
 
   const hasImages = product?.images.some((item) =>
     [item.imageUrl_1, item.imageUrl_2, item.imageUrl_3, item.imageUrl_4, item.imageUrl_5, item.imageUrl_6].some(

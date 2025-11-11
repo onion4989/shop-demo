@@ -1,3 +1,4 @@
+// app/ui/dashboard/control/image-file.tsx
 "use client";
 
 import React, { useState } from "react";
