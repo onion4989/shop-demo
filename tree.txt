@@ -13,19 +13,21 @@ app
 │           ├── layout.tsx
 │           └── page.tsx
 ├── (home)
+│   ├── policy
+│   ├── search
+│   └── term
+├── (marketing)
 │   ├── layout.tsx
 │   ├── page.tsx
 │   ├── policy
 │   │   └── page.tsx
-│   ├── search
-│   │   ├── [productid]
-│   │   │   └── page.tsx
-│   │   ├── clientSearch.tsx
-│   │   ├── forms.tsx
-│   │   └── page.tsx
 │   └── term
 │       └── page.tsx
 ├── (protected)
+│   └── page.tsx
+├── (search)
+│   ├── [productId]
+│   │   └── page.tsx
 │   └── page.tsx
 ├── api
 │   ├── auth
@@ -41,37 +43,35 @@ app
 ├── globals.css
 └── middleware.ts
 cards
-├── loading.tsx
-└── product-items.tsx
 components
 ├── (dashboard)
 │   ├── edit
-│   │   └── edit-forms.tsx
 │   └── login
-│       └── signOutButton.tsx
+├── Loading.tsx
 ├── banner
-│   └── banner.tsx
+│   └── Banner.tsx
 ├── card
-│   └── card.tsx
 ├── detail
-│   ├── detail-info.tsx
-│   └── nutritional.tsx
 ├── footer
-│   ├── footer-bar.tsx
-│   ├── footer-images.tsx
-│   ├── footer-info.tsx
-│   └── index.tsx
+│   ├── FooterBar.tsx
+│   ├── FooterImages.tsx
+│   ├── FooterInfo.tsx
+│   └── index.ts
 ├── header
-│   ├── acmeLogo.jsx
-│   └── navi.tsx
+│   ├── Logo.tsx
+│   └── Navigation.tsx
 └── hero
-    └── hero.tsx
+    └── Hero.tsx
 lib
-├── actions.ts
-├── data-prisma-singleton.ts
-├── data.ts
-├── definitions.ts
-└── prisam.ts
+├── client
+│   └── seed
+├── server
+│   ├── actions.ts
+│   ├── prisma.ts
+│   ├── repositories
+│   └── seed
+│       └── data.ts
+└── types.ts
 prisma
 ├── migrations
 │   ├── 20240610070822_update_option_model
@@ -81,7 +81,6 @@ prisma
 │   └── migration_lock.toml
 └── schema.prisma
 providers
-└── nextauth.tsx
 public
 ├── assets
 │   ├── Cake-Shop-Logo.png
@@ -99,23 +98,11 @@ public
 └── vercel.svg
 ui
 ├── control
-│   ├── category.tsx
-│   ├── options.tsx
-│   ├── price.tsx
-│   └── term.tsx
 ├── dashboard
 │   ├── control
-│   │   ├── button.tsx
-│   │   ├── image-file.tsx
-│   │   └── options.tsx
-│   ├── login
-│   │   └── login-form.tsx
-│   └── sidenav.tsx
+│   └── login
 ├── search
-│   ├── forms.tsx
-│   ├── hit.tsx
-│   └── result.tsx
 ├── skeletons.tsx
 └── spinner.tsx
 
-43 directories, 76 files
+50 directories, 54 files
