@@ -1,6 +1,6 @@
 // app/(admin)/dashboard/layout.tsx などサーバー側での認可ガード
 // app/(admin)/dashboard/layout.tsx
-import "@/globals.css";
+import "@/app/globals.css";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/providers/nextauth";

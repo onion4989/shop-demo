@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/globals.css";
+import "@/app/globals.css";
 import Footer from "@/components/footer";
 import FooterBar from "@/components/footer/footer-bar";
 import Header from "@/components/header/navi";

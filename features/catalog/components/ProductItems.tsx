@@ -3,11 +3,23 @@ import { getTopProducts } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 
-const circlelargeNumber =
-  "absolute -top-5 left-4 flex items-center justify-center text-2xl text-white font-bold bg-[#EC3F9C] rounded-full w-[45px] h-[45px] outline outline-3 outline-white";
+const circleLargeNumber = [
+  "absolute -top-5 -left-4",
+  "flex items-center justify-center",
+  "text-2xl text-white font-bold",
+  "bg-[#EC3F9C] rounded-full",
+  "w-[45px] h-[45px]",
+  "outline outline-3 outline-white",
+  ].join(" ");
 
-const circleMiddleNumber =
-  "absolute -top-4 left-4 flex items-center justify-center text-base text-white font-bold bg-[#EC3F9C] rounded-full w-[35px] h-[35px] outline outline-3 outline-white";
+const circleMiddleNumber = [
+  "absolute -top-4 -left-4",
+  "flex items-center justify-center",
+  "text-base text-white font-bold",
+  "bg-[#EC3F9C] rounded-full",
+  "w-[35px] h-[35px]",
+  "outline outline-3 outline-white",
+  ].join(" ");
 
 export default async function ProductsItems() {
   const products = await getTopProducts(9); // 取得件数は必要分だけ
@@ -21,7 +33,7 @@ export default async function ProductsItems() {
       {/* 先頭アイテム（大） */}
       <div className="relative sm:grid-cols-1 lg:col-span-4 w-[384px] max-h-[384px]">
         <Link href={`/search/${firstProduct.productId}`} className="w-full" prefetch={false}>
-          <div className={circlelargeNumber}>{firstProduct.recommend}</div>
+          <div className={circleLargeNumber}>{firstProduct.recommend}</div>
           <div className="absolute inset-x-0 bottom-4 bg-background/80 rounded-small mx-4 p-4">
             <h2 className="font-bold">{firstProduct.name}</h2>
             <p>
@@ -37,8 +49,7 @@ export default async function ProductsItems() {
               height={384}
               className="rounded-large h-full"
               alt={firstProduct.name}
-              // ↑ 画像最適化
-              priority // ファーストビューなので優先読み込み
+              priority
               sizes="(max-width: 1024px) 100vw, 384px"
               placeholder="empty"
             />
@@ -65,7 +76,7 @@ export default async function ProductsItems() {
                       height={176}
                       className="rounded-large w-full h-full"
                       alt={item.name}
-                      loading="lazy"          // 下のカードは遅延読込
+                      loading="lazy"
                       sizes="(max-width: 1024px) 50vw, 180px"
                       placeholder="empty"
                     />
