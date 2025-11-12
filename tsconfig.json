@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "target": "ES2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,30 +14,32 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
+      // 新しい推奨エイリアス（機能別レイアウト）
+      "@app/*": ["app/*"],
+      "@features/*": ["features/*"],
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@ui/*": ["ui/*"],
+
+      // 互換レイヤ（既存の "@/..." インポートを当面許容）
       "@/*": ["./*"],
-      "@/cards/*": ["./cards/*"],
-      "@/components/*": ["./components/*"],
-      "@/lib/*": ["./lib/*"],
-      "@/providers/*": ["./providers/*"],
-      "@/ui/*": ["./ui/*"],
-      // ルートの app も（ページ/ルートは引き続き app にあるため）
-      "@/routes/*": ["./app/*"]
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/ui/*": ["ui/*"]
+      /* 旧 "@/providers/*" や "@/cards/*" をまだ使っているなら、一時的に以下を追加してもOK
+         ただし広すぎるマッピングになるので、最終的には置換で消すのが安全です。
+         "@/providers/*": ["features/auth/*"],
+         "@/cards/*": ["features/catalog/components/*"]
+      */
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "app/components/header/acmeLogo.js",
-    "app/dashbord/page.tsx",
-    "app/(admin)/dashboard/layout.tsx"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
