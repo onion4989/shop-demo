@@ -1,0 +1,121 @@
+app
+├── (admin)
+│   └── dashboard
+│       ├── all
+│       │   ├── adminAllClient.tsx
+│       │   └── page.tsx
+│       ├── clientProviders.tsx
+│       ├── edit
+│       │   └── page.tsx
+│       ├── layout.tsx
+│       ├── page.tsx
+│       └── top
+│           ├── layout.tsx
+│           └── page.tsx
+├── (home)
+│   ├── layout.tsx
+│   ├── page.tsx
+│   ├── policy
+│   │   └── page.tsx
+│   ├── search
+│   │   ├── [productid]
+│   │   │   └── page.tsx
+│   │   ├── clientSearch.tsx
+│   │   ├── forms.tsx
+│   │   └── page.tsx
+│   └── term
+│       └── page.tsx
+├── (protected)
+│   └── page.tsx
+├── api
+│   ├── auth
+│   │   └── [...nextauth]
+│   │       └── route.ts
+│   ├── categories
+│   │   └── route.ts
+│   ├── hit
+│   │   └── route.ts
+│   └── search
+│       └── route.ts
+├── favicon.ico
+├── globals.css
+└── middleware.ts
+cards
+├── loading.tsx
+└── product-items.tsx
+components
+├── (dashboard)
+│   ├── edit
+│   │   └── edit-forms.tsx
+│   └── login
+│       └── signOutButton.tsx
+├── banner
+│   └── banner.tsx
+├── card
+│   └── card.tsx
+├── detail
+│   ├── detail-info.tsx
+│   └── nutritional.tsx
+├── footer
+│   ├── footer-bar.tsx
+│   ├── footer-images.tsx
+│   ├── footer-info.tsx
+│   └── index.tsx
+├── header
+│   ├── acmeLogo.jsx
+│   └── navi.tsx
+└── hero
+    └── hero.tsx
+lib
+├── actions.ts
+├── data-prisma-singleton.ts
+├── data.ts
+├── definitions.ts
+└── prisam.ts
+prisma
+├── migrations
+│   ├── 20240610070822_update_option_model
+│   │   └── migration.sql
+│   ├── 20251110221057_add_indexes_for_home_page
+│   │   └── migration.sql
+│   └── migration_lock.toml
+└── schema.prisma
+providers
+└── nextauth.tsx
+public
+├── assets
+│   ├── Cake-Shop-Logo.png
+│   ├── cup0001_item_chocolate-chip-cupcake_thumbnail.jpg
+│   ├── cup0002_item_heart-chip-cupcake_thumbnail.jpg
+│   ├── cup0003_item_cream-cupcake_thumbnail.jpg
+│   ├── cup0004_item_herbal-mint-cupcake_thumbnail.jpg
+│   ├── cup0005_item_sakura-cupcake_thumbnail.jpg
+│   ├── cup0006_item_almond-cupcake_thumbnail.jpg
+│   ├── cup0007_item_milk-vanilla-cupcake_thumbnail.jpg
+│   ├── hero.jpg
+│   ├── hero2.jpg
+│   └── ice0001_item_ice-cream-baum_thumbnail.jpg
+├── next.svg
+└── vercel.svg
+ui
+├── control
+│   ├── category.tsx
+│   ├── options.tsx
+│   ├── price.tsx
+│   └── term.tsx
+├── dashboard
+│   ├── control
+│   │   ├── button.tsx
+│   │   ├── image-file.tsx
+│   │   └── options.tsx
+│   ├── login
+│   │   └── login-form.tsx
+│   └── sidenav.tsx
+├── search
+│   ├── forms.tsx
+│   ├── hit.tsx
+│   └── result.tsx
+├── skeletons.tsx
+└── spinner.tsx
+
+43 directories, 76 files
