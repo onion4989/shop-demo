@@ -12,10 +12,6 @@ app
 │       └── top
 │           ├── layout.tsx
 │           └── page.tsx
-├── (home)
-│   ├── policy
-│   ├── search
-│   └── term
 ├── (marketing)
 │   ├── layout.tsx
 │   ├── page.tsx
@@ -40,18 +36,44 @@ app
 │   └── search
 │       └── route.ts
 ├── favicon.ico
-├── globals.css
-└── middleware.ts
-cards
+└── globals.css
+features
+├── admin
+│   ├── components
+│   │   ├── AdminButton.tsx
+│   │   ├── AdminOptions.tsx
+│   │   ├── DashboardSideNav.tsx
+│   │   ├── EditForm.tsx
+│   │   └── ImageFileInput.tsx
+│   └── {components}
+├── auth
+│   ├── AuthProvider.tsx
+│   ├── components
+│   │   ├── LoginForm.tsx
+│   │   └── SignOutButton.tsx
+│   └── {components}
+├── catalog
+│   ├── components
+│   │   ├── ProductCard.tsx
+│   │   ├── ProductDetailInfo.tsx
+│   │   ├── ProductItems.tsx
+│   │   └── ProductNutritional.tsx
+│   └── {components}
+└── search
+    ├── components
+    │   ├── CategoryFilter.tsx
+    │   ├── ClientSearch.tsx
+    │   ├── OptionsFilter.tsx
+    │   ├── PriceFilter.tsx
+    │   ├── SearchForm.tsx
+    │   ├── SearchHit.tsx
+    │   ├── SearchResults.tsx
+    │   └── TermFilter.tsx
+    └── {components}
 components
-├── (dashboard)
-│   ├── edit
-│   └── login
 ├── Loading.tsx
 ├── banner
 │   └── Banner.tsx
-├── card
-├── detail
 ├── footer
 │   ├── FooterBar.tsx
 │   ├── FooterImages.tsx
@@ -72,37 +94,5 @@ lib
 │   └── seed
 │       └── data.ts
 └── types.ts
-prisma
-├── migrations
-│   ├── 20240610070822_update_option_model
-│   │   └── migration.sql
-│   ├── 20251110221057_add_indexes_for_home_page
-│   │   └── migration.sql
-│   └── migration_lock.toml
-└── schema.prisma
-providers
-public
-├── assets
-│   ├── Cake-Shop-Logo.png
-│   ├── cup0001_item_chocolate-chip-cupcake_thumbnail.jpg
-│   ├── cup0002_item_heart-chip-cupcake_thumbnail.jpg
-│   ├── cup0003_item_cream-cupcake_thumbnail.jpg
-│   ├── cup0004_item_herbal-mint-cupcake_thumbnail.jpg
-│   ├── cup0005_item_sakura-cupcake_thumbnail.jpg
-│   ├── cup0006_item_almond-cupcake_thumbnail.jpg
-│   ├── cup0007_item_milk-vanilla-cupcake_thumbnail.jpg
-│   ├── hero.jpg
-│   ├── hero2.jpg
-│   └── ice0001_item_ice-cream-baum_thumbnail.jpg
-├── next.svg
-└── vercel.svg
-ui
-├── control
-├── dashboard
-│   ├── control
-│   └── login
-├── search
-├── skeletons.tsx
-└── spinner.tsx
 
-50 directories, 54 files
+42 directories, 54 files
