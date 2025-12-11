@@ -1,7 +1,7 @@
-// /app/ui/control/term.tsx
+// features/search/components/TermFilter.tsx
 "use client";
 
-import { Input } from "@nextui-org/input";
+import { Input } from "@heroui/input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 

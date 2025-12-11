@@ -1,0 +1,64 @@
+---
+description: フロントエンド開発ルール（ディレクトリ構造、コンポーネント設計、Next.js App Router）
+globs: "app/**/*.{ts,tsx}", "features/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"
+---
+
+# フロントエンド・アーキテクチャ
+
+このプロジェクトは **Feature-based Architecture** を採用しています。
+コードを配置する際は、以下のルールを厳守してください。
+
+## 1. ディレクトリ構造と配置ルール
+
+### `features/` (機能ディレクトリ)
+特定の機能（ドメイン）に強く結びついたコードはここに配置します。
+- **構成**: `features/[機能名]/components`, `features/[機能名]/hooks` など。
+- **例**: 商品詳細に関連するコンポーネントは `features/catalog/components/ProductCard.tsx` へ。
+- **原則**: `app/` ディレクトリ内のページファイルは薄く保ち、実体は `features/` からインポートして組み立ててください。
+
+### `components/ui/` (共有UIパーツ)
+- ボタン、入力フォーム、カードなど、**ドメイン知識を持たない純粋なUI部品**はここに配置します。
+- Shadcn UI等のライブラリコンポーネントもここに含まれます。
+
+### `app/` (ルーティング)
+- **Route Groups**: `(admin)` と `(main)` でレイアウトを分離しています。
+- **責務**: データのフェッチ（Server Components）と、`features` コンポーネントの配置のみに集中してください。ロジックを直接 `page.tsx` に書かないでください。
+
+### `lib/` (ロジック分離)
+- **`lib/server`**: サーバーサイド専用ロジック（DB操作、Server Actions）。
+- **`lib/client`**: クライアントサイド専用ロジック。
+- **`lib/utils.ts`**: 汎用ユーティリティ（`cn` 関数など）。
+
+---
+
+# Next.js App Router 実装ガイドライン
+
+## 1. レンダリング戦略 (Server vs Client)
+- **Default Server**: 基本的に **Server Components (RSC)** で実装します。
+- **Client Boundary**: `useState`, `useEffect`, ブラウザイベント(`onClick`など)が必要な場合のみ、ファイルの先頭に `'use client'` を記述します。
+- **Leaf Pattern**: `'use client'` は可能な限りコンポーネントツリーの末端（ボタンやフォームなど）で使用し、ページ全体をクライアント化することは避けてください。
+
+## 2. データフェッチとミューテーション
+- **取得 (GET)**: Server Components 内で直接非同期関数 (`await prisma...` や `fetch`) を呼び出します。`useEffect` でのフェッチは極力避けてください。
+- **更新 (POST/PUT/DELETE)**: API Routes (`app/api`) ではなく、**Server Actions (`lib/server/actions`)** を優先して使用します。
+  - フォームの送信は `<form action={serverAction}>` を基本とします。
+
+## 3. 状態管理 (State Management)
+- **URL State**: フィルタリング、検索条件、ページネーションなどの状態は、`useState` ではなく **URL Search Params** (`useSearchParams`) で管理してください（共有・リロード可能にするため）。
+- **Local State**: UIの開閉などは `useState` を使用。
+- **Global State**: 必要な場合のみ Context を使用（`app/(admin)/client-providers.tsx` 等を参照）。
+
+---
+
+# コーディング規約
+
+## 1. コンポーネント実装
+- **関数コンポーネント**: アロー関数 `const Component = () => {}` を使用。
+- **Props**: 型定義は `interface` ではなく `type Props = { ... }` を使用し、コンポーネントの直上に記述。
+
+## 2. スタイリング (Tailwind CSS)
+- `style` タグや CSS Modules は原則使用せず、Tailwind のユーティリティクラスを使用します。
+- 条件付きスタイルには `cn` (clsx + tailwind-merge) ユーティリティを使用してください。
+  ```tsx
+  // OK
+  <div className={cn("flex p-4", isActive && "bg-blue-500")} />

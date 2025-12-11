@@ -1,9 +1,10 @@
-// app/ui/control/category.tsx
+// features/search/components/CategoryFilter.tsx
 "use client";
 
 import React, { useMemo, useCallback, useTransition } from "react";
-import { Select, SelectItem, type Selection } from "@nextui-org/react";
-import { CategoryProps } from "@/lib/definitions";
+import { Select, SelectItem } from "@heroui/select";
+import type { Selection } from "@react-types/shared";
+import { CategoryProps } from "@lib/types";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 /**

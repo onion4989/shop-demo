@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "next-auth/react";
+import { signIn } from "@/lib/server/auth";
 import { z } from "zod";
 
 // フォームデータの型チェック
@@ -19,20 +19,28 @@ export async function authenticate(formData: FormData) {
     const parsed = loginSchema.parse({ email, password });
 
     // NextAuth signIn をサーバーアクションから呼び出す
-    const result = await signIn("credentials", {
-      redirect: false, // サーバーアクションでは false にする
+    await signIn("credentials", {
       email: parsed.email,
       password: parsed.password,
+      redirectTo: "/dashboard",
     });
 
-    if (!result || !result.ok) {
-      return "Invalid credentials."; // 認証失敗
+    return "Success"; // 認証成功
+  } catch (error: unknown) {
+    // セキュリティ: 本番環境では詳細なエラー情報をログに出力しない
+    if (process.env.NODE_ENV === "development") {
+      console.error("[authenticate] error:", {
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
 
-    return "Success"; // 認証成功
-  } catch (error: any) {
     // Zod のバリデーションエラー
-    if (error?.errors) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "errors" in error &&
+      Array.isArray(error.errors)
+    ) {
       return "Invalid input.";
     }
 

@@ -1,10 +1,11 @@
-// app/ui/search/result.tsx
+// features/search/components/SearchResults.tsx
 "use client";
 
 import React, { forwardRef } from "react";
 import { VirtuosoGrid } from "react-virtuoso";
-import ProductDesignCard from "@/components/card/card";
-import type { SearchProductsProps } from "@/lib/definitions";
+//import ProductDesignCard from "@/features/catalog/components/ProductCard";
+import ProductDesignCard from "@features/catalog/components/ProductCard";
+import type { SearchProductsProps } from "@lib/types";
 
 /**
  * 仮想化されたグリッド一覧
@@ -67,7 +68,7 @@ const GridItem = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) 
     {...props}
     className="
       w-full h-full
-      [contain:content]
+      contain-content
     "
   >
     {children}

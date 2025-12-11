@@ -1,0 +1,251 @@
+.
+├── FIX_VERIFICATION_REPORT.md
+├── IMPROVEMENT_REPORT.md
+├── NEXTAUTH_URL_GUIDE.md
+├── README.md
+├── REMAINING_ISSUES_REPORT.md
+├── SECURITY_AUDIT_REPORT.md
+├── VERCEL_ENV_REVIEW.md
+├── VERCEL_ENV_SETUP.md
+├── app
+│   ├── (admin)
+│   │   └── dashboard
+│   │       ├── all
+│   │       │   └── page.tsx
+│   │       ├── category-regist
+│   │       │   └── page.tsx
+│   │       ├── client-providers.tsx
+│   │       ├── edit
+│   │       │   └── page.tsx
+│   │       ├── layout.tsx
+│   │       ├── page.tsx
+│   │       ├── regist
+│   │       │   └── page.tsx
+│   │       └── top
+│   │           ├── layout.tsx
+│   │           └── page.tsx
+│   ├── (main)
+│   │   ├── catalog
+│   │   │   ├── [productId]
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── policy
+│   │   └── term
+│   ├── api
+│   │   ├── admin
+│   │   │   └── products
+│   │   │       └── route.ts
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   │       └── route.ts
+│   │   ├── categories
+│   │   │   └── route.ts
+│   │   ├── hit
+│   │   │   └── route.ts
+│   │   └── search
+│   │       └── route.ts
+│   ├── app-tree.txt
+│   ├── auth
+│   │   ├── error
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   ├── new-password
+│   │   │   └── page.tsx
+│   │   ├── new-verification
+│   │   │   └── page.tsx
+│   │   ├── register
+│   │   │   └── page.tsx
+│   │   └── reset
+│   │       └── page.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── lib
+│       └── utils.ts
+├── auth.config.ts
+├── components
+│   ├── Loading.tsx
+│   ├── auth
+│   │   ├── backButton.tsx
+│   │   ├── cardWrapper.tsx
+│   │   ├── errorCard.tsx
+│   │   ├── header.tsx
+│   │   ├── loginButton.tsx
+│   │   ├── loginForm.tsx
+│   │   ├── newPasswordForm.tsx
+│   │   ├── newVerificationForm.tsx
+│   │   ├── registerForm.tsx
+│   │   ├── resetForm.tsx
+│   │   └── social.tsx
+│   ├── banner
+│   │   └── Banner.tsx
+│   ├── error.tsx
+│   ├── footer
+│   │   ├── Footer.tsx
+│   │   ├── FooterBar.tsx
+│   │   ├── FooterImages.tsx
+│   │   └── FooterInfo.tsx
+│   ├── header
+│   │   ├── Logo.tsx
+│   │   └── Navigation.tsx
+│   ├── hero
+│   │   ├── Hero.tsx
+│   │   ├── Wave.tsx
+│   │   └── slider.module.css
+│   ├── success.tsx
+│   └── ui
+│       ├── button.tsx
+│       ├── card.tsx
+│       ├── carousel.tsx
+│       ├── checkbox.tsx
+│       ├── external-link.tsx
+│       ├── form.tsx
+│       ├── input.tsx
+│       ├── label.tsx
+│       ├── select.tsx
+│       └── table.tsx
+├── components.json
+├── dbdata.txt
+├── features
+│   ├── admin
+│   │   ├── components
+│   │   │   ├── AdminButton.tsx
+│   │   │   ├── AdminOptions.tsx
+│   │   │   ├── CategoryRegisterForm.tsx
+│   │   │   ├── CategoryTable.tsx
+│   │   │   ├── DashboardSideNav.tsx
+│   │   │   ├── EditForm.tsx
+│   │   │   ├── ImageFileInput.tsx
+│   │   │   ├── ProductRegisterForm.tsx
+│   │   │   └── shared
+│   │   │       └── RegistrationPopupCard.tsx
+│   │   └── dashbord-all
+│   │       ├── AdminProductListClient.tsx
+│   │       ├── ProductList.tsx
+│   │       ├── ProductListRow.tsx
+│   │       └── ProductSearchForm.tsx
+│   ├── auth
+│   │   ├── AuthProvider.tsx
+│   │   └── components
+│   │       ├── LoginForm.tsx
+│   │       └── SignOutButton.tsx
+│   ├── catalog
+│   │   ├── Loaders.ts
+│   │   └── components
+│   │       ├── ProductCard.tsx
+│   │       ├── ProductDetailInfo.tsx
+│   │       ├── ProductItems.tsx
+│   │       ├── ProductNutritional.tsx
+│   │       └── ProductsCarousel.tsx
+│   ├── search
+│   │   └── components
+│   │       ├── CategoryFilter.tsx
+│   │       ├── ClientSearch.tsx
+│   │       ├── OptionsFilter.tsx
+│   │       ├── PriceFilter.tsx
+│   │       ├── SearchForm.tsx
+│   │       ├── SearchHit.tsx
+│   │       ├── SearchResults.tsx
+│   │       └── TermFilter.tsx
+│   └── ui
+│       ├── Providers.tsx
+│       ├── skeletons.tsx
+│       └── spinner.tsx
+├── lib
+│   ├── client
+│   │   └── seed
+│   ├── env.ts
+│   ├── logger.ts
+│   ├── server
+│   │   ├── actions.ts
+│   │   ├── admin
+│   │   │   └── actions
+│   │   │       ├── deleteCategory.ts
+│   │   │       ├── registerCategory.ts
+│   │   │       ├── registerProduct.ts
+│   │   │       └── updateCategory.ts
+│   │   ├── auth
+│   │   │   ├── actions
+│   │   │   │   ├── login.ts
+│   │   │   │   ├── new-password.ts
+│   │   │   │   ├── new-verification.ts
+│   │   │   │   ├── register.ts
+│   │   │   │   └── reset.ts
+│   │   │   ├── auth.config.ts
+│   │   │   ├── data
+│   │   │   │   ├── passwordResetToken.ts
+│   │   │   │   ├── towFactorConfirmation.ts
+│   │   │   │   ├── twoFactorToken.ts
+│   │   │   │   ├── user.ts
+│   │   │   │   └── verificationToken.ts
+│   │   │   ├── index.ts
+│   │   │   ├── mail.ts
+│   │   │   ├── routes.ts
+│   │   │   ├── timestamp.ts
+│   │   │   ├── tokens.ts
+│   │   │   └── utils.ts
+│   │   ├── prisma.ts
+│   │   ├── repositories
+│   │   └── seed
+│   ├── types.ts
+│   └── utils.ts
+├── middleware.ts
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── prisma
+│   ├── migrations
+│   │   ├── 20240610070822_update_option_model
+│   │   │   └── migration.sql
+│   │   ├── 20251110221057_add_indexes_for_home_page
+│   │   │   └── migration.sql
+│   │   ├── 20251122052238_add_auth_models
+│   │   │   └── migration.sql
+│   │   ├── 20251122061419_add_auth_models
+│   │   │   └── migration.sql
+│   │   ├── 20251124040648_add_verification_token_pk
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   └── schema.prisma
+├── project-tree.txt
+├── public
+│   ├── assets
+│   │   ├── Cake-Shop-Logo.png
+│   │   ├── HeroCard-Images1.jpg
+│   │   ├── HeroCard-Images2.jpg
+│   │   ├── HeroCard-Images3.jpg
+│   │   ├── HeroInfo-images1.jpg
+│   │   ├── HeroInfo-images2.jpg
+│   │   ├── HeroInfo-images3.jpg
+│   │   ├── HeroInfo-images4.jpg
+│   │   ├── HeroInfo-images5.jpg
+│   │   ├── cup0001_item_chocolate-chip-cupcake_thumbnail.jpg
+│   │   ├── cup0002_item_heart-chip-cupcake_thumbnail.jpg
+│   │   ├── cup0003_item_cream-cupcake_thumbnail.jpg
+│   │   ├── cup0004_item_herbal-mint-cupcake_thumbnail.jpg
+│   │   ├── cup0005_item_sakura-cupcake_thumbnail.jpg
+│   │   ├── cup0006_item_almond-cupcake_thumbnail.jpg
+│   │   ├── cup0007_item_milk-vanilla-cupcake_thumbnail.jpg
+│   │   ├── hero.jpg
+│   │   ├── hero2.jpg
+│   │   └── ice0001_item_ice-cream-baum_thumbnail.jpg
+│   ├── next.svg
+│   └── vercel.svg
+├── routes.ts
+├── schemas
+│   ├── Index.ts
+│   └── tree.txt
+├── tailwind.config.js
+├── tree.txt
+├── tsconfig.json
+├── types
+│   └── next-auth.d.ts
+└── vercel.json
+
+71 directories, 178 files

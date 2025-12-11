@@ -1,8 +1,9 @@
-// app/ui/control/price.tsx
+// features/search/components/PriceFilter.tsx
 "use client";
 
 import React, { useMemo } from "react";
-import { Select, SelectItem, type Selection } from "@nextui-org/react";
+import { Select, SelectItem } from "@heroui/select";
+import type { Selection } from "@react-types/shared";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 const price = [

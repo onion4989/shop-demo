@@ -1,6 +1,7 @@
 // app/(admin)/dashboard/edit/page.tsx
 import { notFound } from "next/navigation";
-import EditProductForm from "@/components/(dashboard)/edit/edit-forms";
+import EditProductForm from "@features/admin/components/EditForm";
+
 
 // ※ data.ts 側は、以下の ID ごとキャッシュ関数を用意してある想定：
 //   - getDashboardProductCached(productId: string)
@@ -10,7 +11,7 @@ import {
   getDashboardProductCached,
   getCategoriesCached,
   getOptionsCached,
-} from "@/lib/data";
+} from "@features/catalog/Loaders";
 
 // 管理画面は“いつでも最新”が理想ですが、すでに data.ts 側で
 // 5分キャッシュの ID 別キーにしているため、ここでは dynamic 指定は不要。
@@ -38,7 +39,11 @@ export default async function EditProduct({ searchParams }: Props) {
     <>
       <h1 className="text-3xl font-bold text-white my-8">商品編集</h1>
       <div className="flex flex-col gap-4 text-white">
-        <EditProductForm product={product} category={category} option={option} />
+        <EditProductForm
+          product={product}
+          category={category}
+          option={option ?? { takeoutAvailable: false, seasonal: false, bulkPurchase: false, couponAvailable: false }}
+        />
       </div>
     </>
   );

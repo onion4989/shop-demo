@@ -1,98 +1,130 @@
-app
-├── (admin)
-│   └── dashboard
-│       ├── all
-│       │   ├── adminAllClient.tsx
-│       │   └── page.tsx
-│       ├── clientProviders.tsx
-│       ├── edit
-│       │   └── page.tsx
-│       ├── layout.tsx
-│       ├── page.tsx
-│       └── top
-│           ├── layout.tsx
-│           └── page.tsx
-├── (marketing)
-│   ├── layout.tsx
-│   ├── page.tsx
-│   ├── policy
-│   │   └── page.tsx
-│   └── term
-│       └── page.tsx
-├── (protected)
-│   └── page.tsx
-├── (search)
-│   ├── [productId]
-│   │   └── page.tsx
-│   └── page.tsx
-├── api
-│   ├── auth
-│   │   └── [...nextauth]
+.
+├── README.md
+├── app
+│   ├── (admin)
+│   │   └── dashboard
+│   │       ├── all
+│   │       │   ├── adminAllClient.tsx
+│   │       │   └── page.tsx
+│   │       ├── client-providers.tsx
+│   │       ├── edit
+│   │       │   └── page.tsx
+│   │       ├── layout.tsx
+│   │       ├── page.tsx
+│   │       └── top
+│   │           ├── layout.tsx
+│   │           └── page.tsx
+│   ├── (main)
+│   │   ├── catalog
+│   │   │   ├── [productId]
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── policy
+│   │   └── term
+│   ├── api
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   │       └── route.ts
+│   │   ├── categories
+│   │   │   └── route.ts
+│   │   ├── hit
+│   │   │   └── route.ts
+│   │   └── search
 │   │       └── route.ts
-│   ├── categories
-│   │   └── route.ts
-│   ├── hit
-│   │   └── route.ts
-│   └── search
-│       └── route.ts
-├── favicon.ico
-└── globals.css
-features
-├── admin
-│   ├── components
-│   │   ├── AdminButton.tsx
-│   │   ├── AdminOptions.tsx
-│   │   ├── DashboardSideNav.tsx
-│   │   ├── EditForm.tsx
-│   │   └── ImageFileInput.tsx
-│   └── {components}
-├── auth
-│   ├── AuthProvider.tsx
-│   ├── components
-│   │   ├── LoginForm.tsx
-│   │   └── SignOutButton.tsx
-│   └── {components}
-├── catalog
-│   ├── components
-│   │   ├── ProductCard.tsx
-│   │   ├── ProductDetailInfo.tsx
-│   │   ├── ProductItems.tsx
-│   │   └── ProductNutritional.tsx
-│   └── {components}
-└── search
-    ├── components
-    │   ├── CategoryFilter.tsx
-    │   ├── ClientSearch.tsx
-    │   ├── OptionsFilter.tsx
-    │   ├── PriceFilter.tsx
-    │   ├── SearchForm.tsx
-    │   ├── SearchHit.tsx
-    │   ├── SearchResults.tsx
-    │   └── TermFilter.tsx
-    └── {components}
-components
-├── Loading.tsx
-├── banner
-│   └── Banner.tsx
-├── footer
-│   ├── FooterBar.tsx
-│   ├── FooterImages.tsx
-│   ├── FooterInfo.tsx
-│   └── index.ts
-├── header
-│   ├── Logo.tsx
-│   └── Navigation.tsx
-└── hero
-    └── Hero.tsx
-lib
-├── client
-│   └── seed
-├── server
-│   ├── actions.ts
-│   ├── prisma.ts
-│   ├── repositories
-│   └── seed
-│       └── data.ts
-└── types.ts
+│   ├── favicon.ico
+│   ├── globals.css
+│   └── layout.tsx
+├── components
+│   ├── Loading.tsx
+│   ├── banner
+│   │   └── Banner.tsx
+│   ├── footer
+│   │   ├── Footer.tsx
+│   │   ├── FooterBar.tsx
+│   │   ├── FooterImages.tsx
+│   │   └── FooterInfo.tsx
+│   ├── header
+│   │   ├── Logo.tsx
+│   │   └── Navigation.tsx
+│   └── hero
+│       └── Hero.tsx
+├── dbdata.txt
+├── features
+│   ├── admin
+│   │   └── components
+│   │       ├── AdminButton.tsx
+│   │       ├── AdminOptions.tsx
+│   │       ├── DashboardSideNav.tsx
+│   │       ├── EditForm.tsx
+│   │       └── ImageFileInput.tsx
+│   ├── auth
+│   │   ├── AuthProvider.tsx
+│   │   └── components
+│   │       ├── LoginForm.tsx
+│   │       └── SignOutButton.tsx
+│   ├── catalog
+│   │   ├── Loaders.ts
+│   │   └── components
+│   │       ├── ProductCard.tsx
+│   │       ├── ProductDetailInfo.tsx
+│   │       ├── ProductItems.tsx
+│   │       └── ProductNutritional.tsx
+│   ├── search
+│   │   └── components
+│   │       ├── CategoryFilter.tsx
+│   │       ├── ClientSearch.tsx
+│   │       ├── OptionsFilter.tsx
+│   │       ├── PriceFilter.tsx
+│   │       ├── SearchForm.tsx
+│   │       ├── SearchHit.tsx
+│   │       ├── SearchResults.tsx
+│   │       └── TermFilter.tsx
+│   └── ui
+│       ├── Providers.tsx
+│       ├── skeletons.tsx
+│       └── spinner.tsx
+├── lib
+│   ├── client
+│   │   └── seed
+│   ├── server
+│   │   ├── actions.ts
+│   │   ├── prisma.ts
+│   │   ├── repositories
+│   │   └── seed
+│   └── types.ts
+├── middleware.ts
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── prisma
+│   ├── migrations
+│   │   ├── 20240610070822_update_option_model
+│   │   │   └── migration.sql
+│   │   ├── 20251110221057_add_indexes_for_home_page
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   └── schema.prisma
+├── public
+│   ├── assets
+│   │   ├── Cake-Shop-Logo.png
+│   │   ├── cup0001_item_chocolate-chip-cupcake_thumbnail.jpg
+│   │   ├── cup0002_item_heart-chip-cupcake_thumbnail.jpg
+│   │   ├── cup0003_item_cream-cupcake_thumbnail.jpg
+│   │   ├── cup0004_item_herbal-mint-cupcake_thumbnail.jpg
+│   │   ├── cup0005_item_sakura-cupcake_thumbnail.jpg
+│   │   ├── cup0006_item_almond-cupcake_thumbnail.jpg
+│   │   ├── cup0007_item_milk-vanilla-cupcake_thumbnail.jpg
+│   │   ├── hero.jpg
+│   │   ├── hero2.jpg
+│   │   └── ice0001_item_ice-cream-baum_thumbnail.jpg
+│   ├── next.svg
+│   └── vercel.svg
+├── tailwind.config.js
+├── tree.txt
+├── tsconfig.json
+└── vercel.json
 
-42 directories, 54 files
+45 directories, 83 files

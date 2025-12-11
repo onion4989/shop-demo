@@ -1,12 +1,12 @@
-// app/(home)/search/forms.tsx
+// features/search/components/SearchForm.tsx
 "use client";
 
 import useSWR from "swr";
-import InputTerm from "@/ui/control/term";
-import SelectCategory from "@/ui/control/category";
-import SelectPrice from "@/ui/control/price";
-import CheackdOptions from "@/ui/control/options";
-import Spinner from "@/ui/spinner";
+import InputTerm from "@features/search/components/TermFilter";
+import SelectCategory from "@features/search/components/CategoryFilter";
+import SelectPrice from "@features/search/components/PriceFilter";
+import CheackdOptions from "@features/search/components/OptionsFilter";
+import Spinner from "@features/ui/spinner";
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 

@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/button";
 
 const ImageUploadButton = () => {
   const [image, setImage] = useState<string | null>(null);

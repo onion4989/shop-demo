@@ -1,0 +1,13 @@
+# 機密情報
+.env
+.env.*
+**/*.pem
+**/*.key
+**/secrets.ts
+
+# AIに読ませる必要のない巨大ファイル
+package-lock.json
+pnpm-lock.yaml
+**/node_modules
+**/dist
+**/build
