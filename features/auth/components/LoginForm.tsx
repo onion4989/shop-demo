@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@nextui-org/react";
-import { signIn } from "next-auth/react";
+import { Button } from "@heroui/button";
+import { signIn } from "@/node_modules/next-auth/react";
 
 export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);

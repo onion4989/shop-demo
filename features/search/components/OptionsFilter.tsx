@@ -1,8 +1,8 @@
-// /app/ui/control/options.tsx
+// features/search/components/OptionsFilter.tsx
 "use client";
 
 import React, { useState } from "react";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import { CheckboxGroup, Checkbox } from "@heroui/checkbox";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default function CheackdOptions() {

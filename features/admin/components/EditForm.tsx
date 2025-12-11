@@ -1,9 +1,11 @@
-// app/components/(dashboard)/edit/edit-forms.tsx
+// features/admin/components/EditForm.tsx
 "use client";
 
-import { Input, Textarea, Select, SelectItem, Image } from "@nextui-org/react";
-import type { FetchDashboardSearchProductProps, OptionProps, CategoryProps } from "@/lib/definitions";
-import EditCheackdOptions from "@/ui/dashboard/control/options";
+import { Image } from "@heroui/image";
+import { Input, Textarea } from "@heroui/input";
+import { Select, SelectItem } from "@heroui/select";
+import type { FetchDashboardSearchProductProps, OptionProps, CategoryProps } from "@lib/types";
+import EditCheackdOptions from "@features/admin/components/AdminOptions";
 
 export default function EditProductForm({
   product,
@@ -61,7 +63,7 @@ export default function EditProductForm({
           selectionMode="single"
         >
           {category.map((c) => (
-            <SelectItem key={c.categoryId} value={c.categoryId}>
+            <SelectItem key={c.categoryId} textValue={c.categoryId}>
               {c.name}
             </SelectItem>
           ))}

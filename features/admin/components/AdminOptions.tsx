@@ -2,9 +2,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckboxGroup, Checkbox } from "@nextui-org/react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { OptionProps } from "@/lib/definitions";
+import { CheckboxGroup, Checkbox } from "@heroui/checkbox";
+import { OptionProps } from "@lib/types";
 
 export default function EditCheackdOptions({ option }: { option: OptionProps }) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);

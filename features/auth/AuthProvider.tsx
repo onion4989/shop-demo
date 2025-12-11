@@ -1,15 +1,14 @@
-// app/providers/nextauth.ts
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+// shop-demo/features/auth/AuthProvider.tsx
+"use client";
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-  ],
-  // 必要なら callbacks / session など
+import { SessionProvider } from "next-auth/react";
+import type { ReactNode } from "react";
+
+type Props = {
+  children: ReactNode;
 };
 
-export default NextAuth(authOptions);
+export function AuthProvider({ children }: Props) {
+  return <SessionProvider>{children}</SessionProvider>;
+}
+

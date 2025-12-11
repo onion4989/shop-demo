@@ -1,5 +1,5 @@
-// app/ui/search/hit.tsx
-import { Divider } from "@nextui-org/react";
+// features/search/components/SearchHit.tsx
+import {Divider} from "@heroui/divider";
 
 export default function HitNumber({ max, search }: { max: number; search: number }) {
   return (

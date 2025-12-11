@@ -20,7 +20,7 @@ export default function ProductDesignCard({
   img: string;
 }) {
   return (
-    <Link href={`/search/${productid}`} className="relative w-full max-h-[180px]">
+    <Link href={`/catalog/${productid}`} className="relative w-full max-h-[180px]">
       <div className={`${category_class}`}>{category}</div>
       <div className="absolute left-2 top-2 text-6xl text-white font-bold opacity-25 z-50">{id}</div>
       <div className="absolute inset-x-0 bottom-2 h-[70px] bg-background/80 rounded-small mx-2 py-2 px-4">
@@ -31,9 +31,8 @@ export default function ProductDesignCard({
         src={`/assets/${img}`}
         width={180}
         height={180}
-        className="rounded-large"
+        className="rounded-large w-[180px] h-[180px]"
         alt={`${name}`}
-        style={{ width: "180px", height: "180px" }}
         priority={false}
       />
     </Link>

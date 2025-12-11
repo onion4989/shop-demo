@@ -1,13 +1,38 @@
 // app/(admin)/dashboard/all/page.tsx
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { prisma } from "@/lib/server/prisma";
+import type { AdminCategoryOption } from "@/lib/types";
 
-const AdminAllClient = dynamic(() => import("./adminAllClient"), { ssr: false });
+const AdminProductListClient = dynamic(
+  () =>
+    import("@/features/admin/dashbord-all/AdminProductListClient").then(
+      (m) => m.AdminProductListClient,
+    ),
+);
 
-export default function Page() {
+export default async function AdminAllPage() {
+  const totalCountPromise = prisma.product.count();
+
+  const categoriesPromise = prisma.category.findMany({
+    orderBy: { name: "asc" },
+    select: {
+      id: true,
+      categoryId: true,
+      name: true,
+    },
+  });
+
+  const [totalCount, categories] = await Promise.all([
+    totalCountPromise,
+    categoriesPromise,
+  ]);
+
   return (
-    <Suspense fallback={<div className="text-white p-4">Loading...</div>}>
-      <AdminAllClient />
-    </Suspense>
+    <div className="space-y-6">
+      <AdminProductListClient
+        initialTotalCount={totalCount}
+        categories={categories as AdminCategoryOption[]}
+      />
+    </div>
   );
 }

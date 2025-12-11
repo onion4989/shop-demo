@@ -1,13 +1,12 @@
-// app/(home)/search/clientSearch.tsx
+// features/search/components/ClientSearch.tsx
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import useSWR, { mutate as swrMutate } from "swr";
 import { useSearchParams } from "next/navigation";
-import Spinner from "@/ui/spinner";
-import SearchFroms from "@/app/(home)/search/forms";
-import ResultsTable from "@/ui/search/result";
-import HitNumber from "@/ui/search/hit";
+import SearchFroms from "@features/search/components/SearchForm";
+import ResultsTable from "@features/search/components/SearchResults";
+import HitNumber from "@features/search/components/SearchHit";
 
 /** 型定義 */
 type Product = {
@@ -35,7 +34,7 @@ export default function ClientSearch() {
   const price = norm(params.get("price"));
   const options = norm(params.get("options"));
 
-  // クエリ文字列生成（空なら /api/search で全件）
+  // クエリ文字列生成（空なら /api/catalog で全件）
   const qs: string[] = [];
   if (query) qs.push(`query=${encodeURIComponent(query)}`);
   if (category) qs.push(`category=${encodeURIComponent(category)}`);
@@ -50,20 +49,14 @@ export default function ClientSearch() {
   });
 
   // 事前プリフェッチ（体感速度UPの一例）
-  useEffect(() => {
-    const preKeys = [
-      "/api/search?price=500",
-      "/api/search?price=1000",
-      "/api/search?price=1500",
-    ];
-    preKeys.forEach((k) => swrMutate(k, fetcher(k), { revalidate: false }));
-  }, []);
-
-  // SWR v1向けの fallbackData 用キャッシュ（任意）
-  {/*const lastDataRef = useRef<ApiResponse | undefined>();
-  useEffect(() => {
-    if (data) lastDataRef.current = data;
-  }, [data]);*/}
+  // useEffect(() => {
+  //   const preKeys = [
+  //     "/api/search?price=500",
+  //     "/api/search?price=1000",
+  //     "/api/search?price=1500",
+  //   ];
+  //   preKeys.forEach((k) => swrMutate(k, fetcher(k), { revalidate: false }));
+  // }, []);
 
   return (
     <>
@@ -72,17 +65,10 @@ export default function ClientSearch() {
           <SearchFroms />
         </div>
         <div className="col-span-2">
-          {/*isLoading ? (
-            <Spinner />
-          ) : (
-            <HitNumber max={data?.total || 0} search={data?.products?.length || 0} />
-          )*/}
           <HitNumber max={data?.total || 0} search={data?.products?.length || 0} />
         </div>
       </div>
-
       <div>
-        {/*isLoading ? <Spinner /> : <ResultsTable result={data?.products || []} />*/}
         <ResultsTable result={data?.products || []} />
       </div>
     </>

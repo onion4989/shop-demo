@@ -1,0 +1,16 @@
+---
+description: プロジェクトの技術スタックと基本構成
+globs: "**/*.{ts,tsx,js,jsx,json,css,scss,md}"
+---
+
+# 技術スタック
+- **Framework**: Next.js (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Package Manager**: npm (または pnpm/yarn/bun)
+- **Deployment**: Vercel
+
+# 基本ルール
+- Next.jsのApp Router機能（Server Components, Server Actions）を優先して使用する。
+- ページの作成は `app/` ディレクトリ内に行う。
+- スタイリングにはTailwind CSSのユーティリティクラスを使用し、複雑なCSSは避ける。

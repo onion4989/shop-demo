@@ -1,8 +1,6 @@
 export const runtime = "nodejs"; // ← Prisma を使うので Node ランタイム固定
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/server/prisma";
 
 export async function GET() {
   try {

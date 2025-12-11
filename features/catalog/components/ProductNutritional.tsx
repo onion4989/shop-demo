@@ -1,8 +1,16 @@
-// app/components/detail/nutritional.tsx
-import { getNutritionalInfoCached } from "@/lib/data";
+// features/catalog/components/ProductNutritional.tsx
+//import { notFound } from "next/navigation";
+import { getNutritionalInfoCached } from "@features/catalog/Loaders";
 
-export default async function NutritionalTable(params: { productid: string }) {
-  const nutritional = await getNutritionalInfoCached(params.productid);
+export default async function NutritionalTable({
+  productId,
+}: {
+  productId: string;
+}) {
+  const product = await getNutritionalInfoCached(productId);
+  // if (!product) {
+  //   notFound();
+  // }
   return (
     <table className="block whitespace-nowrap">
       <thead>
@@ -18,9 +26,9 @@ export default async function NutritionalTable(params: { productid: string }) {
       <tbody>
         <tr className="flex gap-2 text-center p-2">
           <td className="w-[100px]">
-            {nutritional?.energy ? (
+            {product?.energy ? (
               <>
-                {nutritional.energy}
+                {product?.energy}
                 <span className="text-xs ml-1">kcal</span>
               </>
             ) : (
@@ -28,46 +36,46 @@ export default async function NutritionalTable(params: { productid: string }) {
             )}
           </td>
           <td className="w-[100px]">
-            {nutritional?.protein ? (
+            {product?.protein ? (
               <>
-                {nutritional.protein}
-                <span className="text-xs ml-1">kcal</span>
+                {product?.protein}
+                <span className="text-xs ml-1">g</span>
               </>
             ) : (
               "-"
             )}
           </td>
           <td className="w-[100px]">
-            {nutritional?.fat ? (
+            {product?.fat ? (
               <>
-                {nutritional.fat}
-                <span className="text-xs ml-1">kcal</span>
+                {product?.fat}
+                <span className="text-xs ml-1">g</span>
               </>
             ) : (
               "-"
             )}
           </td>
           <td className="w-[100px]">
-            {nutritional?.carbohydrates ? (
+            {product?.carbohydrates ? (
               <>
-                {nutritional.carbohydrates}
-                <span className="text-xs ml-1">kcal</span>
+                {product?.carbohydrates}
+                <span className="text-xs ml-1">g</span>
               </>
             ) : (
               "-"
             )}
           </td>
           <td className="w-[100px]">
-            {nutritional?.saltEquivalent ? (
+            {product?.saltEquivalent ? (
               <>
-                {nutritional.saltEquivalent}
-                <span className="text-xs ml-1">kcal</span>
+                {product?.saltEquivalent}
+                <span className="text-xs ml-1">g</span>
               </>
             ) : (
               "-"
             )}
           </td>
-          <td className="w-[200px]">{nutritional?.allergen ? nutritional?.allergen : "-"}</td>
+          <td className="w-[200px]">{product?.allergen ? product?.allergen : "-"}</td>
         </tr>
       </tbody>
     </table>

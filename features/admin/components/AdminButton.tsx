@@ -1,5 +1,6 @@
 // app/ui/dashboard/control/button.tsx
-import { Link, Button } from "@nextui-org/react";
+import { Link } from "@heroui/link";
+import { Button } from "@heroui/button";
 
 export function EditButton({ productid }: { productid: string }) {
   return (

@@ -1,0 +1,42 @@
+---
+description: バックエンド開発ルール（Server Actions, API Route, Validation, Security）
+globs: "app/api/**/*.{ts,tsx}", "lib/server/**/*.{ts,tsx}", "schemas/**/*.{ts,tsx}", "auth.config.ts"
+---
+
+# バックエンド・アーキテクチャ方針
+
+このプロジェクトでは、API実装において **Server Actions** を優先し、必要に応じて **Route Handlers** を使用します。
+
+## 1. 実装方式の使い分け
+
+### Server Actions (`lib/server/actions`)
+- **用途:** クライアントからのデータ更新（POST/PUT/DELETE）、フォーム送信、およびコンポーネント内での直接的なデータ取得。
+- **配置:** `lib/server/actions.ts` または `lib/server/[機能名]/actions/` 配下に配置。
+- **ルール:** 必ずファイルの先頭に `'use server'` を記述する。
+
+### Route Handlers (`app/api`)
+- **用途:** Webhookの受信、外部サービス向けAPI、REST Clientからのアクセスが必要な場合。
+- **配置:** `app/api` 配下。
+- **ルール:** HTTPメソッド（GET, POST等）ごとに名前付きエクスポートを行う。
+
+---
+
+# 2. バリデーション (Zod)
+
+入力データの検証には必ず **Zod** を使用します。
+
+- **スキーマ定義:** `schemas/Index.ts` (または `schemas/` 配下) に定義し、再利用可能な状態にする。
+- **検証フロー:** Server Actions や API Route の冒頭で必ず `safeParse` を実行する。
+
+```typescript
+// 実装例
+import { RegisterSchema } from "@/schemas/Index";
+
+export const register = async (values: z.infer<typeof RegisterSchema>) => {
+  const validatedFields = RegisterSchema.safeParse(values);
+  
+  if (!validatedFields.success) {
+    return { error: "無効な入力データです" };
+  }
+  // ...処理続行
+};
