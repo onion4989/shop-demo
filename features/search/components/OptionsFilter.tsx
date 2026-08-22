@@ -27,9 +27,10 @@ export default function CheackdOptions() {
 
   return (
     <CheckboxGroup label="オプション" value={selectedValues} onChange={handleOptionsChange} className="">
-      <Checkbox value="takeoutAvailable">テイクアウト可</Checkbox>
+      <Checkbox value="giftAvailable">ギフト対応</Checkbox>
       <Checkbox value="seasonal">季節限定</Checkbox>
       <Checkbox value="bulkPurchase">まとめ買い対象</Checkbox>
+      <Checkbox value="frozenDelivery">冷凍配送</Checkbox>
       <Checkbox value="couponAvailable">クーポン可</Checkbox>
     </CheckboxGroup>
   );

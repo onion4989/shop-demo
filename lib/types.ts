@@ -54,9 +54,10 @@ export type CategoryProps = CategoryItem[];
  * - AdminOptions.tsx などから利用
  */
 export type OptionProps = {
-  takeoutAvailable: boolean;
+  giftAvailable: boolean;
   seasonal: boolean;
   bulkPurchase: boolean;
+  frozenDelivery: boolean;
   couponAvailable: boolean;
 } | null;
 
@@ -91,10 +92,11 @@ export type FetchDashboardSearchProductProps = {
     categoryId: string;
   };
   option: {
-    bulkPurchase: boolean;
-    couponAvailable: boolean;
+    giftAvailable: boolean;
     seasonal: boolean;
-    takeoutAvailable: boolean;
+    bulkPurchase: boolean;
+    frozenDelivery: boolean;
+    couponAvailable: boolean;
   } | null;
 };
 
@@ -142,9 +144,10 @@ export type AdminProductSearchOptions = {
     | "OVER_2000";
 
   // Option テーブル由来のフラグ
-  takeoutAvailable: boolean;
+  giftAvailable: boolean;
   seasonal: boolean;
   bulkPurchase: boolean;
+  frozenDelivery: boolean;
   couponAvailable: boolean;
 
   // Product.recommend > 0 のみ抽出するフラグ

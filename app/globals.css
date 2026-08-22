@@ -1,8 +1,7 @@
-@import "tailwindcss";
-@plugin "tailwindcss-animate";
+@import 'tailwindcss';
+@plugin 'tailwindcss-animate';
 @custom-variant dark (&:is(.dark *));
-@config "../tailwind.config.js";
-
+@config '../tailwind.config.js';
 
 @layer base {
   :root {
@@ -59,18 +58,6 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-}
-
-.wave-section {
-  width: 100%;
-  overflow: hidden;
-}
-
-.wave-svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin-left: 0;
 }
 
 *:focus {

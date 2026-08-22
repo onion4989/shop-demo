@@ -94,9 +94,10 @@ export async function registerProduct(values: ProductRegisterFormValues) {
           },
           option: {
             create: {
-              takeoutAvailable: data.takeoutAvailable,
+              giftAvailable: data.giftAvailable,
               seasonal: data.seasonal,
               bulkPurchase: data.bulkPurchase,
+              frozenDelivery: data.frozenDelivery,
               couponAvailable: data.couponAvailable,
             },
           },

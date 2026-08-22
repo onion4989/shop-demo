@@ -1,35 +1,10 @@
 ---
-description: PrismaとNeon(PostgreSQL)を使用したデータベース操作ルール。スキーマ構造の特異性を定義。
-globs: "**/*.{ts,tsx,prisma}"
+description: Prisma シングルトンと Product.productId。DB 作業時に Read
+alwaysApply: false
 ---
 
-# データベースコンテキスト
-- **ORM**: Prisma
-- **Database**: Neon (Serverless PostgreSQL)
-- **Schema**: `prisma/schema.prisma` が正です。
-
-# 重要なルール
-
-## 1. Prisma Clientのインスタンス化 (Singleton Pattern)
-- Next.jsのHot Reloadによる接続数枯渇を防ぐため、**必ず `lib/server/prisma.ts` で定義されたグローバルインスタンスをインポート**してください。
-- `new PrismaClient()` をコンポーネントやAPIルート内で直接呼び出すことは **禁止** です。
-
-## 2. スキーマ固有のクエリ戦略 (重要)
-
-### Productモデルのリレーション
-- `Product` モデルは主キー(`id`: Int)を持っていますが、他のモデル(`Category`, `ProductImage`, `NutritionalInfo`, `Option`)とのリレーションには **`productId` (String)** を使用しています。
-- **注意:** リレーション検索をする際は、`where: { id: ... }` ではなく `where: { productId: ... }` を使うケースが多いので注意してください。
-
-### データの取得 (Fetching)
-- `Product` の詳細情報を取得する際は、関連テーブルが分散しているため、必要に応じて `include` を使用してください。
-  ```typescript
-  // 商品詳細取得の推奨パターン
-  const product = await prisma.product.findUnique({
-    where: { productId: '...' },
-    include: {
-      images: true,
-      nutritionalInfo: true,
-      option: true,
-      category: true,
-    }
-  });
+# Prisma
+- DB は PostgreSQL。正は prisma/schema.prisma
+- PrismaClient は lib/server/prisma.ts のみ。new PrismaClient() 禁止
+- Product は id(Int) と productId(String)。関連（画像・栄養・Option）は productId
+- 商品詳細は include で images / nutritionalInfo / option / category

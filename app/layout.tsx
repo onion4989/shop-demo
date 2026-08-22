@@ -1,6 +1,15 @@
-// /home/takashi_ogawa/shop-demo/app/layout.tsx
-import { AuthProvider } from '@/features/auth/AuthProvider'
+import { AuthProvider } from '@features/auth/AuthProvider'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: { template: '%s | Cake Shop Demo', default: 'Home' },
+  description:
+    'AIケーキショップ。カップケーキ、アイスケーキなどおいしいケーキがたくさん!',
+}
 
 export default function RootLayout({
   children,
@@ -9,8 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      {/* ↓ ここに suppressHydrationWarning={true} を追加 */}
-      <body suppressHydrationWarning={true}>
+      <body className={`min-h-dvh antialiased ${inter.className}`}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

@@ -34,9 +34,10 @@ export function ProductSearchForm({ categories, value, onChange }: Props) {
       keyword: "",
       categoryId: null,
       priceRange: "ALL",
-      takeoutAvailable: false,
+      giftAvailable: false,
       seasonal: false,
       bulkPurchase: false,
+      frozenDelivery: false,
       couponAvailable: false,
       recommendedOnly: false,
     });
@@ -114,12 +115,12 @@ export function ProductSearchForm({ categories, value, onChange }: Props) {
       <div className="border-t pt-3">
         <Label className="block mb-2">オプション</Label>
 
-        <div className="grid grid-cols-5 gap-3 text-xs">
+        <div className="grid grid-cols-3 gap-3 text-xs sm:grid-cols-6">
           <OptionCheckbox
-            label="テイクアウト可"
-            checked={value.takeoutAvailable}
+            label="ギフト対応"
+            checked={value.giftAvailable}
             onCheckedChange={(checked) =>
-              handleChange({ takeoutAvailable: checked })
+              handleChange({ giftAvailable: checked })
             }
           />
           <OptionCheckbox
@@ -132,6 +133,13 @@ export function ProductSearchForm({ categories, value, onChange }: Props) {
             checked={value.bulkPurchase}
             onCheckedChange={(checked) =>
               handleChange({ bulkPurchase: checked })
+            }
+          />
+          <OptionCheckbox
+            label="冷凍配送"
+            checked={value.frozenDelivery}
+            onCheckedChange={(checked) =>
+              handleChange({ frozenDelivery: checked })
             }
           />
           <OptionCheckbox

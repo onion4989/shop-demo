@@ -6,6 +6,7 @@ import { Input, Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
 import type { FetchDashboardSearchProductProps, OptionProps, CategoryProps } from "@lib/types";
 import EditCheackdOptions from "@features/admin/components/AdminOptions";
+import { resolveAssetPath } from "@/lib/utils";
 
 export default function EditProductForm({
   product,
@@ -36,7 +37,7 @@ export default function EditProductForm({
 
       <div>
         <h3 className="my-2">サムネイル画像</h3>
-        <Image width={200} alt={product.name} src={`/assets/${product.images[0].thumbnailUrl}`} />
+        <Image width={200} alt={product.name} src={resolveAssetPath(product.images[0].thumbnailUrl)} />
       </div>
 
       <div>

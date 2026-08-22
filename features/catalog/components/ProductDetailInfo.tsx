@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProductDetailCached } from "@features/catalog/Loaders";
+import { resolveAssetPath } from "@/lib/utils";
 
 export default async function ProductDetailInfo({
   productId,
@@ -36,7 +37,7 @@ export default async function ProductDetailInfo({
       <div className="grid grid-cols-12">
         <div className="col-span-3">
           <Image
-            src={`/assets/${product.images[0].thumbnailUrl}`}
+            src={resolveAssetPath(product.images[0].thumbnailUrl)}
             width={384}
             height={320}
             alt={product.name}
@@ -69,7 +70,7 @@ export default async function ProductDetailInfo({
               .map((url, i) => (
                 <Image
                   key={`${index}-${i}`}
-                  src={`/assets/${url}`}
+                  src={resolveAssetPath(url)}
                   width={160}
                   height={160}
                   alt={product.name}

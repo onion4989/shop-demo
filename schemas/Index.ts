@@ -83,9 +83,10 @@ export const ProductRegisterSchema = z.object({
 
   // オプション設定（複数選択可）
   // default(false) により「入力型」は boolean | undefined、「出力型」は boolean になる
-  takeoutAvailable: z.boolean().default(false),
+  giftAvailable: z.boolean().default(false),
   seasonal: z.boolean().default(false),
   bulkPurchase: z.boolean().default(false),
+  frozenDelivery: z.boolean().default(false),
   couponAvailable: z.boolean().default(false),
 
   recommend: z

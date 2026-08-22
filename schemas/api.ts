@@ -47,9 +47,10 @@ export const AdminProductSearchSchema = z.object({
     .enum(["ALL", "UNDER_500", "BETWEEN_500_999", "BETWEEN_1000_1999", "OVER_2000"])
     .optional()
     .default("ALL"),
-  takeoutAvailable: z.boolean().optional().default(false),
+  giftAvailable: z.boolean().optional().default(false),
   seasonal: z.boolean().optional().default(false),
   bulkPurchase: z.boolean().optional().default(false),
+  frozenDelivery: z.boolean().optional().default(false),
   couponAvailable: z.boolean().optional().default(false),
   recommendedOnly: z.boolean().optional().default(false),
 });
