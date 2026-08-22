@@ -1,54 +1,42 @@
-// components/header/Navigation.tsx
-import { FaUser, FaShoppingCart, FaSearch } from "react-icons/fa";
-import { Link } from "@heroui/link";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-} from "@heroui/navbar";
-import { Logo } from "./Logo";
-import {Button, ButtonGroup} from "@heroui/button";
+import Link from 'next/link'
 
-export const AcmeLogo = () => {
-  return (
-    <svg fill="none" height="36" viewBox="0 0 32 32" width="36">
-      <path
-        clipRule="evenodd"
-        d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-        fill="currentColor"
-        fillRule="evenodd"
-      />
-    </svg>
-  );
-};
+const navLinks = [
+  { href: '/catalog', label: '商品一覧' },
+  { href: '/contact', label: 'お問い合わせ' },
+] as const
 
 export default function Navigations() {
   return (
-    <Navbar isBordered className="bg-[#FBC4C0] bg-opacity-50">
-      <NavbarBrand>
-        <Logo />
-        <Link href="/">
-          <p className="font-bold text-inherit">AI CAKE SHOP</p>
+    // sticky + pt-10 で「画面上端から 40px」をスクロール中も維持
+    <div className="pointer-events-none sticky top-0 z-50 w-full px-4 pt-10 md:px-6">
+      <header
+        className="pointer-events-auto mx-auto flex h-[60px] w-full max-w-[1200px] items-center justify-between rounded-[10px] border border-white/50 bg-white/55 px-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-md md:px-8"
+        role="banner"
+      >
+        <Link href="/" className="min-w-0 shrink">
+          <span className="block truncate text-sm font-bold tracking-wide text-black md:text-base">
+            Sugar Alice
+          </span>
+          <span className="block truncate text-[10px] leading-tight text-black/60 md:text-xs">
+            シュガー・アリス
+          </span>
         </Link>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link href="/catalog" aria-current="page">
-            商品一覧
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link href="/contact">お問い合わせ</Link>
-        </NavbarItem>
-      </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem className="flex space-x-4">
-          <FaSearch className="text-gray-600" size={20} />
-          <FaShoppingCart className="text-gray-600" size={20} />
-          <FaUser className="text-gray-600" size={20} />
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
-  );
+
+        <nav
+          className="hidden items-center gap-6 md:flex lg:gap-8"
+          aria-label="グローバルナビ"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm font-medium text-[#2B56FF] transition-opacity hover:opacity-70"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </header>
+    </div>
+  )
 }

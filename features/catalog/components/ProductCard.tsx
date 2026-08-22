@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { resolveAssetPath } from "@/lib/utils";
 
 const category_class =
   "absolute top-2 right-2 flex items-center justify-center text-xs text-white font-bold bg-[#72BFA3] rounded-full py-1 px-4";
@@ -28,7 +29,7 @@ export default function ProductDesignCard({
         <p>{price}円</p>
       </div>
       <Image
-        src={`/assets/${img}`}
+        src={resolveAssetPath(img)}
         width={180}
         height={180}
         className="rounded-large w-[180px] h-[180px]"

@@ -1,7 +1,9 @@
 export default function FooterBar() {
   return (
-    <footer className="w-full bg-[#FBC4C0] py-5">
-      <div className="flex justify-center items-center">Copyright © AI CAKE All Right Reserved.</div>
-    </footer>
-  );
+    <div className="w-full bg-[#373737] py-4">
+      <p className="text-center text-xs text-white">
+        Copyright © Sugar Alice All Right Reserved.
+      </p>
+    </div>
+  )
 }

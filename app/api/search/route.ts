@@ -48,7 +48,13 @@ export async function GET(req: Request) {
     }
     if (opt) {
       // オプションのバリデーション（安全なキーのみ許可）
-      const validOptions = ["takeoutAvailable", "seasonal", "bulkPurchase", "couponAvailable"];
+      const validOptions = [
+        "giftAvailable",
+        "seasonal",
+        "bulkPurchase",
+        "frozenDelivery",
+        "couponAvailable",
+      ];
       const optionKeys = opt.split(",").filter((k) => validOptions.includes(k));
       if (optionKeys.length > 0) {
         where.option = {

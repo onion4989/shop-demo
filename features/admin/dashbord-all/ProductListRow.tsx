@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTransition } from "react";
 
 import type { AdminProductListItem } from "@/lib/types";
+import { resolveAssetPath } from "@/lib/utils";
 import { EditButton } from "@features/admin/components/AdminButton";
 import { Button } from "@/components/ui/button";
 // import { deleteProduct } from "@/lib/server/admin/actions/deleteProduct"; // 実装済みなら利用
@@ -49,7 +50,7 @@ export function ProductListRow({ product }: Props) {
         {product.thumbnailUrl ? (
           <div className="relative w-[80px] h-[80px] overflow-hidden rounded-lg bg-gray-100">
             <Image
-              src={`/assets/${product.thumbnailUrl}`}
+              src={resolveAssetPath(product.thumbnailUrl)}
               alt={product.name}
               fill
               sizes="80px"

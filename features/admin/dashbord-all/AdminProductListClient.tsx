@@ -19,9 +19,10 @@ const defaultSearchOptions: AdminProductSearchOptions = {
   keyword: "",
   categoryId: null,
   priceRange: "ALL",
-  takeoutAvailable: false,
+  giftAvailable: false,
   seasonal: false,
   bulkPurchase: false,
+  frozenDelivery: false,
   couponAvailable: false,
   recommendedOnly: false,
 };

@@ -64,13 +64,14 @@ model Category {
   products    Product[]
 }
 
-// Option設定 テイクアウト / 季節限定 / まとめ買い対象 / クーポン可
+// Option設定 ギフト対応 / 季節限定 / まとめ買い対象 / 冷凍配送 / クーポン可
 model Option {
   id               Int      @id @default(autoincrement())
   productId        String   @unique
-  takeoutAvailable Boolean  @default(false)
+  giftAvailable    Boolean  @default(false)
   seasonal         Boolean  @default(false)
   bulkPurchase     Boolean  @default(false)
+  frozenDelivery   Boolean  @default(false)
   couponAvailable  Boolean  @default(false)
   product          Product  @relation(fields: [productId], references: [productId])
 }

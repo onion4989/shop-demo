@@ -42,7 +42,7 @@ export default async function EditProduct({ searchParams }: Props) {
         <EditProductForm
           product={product}
           category={category}
-          option={option ?? { takeoutAvailable: false, seasonal: false, bulkPurchase: false, couponAvailable: false }}
+          option={option ?? { giftAvailable: false, seasonal: false, bulkPurchase: false, frozenDelivery: false, couponAvailable: false }}
         />
       </div>
     </>

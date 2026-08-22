@@ -35,9 +35,10 @@ export async function POST(req: Request) {
     keyword,
     categoryId,
     priceRange,
-    takeoutAvailable,
+    giftAvailable,
     seasonal,
     bulkPurchase,
+    frozenDelivery,
     couponAvailable,
     recommendedOnly,
   } = body;
@@ -78,9 +79,10 @@ export async function POST(req: Request) {
 
   // Option テーブルのフラグ
   const optionFilter: Prisma.OptionWhereInput = {};
-  if (takeoutAvailable) optionFilter.takeoutAvailable = true;
+  if (giftAvailable) optionFilter.giftAvailable = true;
   if (seasonal) optionFilter.seasonal = true;
   if (bulkPurchase) optionFilter.bulkPurchase = true;
+  if (frozenDelivery) optionFilter.frozenDelivery = true;
   if (couponAvailable) optionFilter.couponAvailable = true;
 
   if (Object.keys(optionFilter).length > 0) {

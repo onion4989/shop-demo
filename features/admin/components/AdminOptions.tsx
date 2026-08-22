@@ -24,8 +24,8 @@ export default function EditCheackdOptions({ option }: { option: OptionProps }) 
   console.log(trueOptions);
   return (
     <CheckboxGroup label="" defaultValue={trueOptions} className=" text-white">
-      <Checkbox value="takeoutAvailable" color="danger">
-        <span className="text-white">テイクアウト可</span>
+      <Checkbox value="giftAvailable" color="danger">
+        <span className="text-white">ギフト対応</span>
       </Checkbox>
       <Checkbox value="seasonal" color="danger">
         <span className="text-white" color="danger">
@@ -34,6 +34,9 @@ export default function EditCheackdOptions({ option }: { option: OptionProps }) 
       </Checkbox>
       <Checkbox value="bulkPurchase" color="danger">
         <span className="text-white">まとめ買い対象</span>
+      </Checkbox>
+      <Checkbox value="frozenDelivery" color="danger">
+        <span className="text-white">冷凍配送</span>
       </Checkbox>
       <Checkbox value="couponAvailable" color="danger">
         <span className="text-white">クーポン可</span>

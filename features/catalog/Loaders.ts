@@ -58,9 +58,10 @@ export function getDashboardProductCached(productId: string) {
           category: { select: { name: true, categoryId: true } },
           option: {
             select: {
-              takeoutAvailable: true,
+              giftAvailable: true,
               seasonal: true,
               bulkPurchase: true,
+              frozenDelivery: true,
               couponAvailable: true,
             },
           },
@@ -79,9 +80,10 @@ export function getOptionsCached(productId: string) {
       return prisma.option.findUnique({
         where: { productId },
         select: {
-          takeoutAvailable: true,
+          giftAvailable: true,
           seasonal: true,
           bulkPurchase: true,
+          frozenDelivery: true,
           couponAvailable: true,
         },
       });
@@ -116,7 +118,17 @@ export function getTopProducts(limit = 9) {
         name: true,
         price: true,
         recommend: true,
+        description: true,
         images: { select: { thumbnailUrl: true } },
+        option: {
+            select: {
+              giftAvailable: true,
+              seasonal: true,
+              bulkPurchase: true,
+              frozenDelivery: true,
+              couponAvailable: true,
+            },
+        },
       },
     }),
     ["top-products", String(limit)],
