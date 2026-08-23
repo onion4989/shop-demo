@@ -32,6 +32,8 @@ export default function CheackdOptions() {
       <Checkbox value="bulkPurchase">まとめ買い対象</Checkbox>
       <Checkbox value="frozenDelivery">冷凍配送</Checkbox>
       <Checkbox value="couponAvailable">クーポン可</Checkbox>
+      <Checkbox value="shippingAvailable">配送可</Checkbox>
+      <Checkbox value="reservationRequired">予約制</Checkbox>
     </CheckboxGroup>
   );
 }

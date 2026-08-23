@@ -24,6 +24,8 @@ const defaultSearchOptions: AdminProductSearchOptions = {
   bulkPurchase: false,
   frozenDelivery: false,
   couponAvailable: false,
+  shippingAvailable: false,
+  reservationRequired: false,
   recommendedOnly: false,
 };
 

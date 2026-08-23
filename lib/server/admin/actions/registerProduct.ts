@@ -99,6 +99,8 @@ export async function registerProduct(values: ProductRegisterFormValues) {
               bulkPurchase: data.bulkPurchase,
               frozenDelivery: data.frozenDelivery,
               couponAvailable: data.couponAvailable,
+              shippingAvailable: data.shippingAvailable,
+              reservationRequired: data.reservationRequired,
             },
           },
         },

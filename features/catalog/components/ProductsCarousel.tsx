@@ -15,15 +15,14 @@ import {
 import { ExpandableProductDialog } from '@features/home/components/ExpandableProductDialog'
 import { cn, resolveAssetPath } from '@/lib/utils'
 
-const DUMMY_INGREDIENTS =
-  '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'
-
 type ProductOption = {
   giftAvailable: boolean
   seasonal: boolean
   bulkPurchase: boolean
   frozenDelivery: boolean
   couponAvailable: boolean
+  shippingAvailable: boolean
+  reservationRequired: boolean
 }
 
 type RankingProduct = {
@@ -33,6 +32,7 @@ type RankingProduct = {
   price: number
   description: string | null
   images?: { thumbnailUrl: string | null }[]
+  nutritionalInfo?: { ingredients: string | null } | { ingredients: string | null }[] | null
   option?: ProductOption | null
 }
 
@@ -48,6 +48,8 @@ function optionTags(option?: ProductOption | null) {
   if (option.bulkPurchase) tags.push('まとめ買い対象')
   if (option.frozenDelivery) tags.push('冷凍配送')
   if (option.couponAvailable) tags.push('クーポン可')
+  if (option.shippingAvailable) tags.push('配送可')
+  if (option.reservationRequired) tags.push('予約制')
   return tags
 }
 
@@ -137,6 +139,12 @@ function RankingCardFace({
   )
 }
 
+function productIngredients(product: RankingProduct) {
+  const info = product.nutritionalInfo
+  const row = Array.isArray(info) ? info[0] : info
+  return row?.ingredients ?? ''
+}
+
 function RankingCard({
   product,
   rank,
@@ -159,7 +167,7 @@ function RankingCard({
       description={description}
       tags={tags}
       price={formatPrice(product.price)}
-      ingredients={DUMMY_INGREDIENTS}
+      ingredients={productIngredients(product)}
       triggerClassName="block w-[220px] lg:w-full"
       onOpenChange={onDialogOpenChange}
       closeMotion="thumb-crossfade"

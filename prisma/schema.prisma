@@ -54,6 +54,7 @@ model NutritionalInfo {
   carbohydrates  Float?
   saltEquivalent Float?
   allergen       String?
+  ingredients    String?
   product        Product  @relation(fields: [productId], references: [productId])
 }
 
@@ -64,7 +65,7 @@ model Category {
   products    Product[]
 }
 
-// Option設定 ギフト対応 / 季節限定 / まとめ買い対象 / 冷凍配送 / クーポン可
+// Option設定 ギフト対応 / 季節限定 / まとめ買い対象 / 冷凍配送 / クーポン可 / 配送可 / 予約制
 model Option {
   id               Int      @id @default(autoincrement())
   productId        String   @unique
@@ -73,6 +74,8 @@ model Option {
   bulkPurchase     Boolean  @default(false)
   frozenDelivery   Boolean  @default(false)
   couponAvailable  Boolean  @default(false)
+  shippingAvailable Boolean @default(false)
+  reservationRequired Boolean @default(false)
   product          Product  @relation(fields: [productId], references: [productId])
 }
 

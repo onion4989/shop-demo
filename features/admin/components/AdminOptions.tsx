@@ -41,6 +41,12 @@ export default function EditCheackdOptions({ option }: { option: OptionProps }) 
       <Checkbox value="couponAvailable" color="danger">
         <span className="text-white">クーポン可</span>
       </Checkbox>
+      <Checkbox value="shippingAvailable" color="danger">
+        <span className="text-white">配送可</span>
+      </Checkbox>
+      <Checkbox value="reservationRequired" color="danger">
+        <span className="text-white">予約制</span>
+      </Checkbox>
     </CheckboxGroup>
   );
 }

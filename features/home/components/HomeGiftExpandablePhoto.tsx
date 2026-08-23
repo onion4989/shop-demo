@@ -7,7 +7,7 @@ import Image from 'next/image'
 const TITLE_BADGE_CLASS =
   'absolute top-4 left-4 z-10 flex items-center justify-center rounded-[25px] bg-white/25 px-2.5 py-2 text-sm font-bold text-[#E4007E] backdrop-blur-md'
 
-type HomeIntroExpandablePhotoProps = {
+type HomeGiftExpandablePhotoProps = {
   src: string
   alt: string
   className?: string
@@ -18,7 +18,7 @@ type HomeIntroExpandablePhotoProps = {
   ingredients: string
 }
 
-export function HomeIntroExpandablePhoto({
+export function HomeGiftExpandablePhoto({
   src,
   alt,
   className,
@@ -27,7 +27,7 @@ export function HomeIntroExpandablePhoto({
   tags,
   price,
   ingredients,
-}: HomeIntroExpandablePhotoProps) {
+}: HomeGiftExpandablePhotoProps) {
   return (
     <ExpandableProductDialog
       src={src}

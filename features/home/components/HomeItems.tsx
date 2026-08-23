@@ -23,14 +23,14 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#94D0BF]',
     wide: true,
     items: [
-      { file: 'Armond_img.jpg', label: 'アーモンドクリーム', limited: true },
-      { file: 'Heartvanilla_img.jpg', label: 'ハートバニラ', limited: true },
-      { file: 'HeartTip_img.jpg', label: 'ハートチップ' },
-      { file: 'CreamCup_img.jpg', label: 'クリームカップ' },
-      { file: 'HearbMint_img.jpg', label: 'ハーブミント' },
-      { file: 'Blosam_img.jpg', label: 'ブロッサム' },
-      { file: 'ChocoTip_img.jpg', label: 'チョコチップ' },
-      { file: 'ChearryVanillra_img.jpg', label: 'チェリーバニラ' },
+      { file: 'Items_Almond.jpg', label: 'アーモンドクリーム', limited: true },
+      { file: 'Items_HeartVanilla.jpg', label: 'ハートバニラ', limited: true },
+      { file: 'Items_HeartChip.jpg', label: 'ハートチップ' },
+      { file: 'Items_CreamCup.jpg', label: 'クリームカップ' },
+      { file: 'Items_HerbMint.jpg', label: 'ハーブミント' },
+      { file: 'Items_Blossom.jpg', label: 'ブロッサム' },
+      { file: 'Items_ChocoChip.jpg', label: 'チョコチップ' },
+      { file: 'Items_CherryVanilla.jpg', label: 'チェリーバニラ' },
     ],
   },
   {
@@ -38,8 +38,8 @@ const GROUPS: ItemGroup[] = [
     folder: 'ice-cake',
     tone: 'bg-[#FBC4C0]',
     items: [
-      { file: 'Miracle_img.jpg', label: 'ミラクルアイス', limited: true },
-      { file: 'Derax_img.jpg', label: 'デラックスアイス', limited: true },
+      { file: 'Items_Miracle.jpg', label: 'ミラクルアイス', limited: true },
+      { file: 'Items_Deluxe.jpg', label: 'デラックスアイス', limited: true },
     ],
   },
   {
@@ -47,9 +47,9 @@ const GROUPS: ItemGroup[] = [
     folder: 'options',
     tone: 'bg-[#E4C1DB]',
     items: [
-      { file: 'Topping_img.jpg', label: 'トッピングシュガー' },
-      { file: 'Sugaer_img.jpg', label: 'シュガースプレー' },
-      { file: 'ChocoSpray_img.jpg', label: 'チョコスプレー' },
+      { file: 'Items_Topping.jpg', label: 'トッピングシュガー' },
+      { file: 'Items_Sugar.jpg', label: 'シュガースプレー' },
+      { file: 'Items_ChocoSpray.jpg', label: 'チョコスプレー' },
     ],
   },
   {
@@ -58,9 +58,9 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#D2B48CB4]',
     wide: true,
     items: [
-      { file: 'Orange-Lemon_img.jpg', label: 'ミカン＆レモン' },
-      { file: 'FrutsMix_img.jpg', label: 'フルーツミックス' },
-      { file: 'Str-Hunney_img.jpg', label: '木イチゴ＆ハチミツ', limited: true },
+      { file: 'Items_OrangeLemon.jpg', label: 'ミカン＆レモン' },
+      { file: 'Items_FruitsMix.jpg', label: 'フルーツミックス' },
+      { file: 'Items_StrawberryHoney.jpg', label: '木イチゴ＆ハチミツ', limited: true },
     ],
   },
 ]

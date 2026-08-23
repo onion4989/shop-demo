@@ -39,6 +39,8 @@ export function ProductSearchForm({ categories, value, onChange }: Props) {
       bulkPurchase: false,
       frozenDelivery: false,
       couponAvailable: false,
+      shippingAvailable: false,
+      reservationRequired: false,
       recommendedOnly: false,
     });
   };
@@ -147,6 +149,20 @@ export function ProductSearchForm({ categories, value, onChange }: Props) {
             checked={value.couponAvailable}
             onCheckedChange={(checked) =>
               handleChange({ couponAvailable: checked })
+            }
+          />
+          <OptionCheckbox
+            label="配送可"
+            checked={value.shippingAvailable}
+            onCheckedChange={(checked) =>
+              handleChange({ shippingAvailable: checked })
+            }
+          />
+          <OptionCheckbox
+            label="予約制"
+            checked={value.reservationRequired}
+            onCheckedChange={(checked) =>
+              handleChange({ reservationRequired: checked })
             }
           />
           <OptionCheckbox

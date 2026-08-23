@@ -52,6 +52,8 @@ export const AdminProductSearchSchema = z.object({
   bulkPurchase: z.boolean().optional().default(false),
   frozenDelivery: z.boolean().optional().default(false),
   couponAvailable: z.boolean().optional().default(false),
+  shippingAvailable: z.boolean().optional().default(false),
+  reservationRequired: z.boolean().optional().default(false),
   recommendedOnly: z.boolean().optional().default(false),
 });
 

@@ -54,6 +54,8 @@ export async function GET(req: Request) {
         "bulkPurchase",
         "frozenDelivery",
         "couponAvailable",
+        "shippingAvailable",
+        "reservationRequired",
       ];
       const optionKeys = opt.split(",").filter((k) => validOptions.includes(k));
       if (optionKeys.length > 0) {

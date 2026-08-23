@@ -273,6 +273,8 @@ export function ProductRegisterForm({ categories }: ProductRegisterFormProps) {
     bulkPurchase: false,
     frozenDelivery: false,
     couponAvailable: false,
+    shippingAvailable: false,
+    reservationRequired: false,
     recommend: 0,
   };
 
@@ -487,9 +489,10 @@ export function ProductRegisterForm({ categories }: ProductRegisterFormProps) {
                   <h2 className="text-sm font-semibold">画像設定</h2>
                   <div className="rounded-md border border-dashed border-muted-foreground/30 bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
                     <p>画像パス運用ガイド:</p>
-                    <p>・商品画像は <code>public/assets/common/items/</code> に配置してください。</p>
-                    <p>・このフォームでは画像の「ファイル名」を保存します（例: <code>cup0001_item_xxx.jpg</code>）。</p>
-                    <p>・先頭ページ用画像（<code>public/assets/pages/top/</code>）はこのフォームの対象外です。</p>
+                    <p>・Ranking / カタログ用: <code>public/assets/pages/top/ranking/photos/</code></p>
+                    <p>・Gift 用: <code>public/assets/pages/top/gift/photos/</code></p>
+                    <p>・保存値は <code>assets/</code> 以降のパス（例: <code>pages/top/ranking/photos/Ranking_CUP00001_chocolate-chip.jpg</code>）。</p>
+                    <p>・ファイル名のみの旧データは <code>public/assets/common/items/</code> に解決されます。</p>
                   </div>
 
                   {/* サムネイル（必須） */}
@@ -660,6 +663,60 @@ export function ProductRegisterForm({ categories }: ProductRegisterFormProps) {
                             </FormLabel>
                             <p className="text-xs text-muted-foreground">
                               クーポンの対象商品であればチェックします。
+                            </p>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* 配送可 */}
+                    <FormField
+                      control={form.control}
+                      name="shippingAvailable"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={!!field.value}
+                              onCheckedChange={(checked) =>
+                                field.onChange(!!checked)
+                              }
+                              disabled={isPending}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel className="text-sm font-medium">
+                              配送可
+                            </FormLabel>
+                            <p className="text-xs text-muted-foreground">
+                              配送に対応している場合にチェックします。
+                            </p>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* 予約制 */}
+                    <FormField
+                      control={form.control}
+                      name="reservationRequired"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={!!field.value}
+                              onCheckedChange={(checked) =>
+                                field.onChange(!!checked)
+                              }
+                              disabled={isPending}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel className="text-sm font-medium">
+                              予約制
+                            </FormLabel>
+                            <p className="text-xs text-muted-foreground">
+                              予約が必要な場合にチェックします。
                             </p>
                           </div>
                         </FormItem>
