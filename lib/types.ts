@@ -39,6 +39,7 @@ export type NutritionalInfoProps = {
   carbohydrates: number | null;
   saltEquivalent: number | null;
   allergen: string | null;
+  ingredients: string | null;
 };
 
 export type CategoryItem = {
@@ -59,6 +60,8 @@ export type OptionProps = {
   bulkPurchase: boolean;
   frozenDelivery: boolean;
   couponAvailable: boolean;
+  shippingAvailable: boolean;
+  reservationRequired: boolean;
 } | null;
 
 export type SearchProductsProps = {
@@ -97,6 +100,8 @@ export type FetchDashboardSearchProductProps = {
     bulkPurchase: boolean;
     frozenDelivery: boolean;
     couponAvailable: boolean;
+    shippingAvailable: boolean;
+    reservationRequired: boolean;
   } | null;
 };
 
@@ -149,6 +154,8 @@ export type AdminProductSearchOptions = {
   bulkPurchase: boolean;
   frozenDelivery: boolean;
   couponAvailable: boolean;
+  shippingAvailable: boolean;
+  reservationRequired: boolean;
 
   // Product.recommend > 0 のみ抽出するフラグ
   recommendedOnly: boolean;

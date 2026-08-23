@@ -40,6 +40,8 @@ export async function POST(req: Request) {
     bulkPurchase,
     frozenDelivery,
     couponAvailable,
+    shippingAvailable,
+    reservationRequired,
     recommendedOnly,
   } = body;
 
@@ -84,6 +86,8 @@ export async function POST(req: Request) {
   if (bulkPurchase) optionFilter.bulkPurchase = true;
   if (frozenDelivery) optionFilter.frozenDelivery = true;
   if (couponAvailable) optionFilter.couponAvailable = true;
+  if (shippingAvailable) optionFilter.shippingAvailable = true;
+  if (reservationRequired) optionFilter.reservationRequired = true;
 
   if (Object.keys(optionFilter).length > 0) {
     where.option = optionFilter;

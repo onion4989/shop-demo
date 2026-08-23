@@ -63,6 +63,8 @@ export function getDashboardProductCached(productId: string) {
               bulkPurchase: true,
               frozenDelivery: true,
               couponAvailable: true,
+              shippingAvailable: true,
+              reservationRequired: true,
             },
           },
         },
@@ -85,6 +87,8 @@ export function getOptionsCached(productId: string) {
           bulkPurchase: true,
           frozenDelivery: true,
           couponAvailable: true,
+          shippingAvailable: true,
+          reservationRequired: true,
         },
       });
     },
@@ -111,6 +115,7 @@ export function getTopProducts(limit = 9) {
   return unstable_cache(
     () => prisma.product.findMany({
       take: limit,
+      where: { recommend: { gt: 0 } },
       orderBy: { recommend: "asc" },
       select: {
         id: true,
@@ -120,6 +125,7 @@ export function getTopProducts(limit = 9) {
         recommend: true,
         description: true,
         images: { select: { thumbnailUrl: true } },
+        nutritionalInfo: { select: { ingredients: true } },
         option: {
             select: {
               giftAvailable: true,
@@ -127,11 +133,13 @@ export function getTopProducts(limit = 9) {
               bulkPurchase: true,
               frozenDelivery: true,
               couponAvailable: true,
+              shippingAvailable: true,
+              reservationRequired: true,
             },
         },
       },
     }),
-    ["top-products", String(limit)],
+    ["top-products", "ranked", String(limit)],
     { revalidate: 300 }
   )();
 }

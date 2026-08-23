@@ -88,6 +88,8 @@ export const ProductRegisterSchema = z.object({
   bulkPurchase: z.boolean().default(false),
   frozenDelivery: z.boolean().default(false),
   couponAvailable: z.boolean().default(false),
+  shippingAvailable: z.boolean().default(false),
+  reservationRequired: z.boolean().default(false),
 
   recommend: z
     .number({ invalid_type_error: "おすすめ順位は数値で入力してください" })
