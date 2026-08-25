@@ -21,3 +21,4 @@ alwaysApply: true
 # 詳細（必要なときだけ）
 - UI / 配置 / Actions: .cursor/rules/frontend.mdc
 - Prisma / PostgreSQL: .cursor/rules/database.mdc
+- カート / サイドパネル: .cursor/rules/cart.mdc
