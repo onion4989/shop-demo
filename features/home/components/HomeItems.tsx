@@ -23,14 +23,14 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#94D0BF]',
     wide: true,
     items: [
-      { file: 'Items_Almond.jpg', label: 'アーモンドクリーム', limited: true },
-      { file: 'Items_HeartVanilla.jpg', label: 'ハートバニラ', limited: true },
-      { file: 'Items_HeartChip.jpg', label: 'ハートチップ' },
-      { file: 'Items_CreamCup.jpg', label: 'クリームカップ' },
-      { file: 'Items_HerbMint.jpg', label: 'ハーブミント' },
-      { file: 'Items_Blossom.jpg', label: 'ブロッサム' },
-      { file: 'Items_ChocoChip.jpg', label: 'チョコチップ' },
-      { file: 'Items_CherryVanilla.jpg', label: 'チェリーバニラ' },
+      { file: 'CUP00001_ChocolateChip.jpg', label: 'チョコチップ' },
+      { file: 'CUP00002_HeartChip.jpg', label: 'ハートチップ', limited: true },
+      { file: 'CUP00003_CreamCup.jpg', label: 'クリーム' },
+      { file: 'CUP00004_HerbMint.jpg', label: 'ハーブミント' },
+      { file: 'CUP00005_Sakura.jpg', label: 'さくら' },
+      { file: 'CUP00006_Almond.jpg', label: 'アーモンド', limited: true },
+      { file: 'CUP00007_MilkVanilla.jpg', label: 'ミルクバニラ' },
+      { file: 'CUP00008_CherryVanilla.jpg', label: 'チェリーバニラ' },
     ],
   },
   {
@@ -38,8 +38,8 @@ const GROUPS: ItemGroup[] = [
     folder: 'ice-cake',
     tone: 'bg-[#FBC4C0]',
     items: [
-      { file: 'Items_Miracle.jpg', label: 'ミラクルアイス', limited: true },
-      { file: 'Items_Deluxe.jpg', label: 'デラックスアイス', limited: true },
+      { file: 'ICE00001_Miracle.jpg', label: 'ミラクル', limited: true },
+      { file: 'ICE00002_Deluxe.jpg', label: 'デラックス', limited: true },
     ],
   },
   {
@@ -58,9 +58,9 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#D2B48CB4]',
     wide: true,
     items: [
-      { file: 'Items_OrangeLemon.jpg', label: 'ミカン＆レモン' },
-      { file: 'Items_FruitsMix.jpg', label: 'フルーツミックス' },
-      { file: 'Items_StrawberryHoney.jpg', label: '木イチゴ＆ハチミツ', limited: true },
+      { file: 'TAR00001_OrangeLemon.jpg', label: 'ミカン＆レモン' },
+      { file: 'TAR00002_FruitsMix.jpg', label: 'フルーツミックス' },
+      { file: 'TAR00003_StrawberryHoney.jpg', label: '木イチゴ＆ハチミツ', limited: true },
     ],
   },
 ]
@@ -94,7 +94,7 @@ function ItemCard({ folder, item }: { folder: string; item: Item }) {
 function ItemCategory({ group }: { group: ItemGroup }) {
   return (
     <section className={group.wide ? 'lg:col-span-2' : undefined}>
-      <h2 className="mb-3 text-[32px] font-bold text-[#E4007E] md:text-[20px] lg:text-[32px]">
+      <h2 className="pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[20px] lg:text-[32px]">
         {group.title}
       </h2>
       <div

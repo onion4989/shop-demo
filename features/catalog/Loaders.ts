@@ -124,6 +124,7 @@ export function getTopProducts(limit = 9) {
         price: true,
         recommend: true,
         description: true,
+        category: { select: { name: true } },
         images: { select: { thumbnailUrl: true } },
         nutritionalInfo: { select: { ingredients: true } },
         option: {
@@ -139,7 +140,7 @@ export function getTopProducts(limit = 9) {
         },
       },
     }),
-    ["top-products", "ranked", String(limit)],
+    ["top-products", "ranked", "with-category", String(limit)],
     { revalidate: 300 }
   )();
 }
