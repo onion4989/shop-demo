@@ -54,7 +54,7 @@ export async function HomeGift() {
 
   return (
     <section className="relative mb-[93px] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA]">
-      <div className="relative mx-auto min-h-[800px] w-full max-w-[1440px]">
+      <div className="relative mx-auto min-h-[900px] w-full max-w-[1440px]">
         {bubbles.map((bubble) => (
           <span
             key={bubble.className}
@@ -64,7 +64,11 @@ export async function HomeGift() {
           />
         ))}
 
-        <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-6 px-4 pt-8 pb-8 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px] lg:px-0">
+        <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 lg:px-0">
+          <h2 className="pt-[30px] pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[20px] lg:text-[32px]">
+            ギフト / Gift
+          </h2>
+          <div className="grid grid-cols-1 gap-6 pb-8 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
           {HOME_GIFT_SLOTS.map((slot) => {
             const product = byId.get(slot.productId)
             if (!product) return null
@@ -85,6 +89,7 @@ export async function HomeGift() {
               />
             )
           })}
+          </div>
         </div>
 
         <img

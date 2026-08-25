@@ -12,7 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { CategoryTag } from '@features/catalog/components/CategoryTag'
 import { ExpandableProductDialog } from '@features/home/components/ExpandableProductDialog'
+import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import { cn, resolveAssetPath } from '@/lib/utils'
 
 type ProductOption = {
@@ -32,6 +34,7 @@ type RankingProduct = {
   price: number
   description: string | null
   images?: { thumbnailUrl: string | null }[]
+  category?: { name: string } | null
   nutritionalInfo?: { ingredients: string | null } | { ingredients: string | null }[] | null
   option?: ProductOption | null
 }
@@ -73,6 +76,7 @@ function RankBadge({ rank }: { rank: number }) {
 function RankingCardFace({
   rank,
   name,
+  categoryName,
   description,
   src,
   tags,
@@ -80,6 +84,7 @@ function RankingCardFace({
 }: {
   rank: number
   name: string
+  categoryName?: string
   description: string
   src: string
   tags: string[]
@@ -106,6 +111,12 @@ function RankingCardFace({
         ) : (
           <div className="size-full bg-white/30" />
         )}
+        {categoryName ? (
+          <CategoryTag
+            name={categoryName}
+            className="absolute top-[5px] right-[5px] z-10"
+          />
+        ) : null}
       </div>
 
       <div className="mt-[15px] flex min-h-0 flex-1 flex-col">
@@ -158,12 +169,15 @@ function RankingCard({
   const src = thumb ? resolveAssetPath(thumb) : ''
   const description = product.description ?? ''
   const tags = optionTags(product.option)
+  const name = flavorDisplayName(product.name)
+  const categoryName = product.category?.name
 
   return (
     <ExpandableProductDialog
       src={src}
-      alt={product.name}
-      title={product.name}
+      alt={name}
+      title={name}
+      categoryName={categoryName}
       description={description}
       tags={tags}
       price={formatPrice(product.price)}
@@ -174,7 +188,8 @@ function RankingCard({
       thumbPreview={
         <RankingCardFace
           rank={rank}
-          name={product.name}
+          name={name}
+          categoryName={categoryName}
           description={description}
           src={src}
           tags={tags}
@@ -184,7 +199,8 @@ function RankingCard({
     >
       <RankingCardFace
         rank={rank}
-        name={product.name}
+        name={name}
+        categoryName={categoryName}
         description={description}
         src={src}
         tags={tags}

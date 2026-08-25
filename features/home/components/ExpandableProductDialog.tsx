@@ -1,5 +1,6 @@
 'use client'
 
+import { CategoryTag } from '@features/catalog/components/CategoryTag'
 import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -115,10 +116,40 @@ function getCardRect(
   }
 }
 
+function DialogTagRow({
+  categoryName,
+  tags,
+  gapClassName,
+}: {
+  categoryName?: string
+  tags: string[]
+  gapClassName: string
+}) {
+  return (
+    <div className={cn('flex flex-wrap items-center', gapClassName)}>
+      {categoryName ? <CategoryTag name={categoryName} /> : null}
+      {categoryName && tags.length > 0 ? (
+        <span className="text-xs font-bold text-black" aria-hidden>
+          /
+        </span>
+      ) : null}
+      {tags.map((tag) => (
+        <span
+          key={tag}
+          className="rounded-[5px] bg-[#6B4226] px-2 py-0.5 text-xs font-bold text-white"
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 export type ExpandableProductDialogProps = {
   src: string
   alt: string
   title: string
+  categoryName?: string
   description: string
   tags: string[]
   price: string
@@ -135,6 +166,7 @@ export function ExpandableProductDialog({
   src,
   alt,
   title,
+  categoryName,
   description,
   tags,
   price,
@@ -381,16 +413,11 @@ export function ExpandableProductDialog({
                 >
                   {isDesktop ? (
                     <div className="flex h-[200px] flex-col justify-between px-[19px] py-3">
-                      <div className="flex flex-wrap gap-2">
-                        {tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-[5px] bg-[#6B4226] px-2 py-0.5 text-xs font-bold text-white"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                      <DialogTagRow
+                        categoryName={categoryName}
+                        tags={tags}
+                        gapClassName="gap-2"
+                      />
                       <p className="text-base leading-[25px] text-black">
                         {description}
                       </p>
@@ -405,16 +432,11 @@ export function ExpandableProductDialog({
                     </div>
                   ) : (
                     <div className="flex h-[210px] flex-col justify-between px-3 py-2.5">
-                      <div className="flex flex-wrap gap-1.5">
-                        {tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="rounded-[5px] bg-[#6B4226] px-2 py-0.5 text-xs font-bold text-white"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                      <DialogTagRow
+                        categoryName={categoryName}
+                        tags={tags}
+                        gapClassName="gap-1.5"
+                      />
                       <p className="text-[14px] leading-[1.15] text-black">
                         {description}
                       </p>

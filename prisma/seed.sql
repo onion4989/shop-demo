@@ -2,6 +2,7 @@ INSERT INTO "Category" ("categoryId", "name")
 VALUES
   ('CUP', 'カップケーキ'),
   ('ICE', 'アイスケーキ'),
+  ('TAR', 'タルトケーキ'),
   ('GIF', 'ギフト')
 ON CONFLICT ("categoryId") DO NOTHING;
 
@@ -71,16 +72,38 @@ VALUES
     NOW()
   ),
   (
+    'CUP00008',
+    'チェリーバニラカップケーキ',
+    'CUP',
+    530,
+    '甘酸っぱいチェリーと濃厚なバニラが織りなす華やかなカップケーキです。ふんわり生地にバニラの豊かな香りを閉じ込め、甘美なチェリーをトッピング。上品な甘さと甘酸っぱさの絶妙なバランスが魅力です。',
+    0,
+    NOW()
+  ),
+  (
     'ICE00001',
-    'アイスクリームバウム',
+    'ミラクルアイス',
     'ICE',
     580,
-    'バウムクーヘンとアイスを組み合わせたケーキです。しっとりバウムの中に濃厚アイスを詰め込みました。生地とひんやりとろけるアイスが合わさる新感覚の食感で、特別な日のデザートに最適です。',
+    '6つの多彩なフレーバーを贅沢に重ね合わせた夢のようなアイスケーキです。一口ごとに異なる味わいと彩りが広がり、最後まで飽きずに楽しめます。パーティーや特別な日のデザートにぴったりな華やかな一品です。',
     8,
+    NOW()
+  ),
+  (
+    'ICE00002',
+    'デラックスアイス',
+    'ICE',
+    620,
+    'こだわりのフレーバー3種を一度に堪能できる贅沢なアイスケーキです。クリーミーなコクと爽やかな風味が絶妙なハーモニーを奏でます。自分へのご褒美や、大切な人とのカフェタイムを上質に彩る一品です。',
+    0,
     NOW()
   )
 ON CONFLICT ("productId") DO UPDATE SET
+  name = EXCLUDED.name,
+  price = EXCLUDED.price,
   description = EXCLUDED.description,
+  "categoryId" = EXCLUDED."categoryId",
+  recommend = EXCLUDED.recommend,
   "updatedDate" = NOW();
 
 INSERT INTO "Product" ("productId", "name", "categoryId", "price", "description", "recommend", "updatedDate")
@@ -147,22 +170,64 @@ ON CONFLICT ("productId") DO UPDATE SET
   recommend = EXCLUDED.recommend,
   "updatedDate" = NOW();
 
+INSERT INTO "Product" ("productId", "name", "categoryId", "price", "description", "recommend", "updatedDate")
+VALUES
+  (
+    'TAR00001',
+    'ミカン＆レモン',
+    'TAR',
+    520,
+    '柑橘の甘酸っぱさが弾けるタルトです。ジューシーなミカンと爽やかなレモン果汁を合わせ、香ばしいタルト生地にのせました。きゅっと甘酸っぱいフレッシュな味わいは夏やリフレッシュしたい時に最適です。',
+    0,
+    NOW()
+  ),
+  (
+    'TAR00002',
+    'フルーツミックス',
+    'TAR',
+    540,
+    '色とりどりの果実を贅沢にあしらった王道タルトです。コクのあるカスタードに、旬のフルーツをバランスよくトッピングしました。一口ごとに異なる果実の風味が広がる、見た目も華やかな一品です。',
+    0,
+    NOW()
+  ),
+  (
+    'TAR00003',
+    '木イチゴ＆ハチミツ',
+    'TAR',
+    560,
+    '甘酸っぱい木イチゴと優しいハチミツのハーモニーが楽しめるタルトです。甘さを抑えたアーモンド生地に木イチゴの甘酸っぱさとハチミツの芳醇なコクが絡み合い、奥深い上品な味わいに仕上げました。',
+    0,
+    NOW()
+  )
+ON CONFLICT ("productId") DO UPDATE SET
+  name = EXCLUDED.name,
+  price = EXCLUDED.price,
+  description = EXCLUDED.description,
+  "categoryId" = EXCLUDED."categoryId",
+  recommend = EXCLUDED.recommend,
+  "updatedDate" = NOW();
+
 INSERT INTO "ProductImage" ("productId", "thumbnailUrl")
 VALUES
-  ('CUP00001', 'pages/top/ranking/photos/Ranking_CUP00001_chocolate-chip.jpg'),
-  ('CUP00002', 'pages/top/ranking/photos/Ranking_CUP00002_heart-chip.jpg'),
-  ('CUP00003', 'pages/top/ranking/photos/Ranking_CUP00003_cream.jpg'),
-  ('CUP00004', 'pages/top/ranking/photos/Ranking_CUP00004_herb-mint.jpg'),
-  ('CUP00005', 'pages/top/ranking/photos/Ranking_CUP00005_sakura.jpg'),
-  ('CUP00006', 'pages/top/ranking/photos/Ranking_CUP00006_almond.jpg'),
-  ('CUP00007', 'pages/top/ranking/photos/Ranking_CUP00007_milk-vanilla.jpg'),
-  ('ICE00001', 'pages/top/ranking/photos/Ranking_ICE00001_ice-cream-baum.jpg'),
+  ('CUP00001', 'pages/top/items/cupcake/CUP00001_ChocolateChip.jpg'),
+  ('CUP00002', 'pages/top/items/cupcake/CUP00002_HeartChip.jpg'),
+  ('CUP00003', 'pages/top/items/cupcake/CUP00003_CreamCup.jpg'),
+  ('CUP00004', 'pages/top/items/cupcake/CUP00004_HerbMint.jpg'),
+  ('CUP00005', 'pages/top/items/cupcake/CUP00005_Sakura.jpg'),
+  ('CUP00006', 'pages/top/items/cupcake/CUP00006_Almond.jpg'),
+  ('CUP00007', 'pages/top/items/cupcake/CUP00007_MilkVanilla.jpg'),
+  ('CUP00008', 'pages/top/items/cupcake/CUP00008_CherryVanilla.jpg'),
+  ('ICE00001', 'pages/top/items/ice-cake/ICE00001_Miracle.jpg'),
+  ('ICE00002', 'pages/top/items/ice-cake/ICE00002_Deluxe.jpg'),
   ('GIF00001', 'pages/top/gift/photos/Gift_Waffles.jpg'),
   ('GIF00002', 'pages/top/gift/photos/Gift_WholeCake.jpg'),
   ('GIF00003', 'pages/top/gift/photos/Gift_Macaron.jpg'),
   ('GIF00004', 'pages/top/gift/photos/Gift_WholeCake_Presents.jpg'),
   ('GIF00005', 'pages/top/gift/photos/Gift_5CupCake.jpg'),
-  ('GIF00006', 'pages/top/gift/photos/Gift_3FruitTarts.jpg')
+  ('GIF00006', 'pages/top/gift/photos/Gift_3FruitTarts.jpg'),
+  ('TAR00001', 'pages/top/items/tart-cake/TAR00001_OrangeLemon.jpg'),
+  ('TAR00002', 'pages/top/items/tart-cake/TAR00002_FruitsMix.jpg'),
+  ('TAR00003', 'pages/top/items/tart-cake/TAR00003_StrawberryHoney.jpg')
 ON CONFLICT ("productId") DO UPDATE SET
   "thumbnailUrl" = EXCLUDED."thumbnailUrl";
 
@@ -175,13 +240,18 @@ VALUES
   ('CUP00005', true, true, false, false, true, false, false),
   ('CUP00006', false, true, true, false, false, false, false),
   ('CUP00007', true, false, false, true, true, false, false),
-  ('ICE00001', false, false, true, true, true, false, false),
+  ('CUP00008', true, false, false, false, true, false, false),
+  ('ICE00001', false, true, true, true, true, false, false),
+  ('ICE00002', false, true, false, true, true, false, false),
   ('GIF00001', true, false, false, false, true, true, false),
   ('GIF00002', true, false, false, false, false, true, true),
   ('GIF00003', true, false, false, false, false, true, false),
   ('GIF00004', true, false, false, true, false, true, true),
   ('GIF00005', true, false, false, false, false, true, false),
-  ('GIF00006', true, false, false, false, false, true, false)
+  ('GIF00006', true, false, false, false, false, true, false),
+  ('TAR00001', true, false, false, false, true, true, false),
+  ('TAR00002', true, false, false, false, true, true, false),
+  ('TAR00003', true, true, false, false, true, true, false)
 ON CONFLICT ("productId") DO UPDATE SET
   "giftAvailable" = EXCLUDED."giftAvailable",
   seasonal = EXCLUDED.seasonal,
@@ -200,12 +270,17 @@ VALUES
   ('CUP00005', '小麦粉、砂糖、全卵、バター、桜葉ペースト／膨張剤、着色料、香料、（一部に小麦・卵・乳成分を含む）'),
   ('CUP00006', '小麦粉、アーモンド、砂糖、全卵、バター、食塩／膨張剤、香料、（一部に小麦・卵・乳成分・アーモンドを含む）'),
   ('CUP00007', '小麦粉、砂糖、全卵、牛乳、バター、練乳、バニラペースト／膨張剤、香料、（一部に小麦・卵・乳成分を含む）'),
-  ('ICE00001', 'バニラアイス、小麦粉、砂糖、全卵、バター／トレハロース、膨張剤、乳化剤、香料、（一部に小麦・卵・乳成分を含む）'),
+  ('CUP00008', '小麦粉、砂糖、全卵、バター、チェリー砂糖漬け、バニラビーンズ／膨張剤、香料、（一部に小麦・卵・乳成分を含む）'),
+  ('ICE00001', '乳製品、砂糖、小麦粉、全卵、バター、各種果汁、チョコ／安定剤、乳化剤、香料、（一部に小麦・卵・乳成分含む）'),
+  ('ICE00002', '乳製品、砂糖、小麦粉、全卵、バター、果汁、ココアパウダー／安定剤、乳化剤、香料、（一部に小麦・卵・乳成分含む）'),
   ('GIF00001', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
   ('GIF00002', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
   ('GIF00003', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
   ('GIF00004', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
   ('GIF00005', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
-  ('GIF00006', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど')
+  ('GIF00006', '小麦粉、バター（またはマーガリン）、砂糖、卵、カスタードクリーム、アーモンドクリーム、生クリーム、チーズなど'),
+  ('TAR00001', '小麦粉、ミカン、砂糖、バター、全卵、レモン果汁／ゲル化剤、酸味料、香料、（一部に小麦・卵・乳成分を含む）'),
+  ('TAR00002', '小麦粉、ミックスフルーツ、カスタード、砂糖、バター、全卵／ゲル化剤、乳化剤、香料、（一部に小麦・卵・乳成分含む）'),
+  ('TAR00003', '小麦粉、木イチゴ、砂糖、バター、全卵、ハチミツ、アーモンド／膨張剤、香料、（一部に小麦・卵・乳成分を含む）')
 ON CONFLICT ("productId") DO UPDATE SET
   ingredients = EXCLUDED.ingredients;
