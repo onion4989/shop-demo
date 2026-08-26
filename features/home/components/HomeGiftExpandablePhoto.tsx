@@ -12,6 +12,7 @@ type HomeGiftExpandablePhotoProps = {
   alt: string
   className?: string
   title: string
+  productId: string
   description: string
   tags: string[]
   price: string
@@ -23,6 +24,7 @@ export function HomeGiftExpandablePhoto({
   alt,
   className,
   title,
+  productId,
   description,
   tags,
   price,
@@ -33,6 +35,7 @@ export function HomeGiftExpandablePhoto({
       src={src}
       alt={alt}
       title={title}
+      productId={productId}
       description={description}
       tags={tags}
       price={price}
