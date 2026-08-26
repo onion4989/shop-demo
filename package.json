@@ -64,7 +64,8 @@
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.1",
     "uuid": "^10.0.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@heroui/theme": "^2.4.23",

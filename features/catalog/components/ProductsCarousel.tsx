@@ -177,6 +177,7 @@ function RankingCard({
       src={src}
       alt={name}
       title={name}
+      productId={product.productId}
       categoryName={categoryName}
       description={description}
       tags={tags}

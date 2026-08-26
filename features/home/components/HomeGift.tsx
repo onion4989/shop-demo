@@ -82,6 +82,7 @@ export async function HomeGift() {
                 alt={product.name}
                 className={slot.className}
                 title={product.name}
+                productId={product.productId}
                 description={product.description ?? ''}
                 tags={giftTags(product.option)}
                 price={formatPrice(product.price)}

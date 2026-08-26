@@ -1,6 +1,9 @@
 'use client'
 
 import { CategoryTag } from '@features/catalog/components/CategoryTag'
+import { MAX_QTY } from '@features/cart/pricing'
+import { useCartStore } from '@features/cart/store'
+import { useBodyScrollLock } from '@lib/useBodyScrollLock'
 import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -96,6 +99,12 @@ function getCenteredCardRect(layout: ExpandLayout): Rect {
   }
 }
 
+/** getBoundingClientRect は端数を返すため、完了判定は許容誤差付きで行う */
+function isSameHeight(a: number | undefined, b: number | undefined) {
+  if (typeof a !== 'number' || typeof b !== 'number') return false
+  return Math.abs(a - b) < 2
+}
+
 function getCardRect(
   phase: Phase,
   origin: Rect,
@@ -149,6 +158,7 @@ export type ExpandableProductDialogProps = {
   src: string
   alt: string
   title: string
+  productId?: string
   categoryName?: string
   description: string
   tags: string[]
@@ -166,6 +176,7 @@ export function ExpandableProductDialog({
   src,
   alt,
   title,
+  productId,
   categoryName,
   description,
   tags,
@@ -185,6 +196,13 @@ export function ExpandableProductDialog({
   const [phase, setPhase] = useState<Phase>('closed')
   const [origin, setOrigin] = useState<Rect | null>(null)
   const [, setLayoutTick] = useState(0)
+
+  const addToCart = useCartStore((state) => state.addItem)
+  const cartStep = useCartStore((state) => state.step)
+  const qtyInCart = useCartStore(
+    (state) =>
+      state.lines.find((line) => line.productId === productId)?.qty ?? 0,
+  )
 
   phaseRef.current = phase
   const isOpen = phase !== 'closed'
@@ -209,6 +227,7 @@ export function ExpandableProductDialog({
 
   const dismiss = useCallback(() => {
     const current = phaseRef.current
+    if (current === 'closed') return
     if (closeMotion === 'thumb-crossfade') {
       if (current === 'open' || current === 'expanding') {
         setPhase('collapsing-image')
@@ -228,23 +247,26 @@ export function ExpandableProductDialog({
     onOpenChange?.(isOpen)
   }, [isOpen, onOpenChange])
 
+  // カートが開いたら拡大ダイアログは閉じる（カゴ優先）。
+  // 閉じアニメーション中にカゴを開くと完了イベントが来ず、
+  // 透明なオーバーレイが残るためアニメーションせず即座に閉じる
+  useEffect(
+    () =>
+      useCartStore.subscribe((state, previous) => {
+        if (state.isOpen && !previous.isOpen) setPhase('closed')
+      }),
+    [],
+  )
+
+  useBodyScrollLock(isOpen)
+
   useEffect(() => {
     if (!isOpen) return
-
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth
-    const previousOverflow = document.body.style.overflow
-    const previousPaddingRight = document.body.style.paddingRight
-
-    document.body.style.overflow = 'hidden'
-    document.body.style.paddingRight = `${scrollbarWidth}px`
 
     const syncLayout = () => setLayoutTick((tick) => tick + 1)
     window.addEventListener('resize', syncLayout)
 
     return () => {
-      document.body.style.overflow = previousOverflow
-      document.body.style.paddingRight = previousPaddingRight
       window.removeEventListener('resize', syncLayout)
     }
   }, [isOpen])
@@ -264,16 +286,39 @@ export function ExpandableProductDialog({
       const current = phaseRef.current
       const imageHeight = imageHeightRef.current
 
-      if (current === 'expanding' && height === imageHeight) {
+      if (current === 'expanding' && isSameHeight(height, imageHeight)) {
         setPhase('open')
-      } else if (current === 'collapsing-text' && height === imageHeight) {
+      } else if (
+        current === 'collapsing-text' &&
+        isSameHeight(height, imageHeight)
+      ) {
         setPhase('collapsing-image')
-      } else if (current === 'collapsing-image' && height === origin?.height) {
+      } else if (
+        current === 'collapsing-image' &&
+        isSameHeight(height, origin?.height)
+      ) {
         setPhase('closed')
       }
     },
     [origin],
   )
+
+  const isClosing = phase === 'collapsing-text' || phase === 'collapsing-image'
+
+  // 差分ゼロなどで onAnimationComplete が発火しない場合の保険。
+  // closed に戻せないと透明なオーバーレイが操作を奪い続ける
+  useEffect(() => {
+    if (!isClosing) return
+
+    const duration =
+      phase === 'collapsing-text' ? TEXT_DURATION : IMAGE_DURATION
+    const timer = window.setTimeout(
+      () => setPhase('closed'),
+      duration * 1000 + 150,
+    )
+
+    return () => window.clearTimeout(timer)
+  }, [isClosing, phase])
 
   const collapsingThumb =
     closeMotion === 'thumb-crossfade' && phase === 'collapsing-image'
@@ -291,6 +336,8 @@ export function ExpandableProductDialog({
   const isDesktop = layout?.isDesktop ?? true
   const imageHeight = layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
   const textHeight = layout?.textHeight ?? DESKTOP_TEXT_HEIGHT
+  const canAddToCart =
+    Boolean(productId) && cartStep === 'cart' && qtyInCart < MAX_QTY
 
   return (
     <>
@@ -315,7 +362,10 @@ export function ExpandableProductDialog({
       {isOpen && origin && target
         ? createPortal(
             <div
-              className="fixed inset-0 z-60 cursor-pointer"
+              className={cn(
+                'fixed inset-0 z-60 cursor-pointer',
+                isClosing && 'pointer-events-none',
+              )}
               role="dialog"
               aria-modal="true"
               aria-labelledby={titleId}
@@ -383,13 +433,25 @@ export function ExpandableProductDialog({
                     </span>
                     <button
                       type="button"
+                      disabled={!canAddToCart}
+                      title={
+                        qtyInCart >= MAX_QTY
+                          ? `カートは${MAX_QTY}個までです`
+                          : undefined
+                      }
                       className={cn(
                         'flex shrink-0 items-center justify-center gap-1.5 rounded-[10px] bg-[#E4007E] text-[14px] font-bold text-white',
                         isDesktop
                           ? 'h-[45px] w-[155px]'
                           : 'h-[45px] w-[146px]',
+                        canAddToCart ? 'cursor-pointer' : 'opacity-60',
                       )}
-                      onClick={(event) => event.stopPropagation()}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        if (!productId || !canAddToCart) return
+                        addToCart(productId)
+                        dismiss()
+                      }}
                     >
                       <FaShoppingCart
                         className={
