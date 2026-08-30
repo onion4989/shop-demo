@@ -24,7 +24,6 @@ const TABLET_WIDTH = 480
 const TABLET_IMAGE_HEIGHT = 240
 const MOBILE_IMAGE_HEIGHT = 196
 const MOBILE_TEXT_HEIGHT = 210
-const TEXT_FALLBACK = 200
 const SIDE_GUTTER = 16
 
 const IMAGE_DURATION = 0.55
@@ -65,35 +64,23 @@ function matchesMin(px: number) {
   return window.matchMedia(`(min-width: ${px}px)`).matches
 }
 
-function maxTextH(imageH: number) {
-  return Math.max(0, window.innerHeight - imageH - SIDE_GUTTER * 2)
-}
-
-function resolveTextH(bodyH: number, imageH: number) {
-  const cap = maxTextH(imageH)
-  if (bodyH <= 0) return Math.min(TEXT_FALLBACK, cap)
-  return Math.min(bodyH, cap)
-}
-
-function getExpandLayout(bodyH: number): ExpandLayout {
+function getExpandLayout(): ExpandLayout {
   if (matchesMin(1024)) {
-    const textHeight = resolveTextH(bodyH, DESKTOP_IMAGE_HEIGHT)
     return {
       width: DESKTOP_WIDTH,
       imageHeight: DESKTOP_IMAGE_HEIGHT,
-      textHeight,
-      cardHeight: DESKTOP_IMAGE_HEIGHT + textHeight,
+      textHeight: MOBILE_TEXT_HEIGHT,
+      cardHeight: DESKTOP_IMAGE_HEIGHT + MOBILE_TEXT_HEIGHT,
       isDesktop: true,
     }
   }
 
   if (matchesMin(768)) {
-    const textHeight = resolveTextH(bodyH, TABLET_IMAGE_HEIGHT)
     return {
       width: TABLET_WIDTH,
       imageHeight: TABLET_IMAGE_HEIGHT,
-      textHeight,
-      cardHeight: TABLET_IMAGE_HEIGHT + textHeight,
+      textHeight: MOBILE_TEXT_HEIGHT,
+      cardHeight: TABLET_IMAGE_HEIGHT + MOBILE_TEXT_HEIGHT,
       isDesktop: true,
     }
   }
@@ -108,18 +95,12 @@ function getExpandLayout(bodyH: number): ExpandLayout {
   }
 }
 
-function getCenteredCardRect(layout: ExpandLayout): Rect {
+function getCenteredImageRect(layout: ExpandLayout): Rect {
   return {
     width: layout.width,
-    height: layout.cardHeight,
-    left: Math.max(
-      SIDE_GUTTER,
-      (window.innerWidth - layout.width) / 2,
-    ),
-    top: Math.max(
-      SIDE_GUTTER,
-      (window.innerHeight - layout.cardHeight) / 2,
-    ),
+    height: layout.imageHeight,
+    left: Math.max(SIDE_GUTTER, (window.innerWidth - layout.width) / 2),
+    top: Math.max(SIDE_GUTTER, (window.innerHeight - layout.imageHeight) / 2),
   }
 }
 
@@ -134,15 +115,14 @@ function getCardRect(
   origin: Rect,
   layout: ExpandLayout,
 ): Rect {
-  const dest = getCenteredCardRect(layout)
-  const destImage = { ...dest, height: layout.imageHeight }
+  const destImage = getCenteredImageRect(layout)
 
   switch (phase) {
     case 'expanding':
     case 'collapsing-text':
       return destImage
     case 'open':
-      return dest
+      return destImage
     case 'collapsing-image':
     case 'closed':
       return origin
@@ -174,6 +154,41 @@ function DialogTagRow({
           {tag}
         </span>
       ))}
+    </div>
+  )
+}
+
+function DesktopTextBody({
+  categoryName,
+  tags,
+  description,
+  ingredients,
+  price,
+}: {
+  categoryName?: string
+  tags: string[]
+  description: string
+  ingredients: string
+  price: string
+}) {
+  return (
+    <div className="flex flex-col gap-2.5 px-[19px] py-3">
+      <DialogTagRow
+        categoryName={categoryName}
+        tags={tags}
+        gapClassName="gap-2"
+      />
+      <p className="text-base leading-[25px] wrap-break-word text-black">
+        {description}
+      </p>
+      <div className="flex items-start justify-between gap-4">
+        <p className="min-w-0 flex-1 wrap-break-word rounded-[10px] bg-[#E0E0E0] px-3.5 py-2 text-[12px] leading-5 text-black">
+          {ingredients}
+        </p>
+        <p className="shrink-0 text-2xl font-bold text-black lg:text-[32px]">
+          {price}
+        </p>
+      </div>
     </div>
   )
 }
@@ -215,12 +230,10 @@ export function ExpandableProductDialog({
 }: ExpandableProductDialogProps) {
   const titleId = useId()
   const thumbRef = useRef<HTMLButtonElement>(null)
-  const bodyRef = useRef<HTMLDivElement>(null)
   const phaseRef = useRef<Phase>('closed')
   const imageHeightRef = useRef(DESKTOP_IMAGE_HEIGHT)
   const [phase, setPhase] = useState<Phase>('closed')
   const [origin, setOrigin] = useState<Rect | null>(null)
-  const [bodyH, setBodyH] = useState(0)
   const [, setLayoutTick] = useState(0)
 
   const addToCart = useCartStore((state) => state.addItem)
@@ -232,7 +245,7 @@ export function ExpandableProductDialog({
 
   phaseRef.current = phase
   const isOpen = phase !== 'closed'
-  const layout = typeof window === 'undefined' ? null : getExpandLayout(bodyH)
+  const layout = typeof window === 'undefined' ? null : getExpandLayout()
   if (layout) {
     imageHeightRef.current = layout.imageHeight
   }
@@ -254,12 +267,6 @@ export function ExpandableProductDialog({
   const dismiss = useCallback(() => {
     const current = phaseRef.current
     if (current === 'closed') return
-    if (closeMotion === 'thumb-crossfade') {
-      if (current === 'open' || current === 'expanding') {
-        setPhase('collapsing-image')
-      }
-      return
-    }
     if (current === 'open') {
       setPhase('collapsing-text')
       return
@@ -267,7 +274,7 @@ export function ExpandableProductDialog({
     if (current === 'expanding') {
       setPhase('collapsing-image')
     }
-  }, [closeMotion])
+  }, [])
 
   useEffect(() => {
     onOpenChange?.(isOpen)
@@ -297,18 +304,6 @@ export function ExpandableProductDialog({
     }
   }, [isOpen])
 
-  // テキスト量に合わせてカード高さを同期する
-  useEffect(() => {
-    const el = bodyRef.current
-    if (!el || !isOpen) return
-
-    const apply = () => setBodyH(el.offsetHeight)
-    apply()
-    const observer = new ResizeObserver(apply)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [isOpen, description, ingredients, tags, price, categoryName])
-
   const handleCardAnimationComplete = useCallback(
     (definition: unknown) => {
       if (
@@ -327,11 +322,6 @@ export function ExpandableProductDialog({
       if (current === 'expanding' && isSameHeight(height, imageHeight)) {
         setPhase('open')
       } else if (
-        current === 'collapsing-text' &&
-        isSameHeight(height, imageHeight)
-      ) {
-        setPhase('collapsing-image')
-      } else if (
         current === 'collapsing-image' &&
         isSameHeight(height, origin?.height)
       ) {
@@ -340,6 +330,12 @@ export function ExpandableProductDialog({
     },
     [origin],
   )
+
+  const handleTextAnimEnd = useCallback(() => {
+    if (phaseRef.current === 'collapsing-text') {
+      setPhase('collapsing-image')
+    }
+  }, [])
 
   const isClosing = phase === 'collapsing-text' || phase === 'collapsing-image'
 
@@ -350,8 +346,9 @@ export function ExpandableProductDialog({
 
     const duration =
       phase === 'collapsing-text' ? TEXT_DURATION : IMAGE_DURATION
+    const nextPhase = phase === 'collapsing-text' ? 'collapsing-image' : 'closed'
     const timer = window.setTimeout(
-      () => setPhase('closed'),
+      () => setPhase(nextPhase),
       duration * 1000 + 150,
     )
 
@@ -363,18 +360,27 @@ export function ExpandableProductDialog({
   const imageFillsCard =
     phase === 'expanding' ||
     (phase === 'collapsing-image' && closeMotion === 'intro')
-  const showExpandedText =
-    phase === 'open' || collapsingThumb
+  const showExpandedText = phase === 'open'
+  const cardHeightAuto = layout?.isDesktop && phase === 'open'
   const target =
     origin && layout ? getCardRect(phase, origin, layout) : null
+  const motionTarget = target
+    ? cardHeightAuto
+      ? {
+          left: target.left,
+          top: target.top,
+          width: target.width,
+          height: 'auto' as const,
+        }
+      : target
+    : null
   const cardDuration =
     phase === 'open' || phase === 'collapsing-text'
       ? TEXT_DURATION
       : IMAGE_DURATION
   const isDesktop = layout?.isDesktop ?? true
   const imageHeight = layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
-  const textHeight = layout?.textHeight ?? TEXT_FALLBACK
-  const textClipped = isDesktop && bodyH > textHeight
+  const textHeight = layout?.textHeight ?? MOBILE_TEXT_HEIGHT
   const canAddToCart =
     Boolean(productId) && cartStep === 'cart' && qtyInCart < MAX_QTY
 
@@ -398,7 +404,7 @@ export function ExpandableProductDialog({
         {children}
       </button>
 
-      {isOpen && origin && target
+      {isOpen && origin && motionTarget
         ? createPortal(
             <div
               className={cn(
@@ -421,6 +427,7 @@ export function ExpandableProductDialog({
               <motion.div
                 className={cn(
                   'absolute overflow-hidden shadow-2xl',
+                  cardHeightAuto && 'overflow-y-auto',
                   collapsingThumb
                     ? 'rounded-[10px]'
                     : isDesktop
@@ -428,22 +435,32 @@ export function ExpandableProductDialog({
                       : 'rounded-[15px]',
                 )}
                 initial={origin}
-                animate={target}
+                animate={motionTarget}
+                style={
+                  cardHeightAuto && target
+                    ? {
+                        maxHeight: Math.max(
+                          0,
+                          window.innerHeight - target.top - SIDE_GUTTER,
+                        ),
+                      }
+                    : undefined
+                }
                 transition={{ duration: cardDuration, ease: EASE }}
                 onAnimationComplete={handleCardAnimationComplete}
               >
-                <div className="relative size-full">
+                <div className={cn('relative w-full', !cardHeightAuto && 'size-full')}>
                   <motion.div
                     className={cn(
                       collapsingThumb
                         ? 'absolute inset-0 overflow-hidden'
-                        : 'flex h-full flex-col',
+                        : cn('flex flex-col', !cardHeightAuto && 'h-full'),
                     )}
                     animate={{ opacity: collapsingThumb ? 0 : 1 }}
                     transition={{ duration: IMAGE_DURATION, ease: EASE }}
                   >
                 <div
-                  className="relative w-full"
+                  className="relative w-full shrink-0"
                   style={{
                     height: imageFillsCard ? '100%' : imageHeight,
                   }}
@@ -504,40 +521,31 @@ export function ExpandableProductDialog({
                     </button>
                   </div>
                 </div>
-                <motion.div
-                  className={cn(
-                    'bg-white',
-                    textClipped ? 'overflow-y-auto' : 'overflow-hidden',
-                  )}
-                  initial={{ height: 0 }}
-                  animate={{
-                    height: showExpandedText ? textHeight : 0,
-                  }}
-                  transition={{ duration: TEXT_DURATION, ease: EASE }}
-                >
-                  {isDesktop ? (
-                    <div
-                      ref={bodyRef}
-                      className="flex flex-col gap-2.5 px-[19px] py-3"
-                    >
-                      <DialogTagRow
-                        categoryName={categoryName}
-                        tags={tags}
-                        gapClassName="gap-2"
-                      />
-                      <p className="text-base leading-[25px] wrap-break-word text-black">
-                        {description}
-                      </p>
-                      <div className="flex items-start justify-between gap-4">
-                        <p className="min-w-0 flex-1 wrap-break-word rounded-[10px] bg-[#E0E0E0] px-3.5 py-2 text-[12px] leading-5 text-black">
-                          {ingredients}
-                        </p>
-                        <p className="shrink-0 text-2xl font-bold text-black lg:text-[32px]">
-                          {price}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
+                {isDesktop ? (
+                  <motion.div
+                    className="overflow-hidden bg-white"
+                    initial={false}
+                    animate={{ height: showExpandedText ? 'auto' : 0 }}
+                    transition={{ duration: TEXT_DURATION, ease: EASE }}
+                    onAnimationComplete={handleTextAnimEnd}
+                  >
+                    <DesktopTextBody
+                      categoryName={categoryName}
+                      tags={tags}
+                      description={description}
+                      ingredients={ingredients}
+                      price={price}
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    className="overflow-hidden bg-white"
+                    initial={{ height: 0 }}
+                    animate={{
+                      height: showExpandedText ? textHeight : 0,
+                    }}
+                    transition={{ duration: TEXT_DURATION, ease: EASE }}
+                  >
                     <div className="flex h-[210px] flex-col justify-between px-3 py-2.5">
                       <DialogTagRow
                         categoryName={categoryName}
@@ -556,8 +564,8 @@ export function ExpandableProductDialog({
                         </p>
                       </div>
                     </div>
-                  )}
-                </motion.div>
+                  </motion.div>
+                )}
                   </motion.div>
                   {collapsingThumb && thumbPreview ? (
                     <motion.div
