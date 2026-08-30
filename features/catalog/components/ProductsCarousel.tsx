@@ -235,19 +235,30 @@ export function ProductsCarousel({ products }: ProductsCarouselProps) {
 
     const plugin = autoplay.current
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const root = api.rootNode()
+    const container = api.containerNode()
+
+    const canPlay = () => !dialogOpen && !mq.matches && canLoop
 
     const sync = () => {
-      if (!dialogOpen && !mq.matches && canLoop) {
-        plugin.play()
-      } else {
-        plugin.stop()
-      }
+      if (canPlay()) plugin.play()
+      else plugin.stop()
+    }
+
+    // stopOnMouseEnter / focusout の play() は dialogOpen を見ない。
+    // プラグインより後に登録し、再開を打ち消す
+    const haltResume = () => {
+      if (!canPlay()) plugin.stop()
     }
 
     sync()
     mq.addEventListener('change', sync)
+    root.addEventListener('mouseleave', haltResume)
+    container.addEventListener('focusout', haltResume)
     return () => {
       mq.removeEventListener('change', sync)
+      root.removeEventListener('mouseleave', haltResume)
+      container.removeEventListener('focusout', haltResume)
       plugin.stop()
     }
   }, [api, canLoop, dialogOpen])

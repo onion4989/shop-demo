@@ -5,6 +5,8 @@ alwaysApply: false
 
 # カート（デモ）
 
+仕様の長文: `~/projects/shop-demo-docs/shop-demo/10-spec/cart-side-panel.md.md`
+
 ## 置き場所
 - 実体は features/cart。app/ の page は薄く保つ
 - 状態は Zustand。永続は productId と個数のみ localStorage。表示時にカタログと突き合わせる

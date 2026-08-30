@@ -3,6 +3,10 @@
 import { CategoryTag } from '@features/catalog/components/CategoryTag'
 import { MAX_QTY, isDeliveryProductId } from '@features/cart/pricing'
 import { useCartStore } from '@features/cart/store'
+import {
+  addExpandCloser,
+  removeExpandCloser,
+} from '@lib/expandDialogCloser'
 import { useBodyScrollLock } from '@lib/useBodyScrollLock'
 import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
@@ -28,6 +32,8 @@ const SIDE_GUTTER = 16
 
 const IMAGE_DURATION = 0.55
 const TEXT_DURATION = 0.4
+const CLOSE_IMAGE_DUR = 0.38
+const CLOSE_TEXT_DUR = 0.28
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const TITLE_BADGE_DESKTOP =
@@ -250,6 +256,19 @@ export function ExpandableProductDialog({
     imageHeightRef.current = layout.imageHeight
   }
 
+  const dismissRef = useRef<() => void>(() => {})
+  const closer = useCallback(() => {
+    dismissRef.current()
+  }, [])
+
+  const closeNow = useCallback(() => {
+    if (phaseRef.current === 'closed') return
+    phaseRef.current = 'closed'
+    removeExpandCloser(closer)
+    setPhase('closed')
+    onOpenChange?.(false)
+  }, [closer, onOpenChange])
+
   const open = useCallback(() => {
     if (desktopOnly && !matchesMin(768)) return
     const el = thumbRef.current
@@ -261,8 +280,10 @@ export function ExpandableProductDialog({
       width: rect.width,
       height: rect.height,
     })
+    addExpandCloser(closer)
     setPhase('expanding')
-  }, [desktopOnly])
+    onOpenChange?.(true)
+  }, [closer, desktopOnly, onOpenChange])
 
   const dismiss = useCallback(() => {
     const current = phaseRef.current
@@ -275,21 +296,9 @@ export function ExpandableProductDialog({
       setPhase('collapsing-image')
     }
   }, [])
+  dismissRef.current = dismiss
 
-  useEffect(() => {
-    onOpenChange?.(isOpen)
-  }, [isOpen, onOpenChange])
-
-  // カートが開いたら拡大ダイアログは閉じる（カゴ優先）。
-  // 閉じアニメーション中にカゴを開くと完了イベントが来ず、
-  // 透明なオーバーレイが残るためアニメーションせず即座に閉じる
-  useEffect(
-    () =>
-      useCartStore.subscribe((state, previous) => {
-        if (state.isOpen && !previous.isOpen) setPhase('closed')
-      }),
-    [],
-  )
+  useEffect(() => () => removeExpandCloser(closer), [closer])
 
   useBodyScrollLock(isOpen)
 
@@ -325,10 +334,10 @@ export function ExpandableProductDialog({
         current === 'collapsing-image' &&
         isSameHeight(height, origin?.height)
       ) {
-        setPhase('closed')
+        closeNow()
       }
     },
-    [origin],
+    [closeNow, origin],
   )
 
   const handleTextAnimEnd = useCallback(() => {
@@ -345,15 +354,15 @@ export function ExpandableProductDialog({
     if (!isClosing) return
 
     const duration =
-      phase === 'collapsing-text' ? TEXT_DURATION : IMAGE_DURATION
+      phase === 'collapsing-text' ? CLOSE_TEXT_DUR : CLOSE_IMAGE_DUR
     const nextPhase = phase === 'collapsing-text' ? 'collapsing-image' : 'closed'
-    const timer = window.setTimeout(
-      () => setPhase(nextPhase),
-      duration * 1000 + 150,
-    )
+    const timer = window.setTimeout(() => {
+      if (nextPhase === 'closed') closeNow()
+      else setPhase(nextPhase)
+    }, duration * 1000 + 150)
 
     return () => window.clearTimeout(timer)
-  }, [isClosing, phase])
+  }, [closeNow, isClosing, phase])
 
   const collapsingThumb =
     closeMotion === 'thumb-crossfade' && phase === 'collapsing-image'
@@ -374,10 +383,17 @@ export function ExpandableProductDialog({
         }
       : target
     : null
-  const cardDuration =
-    phase === 'open' || phase === 'collapsing-text'
-      ? TEXT_DURATION
-      : IMAGE_DURATION
+  const isCollapseText = phase === 'collapsing-text'
+  const isCollapseImage = phase === 'collapsing-image'
+  const textAnimDur = isCollapseText ? CLOSE_TEXT_DUR : TEXT_DURATION
+  const imageAnimDur = isCollapseImage ? CLOSE_IMAGE_DUR : IMAGE_DURATION
+  const cardDuration = isCollapseText
+    ? CLOSE_TEXT_DUR
+    : isCollapseImage
+      ? CLOSE_IMAGE_DUR
+      : phase === 'open'
+        ? TEXT_DURATION
+        : IMAGE_DURATION
   const isDesktop = layout?.isDesktop ?? true
   const imageHeight = layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
   const textHeight = layout?.textHeight ?? MOBILE_TEXT_HEIGHT
@@ -422,7 +438,7 @@ export function ExpandableProductDialog({
                 animate={{
                   opacity: phase === 'collapsing-image' ? 0 : 1,
                 }}
-                transition={{ duration: IMAGE_DURATION, ease: EASE }}
+                transition={{ duration: imageAnimDur, ease: EASE }}
               />
               <motion.div
                 className={cn(
@@ -457,7 +473,7 @@ export function ExpandableProductDialog({
                         : cn('flex flex-col', !cardHeightAuto && 'h-full'),
                     )}
                     animate={{ opacity: collapsingThumb ? 0 : 1 }}
-                    transition={{ duration: IMAGE_DURATION, ease: EASE }}
+                    transition={{ duration: imageAnimDur, ease: EASE }}
                   >
                 <div
                   className="relative w-full shrink-0"
@@ -526,7 +542,7 @@ export function ExpandableProductDialog({
                     className="overflow-hidden bg-white"
                     initial={false}
                     animate={{ height: showExpandedText ? 'auto' : 0 }}
-                    transition={{ duration: TEXT_DURATION, ease: EASE }}
+                    transition={{ duration: textAnimDur, ease: EASE }}
                     onAnimationComplete={handleTextAnimEnd}
                   >
                     <DesktopTextBody
@@ -544,7 +560,7 @@ export function ExpandableProductDialog({
                     animate={{
                       height: showExpandedText ? textHeight : 0,
                     }}
-                    transition={{ duration: TEXT_DURATION, ease: EASE }}
+                    transition={{ duration: textAnimDur, ease: EASE }}
                   >
                     <div className="flex h-[210px] flex-col justify-between px-3 py-2.5">
                       <DialogTagRow
@@ -572,7 +588,7 @@ export function ExpandableProductDialog({
                       className="pointer-events-none absolute inset-0 overflow-hidden"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: IMAGE_DURATION, ease: EASE }}
+                      transition={{ duration: imageAnimDur, ease: EASE }}
                       aria-hidden
                     >
                       {thumbPreview}
