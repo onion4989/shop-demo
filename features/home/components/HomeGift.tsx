@@ -53,7 +53,7 @@ export async function HomeGift() {
   const byId = new Map(products.map((product) => [product.productId, product]))
 
   return (
-    <section className="relative mb-[93px] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA]">
+    <section className="relative mb-[93px] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA] lg:mb-32">
       <div className="relative mx-auto min-h-[900px] w-full max-w-[1440px]">
         {bubbles.map((bubble) => (
           <span
@@ -65,7 +65,7 @@ export async function HomeGift() {
         ))}
 
         <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 lg:px-0">
-          <h2 className="pt-[30px] pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[20px] lg:text-[32px]">
+          <h2 className="pt-[30px] pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
             ギフト / Gift
           </h2>
           <div className="grid grid-cols-1 gap-6 pb-8 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">

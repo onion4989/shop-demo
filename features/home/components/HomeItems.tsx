@@ -67,19 +67,19 @@ const GROUPS: ItemGroup[] = [
 
 function ItemCard({ folder, item }: { folder: string; item: Item }) {
   return (
-    <div className="flex w-40 flex-col items-center gap-3 md:w-[100px] lg:w-40">
-      <div className="relative size-40 md:size-[100px] lg:size-40">
-        <div className="relative size-40 overflow-hidden rounded-full border-2 border-white md:size-[100px] lg:size-40">
+    <div className="flex w-40 flex-col items-center gap-3 md:w-[120px] lg:w-40">
+      <div className="relative size-40 md:size-[120px] lg:size-40">
+        <div className="relative size-40 overflow-hidden rounded-full border-2 border-white md:size-[120px] lg:size-40">
           <Image
             src={`${ITEMS_DIR}/${folder}/${item.file}`}
             alt={item.label}
             fill
             className="object-cover"
-            sizes="(min-width: 1024px) 160px, (min-width: 768px) 100px, 160px"
+            sizes="(min-width: 1024px) 160px, (min-width: 768px) 120px, 160px"
           />
         </div>
         {item.limited ? (
-          <span className="absolute top-2 right-0 z-10 rounded-full bg-[#E4007E] px-2 py-0.5 text-xs font-bold text-white md:text-[10px] lg:text-xs">
+          <span className="absolute top-2 right-0 z-10 whitespace-nowrap rounded-full bg-[#E4007E] px-2 py-0.5 text-xs font-bold text-white md:top-auto md:right-auto md:bottom-0 md:left-1/2 md:-translate-x-1/2 md:px-2 md:text-[11px] lg:top-2 lg:right-0 lg:bottom-auto lg:left-auto lg:translate-x-0 lg:px-2 lg:text-xs">
             期間限定
           </span>
         ) : null}
@@ -94,11 +94,11 @@ function ItemCard({ folder, item }: { folder: string; item: Item }) {
 function ItemCategory({ group }: { group: ItemGroup }) {
   return (
     <section className={group.wide ? 'lg:col-span-2' : undefined}>
-      <h2 className="pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[20px] lg:text-[32px]">
+      <h2 className="pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
         {group.title}
       </h2>
       <div
-        className={`flex flex-wrap gap-x-6 gap-y-8 rounded-[25px] px-7 py-8 ${group.tone}`}
+        className={`flex flex-wrap gap-x-6 gap-y-8 rounded-[25px] px-7 py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
       >
         {group.items.map((item) => (
           <ItemCard key={item.file} folder={group.folder} item={item} />
@@ -112,7 +112,7 @@ export function HomeItems() {
   const [cupcake, ice, options, tart] = GROUPS
 
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-4 py-24 lg:px-0">
+    <section className="mx-auto w-full max-w-[1200px] px-4 pb-24 md:pt-24 lg:px-0 lg:pt-0 lg:pb-32">
       <div className="flex flex-col gap-12">
         <ItemCategory group={cupcake} />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

@@ -69,7 +69,7 @@ export function CartPanel({
   return (
     <aside
       className={cn(
-        'flex h-dvh w-full shrink-0 flex-col bg-[#3B3B3B]/95 shadow-2xl backdrop-blur-md lg:w-[500px]',
+        'flex h-dvh w-full shrink-0 flex-col bg-[#3B3B3B]/95 shadow-2xl backdrop-blur-md md:w-[500px]',
         inactive ? 'pointer-events-none' : 'pointer-events-auto',
       )}
       role="dialog"
@@ -84,9 +84,12 @@ export function CartPanel({
           onClick={onClose}
           disabled={busy}
           aria-label="カートを閉じる"
-          className="flex size-8 items-center justify-center rounded-full bg-white/15 text-white transition-opacity hover:opacity-70 disabled:opacity-40"
+          className="group flex size-8 cursor-pointer items-center justify-center rounded-full bg-[#D2B48C]/70 text-white transition-all duration-200 hover:bg-[#D2B48C] disabled:cursor-not-allowed disabled:opacity-40"
         >
-          <FaTimes className="size-3.5" aria-hidden />
+          <FaTimes
+            className="size-3.5 transition-transform duration-200 group-hover:rotate-90"
+            aria-hidden
+          />
         </button>
       </div>
 

@@ -14,7 +14,9 @@ type CartState = {
   isOpen: boolean
   step: CartStep
   busy: boolean
-  addItem: (productId: string) => void
+  bubbleInitialMode: boolean
+  addBumpSeq: number
+  addItem: (productId: string, isDelivery?: boolean) => void
   setQty: (productId: string, qty: number) => void
   removeItem: (productId: string) => void
   openCart: () => void
@@ -31,14 +33,23 @@ export const useCartStore = create<CartState>()(
       isOpen: false,
       step: 'cart',
       busy: false,
+      bubbleInitialMode: false,
+      addBumpSeq: 0,
 
-      addItem: (productId) => {
-        const { step, lines } = get()
+      addItem: (productId, isDelivery = false) => {
+        const { step, lines, addBumpSeq } = get()
         if (step !== 'cart') return
+
+        const clearBubble = isDelivery ? { bubbleInitialMode: false } : {}
+        const bump = { addBumpSeq: addBumpSeq + 1 }
 
         const line = lines.find((entry) => entry.productId === productId)
         if (!line) {
-          set({ lines: [...lines, { productId, qty: 1 }] })
+          set({
+            lines: [...lines, { productId, qty: 1 }],
+            ...clearBubble,
+            ...bump,
+          })
           return
         }
         if (line.qty >= MAX_QTY) return
@@ -49,6 +60,8 @@ export const useCartStore = create<CartState>()(
               ? { ...entry, qty: entry.qty + 1 }
               : entry,
           ),
+          ...clearBubble,
+          ...bump,
         })
       },
 
@@ -100,7 +113,13 @@ export const useCartStore = create<CartState>()(
 
         set({ busy: true })
         window.setTimeout(
-          () => set({ busy: false, step: 'complete', lines: [] }),
+          () =>
+            set({
+              busy: false,
+              step: 'complete',
+              lines: [],
+              bubbleInitialMode: true,
+            }),
           LOADING_MS,
         )
       },

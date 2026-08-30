@@ -48,7 +48,7 @@ function FooterHeading({ children }: { children: string }) {
 export default function Footer() {
   return (
     <footer className="bg-[#373737] text-white">
-      <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden md:h-[377px]">
+      <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden md:h-[200px] lg:h-[377px]">
         <Image
           src={`${PHOTO_DIR}/Footer_Head.png`}
           alt=""
@@ -57,28 +57,61 @@ export default function Footer() {
           sizes="100vw"
           priority={false}
         />
-        <p className="relative z-10 px-4 text-center text-4xl font-black tracking-wider text-black sm:text-6xl md:text-[96px]">
+        <p className="relative z-10 px-4 text-center text-4xl font-black tracking-wider text-black sm:text-6xl md:text-[64px] lg:text-[96px]">
           Sugar Alice
         </p>
       </div>
 
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-4 py-12 lg:grid-cols-[578px_1fr] lg:gap-8 lg:px-0">
         <div>
-          <div className="grid grid-cols-[1fr_130px_130px] grid-rows-[160px_149px_60px] gap-5">
-            <StorePhoto file="Store_img1.jpg" alt="店舗外観1" className="row-span-2 h-full min-h-[330px]" />
-            <StorePhoto file="Store_img2.jpg" alt="店舗外観2" className="col-span-2" />
-            <StorePhoto file="Store_img3.jpg" alt="店舗外観3" />
-            <StorePhoto file="Store_img4.jpg" alt="店舗外観4" />
-            <div className="flex h-[60px] items-center justify-between rounded-[10px] bg-[#838383] px-2.5">
-              {SNS_ICONS.map((icon) => (
-                <Image
-                  key={icon.file}
-                  src={`${ICON_DIR}/${icon.file}`}
-                  alt={icon.label}
-                  width={34}
-                  height={36}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-[1fr_130px_130px] lg:grid-rows-[160px_149px_60px]">
+            <div className="flex flex-col gap-5 lg:row-span-2">
+              <StorePhoto
+                file="Store_img1.jpg"
+                alt="店舗外観1"
+                className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:h-full lg:min-h-[330px] lg:max-w-none"
+              />
+              <div className="flex h-[60px] items-center justify-start gap-5 rounded-[10px] bg-[#838383] px-5 md:flex lg:hidden">
+                {SNS_ICONS.map((icon) => (
+                  <Image
+                    key={icon.file}
+                    src={`${ICON_DIR}/${icon.file}`}
+                    alt={icon.label}
+                    width={34}
+                    height={36}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-5 lg:contents">
+              <StorePhoto
+                file="Store_img2.jpg"
+                alt="店舗外観2"
+                className="mx-auto h-[146px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:col-span-2 lg:h-auto lg:max-w-none"
+              />
+              <div className="mx-auto grid w-full max-w-[342px] grid-cols-2 gap-5 md:mx-0 md:max-w-none lg:contents">
+                <StorePhoto
+                  file="Store_img3.jpg"
+                  alt="店舗外観3"
+                  className="h-[134px] lg:h-auto"
                 />
-              ))}
+                <StorePhoto
+                  file="Store_img4.jpg"
+                  alt="店舗外観4"
+                  className="h-[134px] lg:h-auto"
+                />
+              </div>
+              <div className="hidden h-[60px] items-center justify-between rounded-[10px] bg-[#838383] px-2.5 lg:col-span-2 lg:flex">
+                {SNS_ICONS.map((icon) => (
+                  <Image
+                    key={icon.file}
+                    src={`${ICON_DIR}/${icon.file}`}
+                    alt={icon.label}
+                    width={34}
+                    height={36}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

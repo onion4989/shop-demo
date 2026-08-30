@@ -14,10 +14,10 @@ export default async function ProductsItems() {
 
   return (
     <div className="mx-auto w-full max-w-[708px] lg:max-w-none">
-      <h2 className="pb-[20px] text-[36px] font-bold tracking-wider text-[#E4007E]">
+      <h2 className="pb-[20px] text-[36px] font-bold tracking-wider text-[#E4007E] md:text-[24px] lg:text-[36px]">
         人気ランキング / Ranking
       </h2>
-      <div className="mb-10">
+      <div className="mb-24 lg:mb-32">
         <ProductsCarousel products={products} />
       </div>
     </div>
