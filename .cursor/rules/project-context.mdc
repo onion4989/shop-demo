@@ -1,0 +1,26 @@
+---
+description: ケーキ店デモの目的・スコープ・固有制約
+alwaysApply: true
+---
+
+# プロジェクト概要
+- 名前: shop-demo（Sugar Alice）
+- 一言: ケーキ店 Top のデモ（カートは疑似購入）
+- 種別: EC デモ
+
+# スコープ
+- 含む: Top（Ranking / Gift / Items）、サイドカートデモ
+- 含まない: 管理画面の改修、DB スキーマ変更、実決済・メール・注文保存（依頼があるまで）
+
+# スタック
+- Next.js App Router × TypeScript × Tailwind。npm
+- ローカル: Docker Desktop
+- 本番: エックスサーバー VPS。GitHub → Dokploy > projects > Works > CAKE-SHOP
+- Vercel 前提で書かない（vercel.json は旧環境）
+
+# エージェントへの固有指示
+- admin 既存ファイルは削除しない。依頼なしに触らない
+- ルールを増やさない。詳細は下を Read。解説は `~/projects/_knowledge`
+- UI / 配置: `.cursor/rules/frontend.mdc`
+- Prisma: `.cursor/rules/database.mdc`
+- カート: `.cursor/rules/cart.mdc`

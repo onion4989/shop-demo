@@ -11,6 +11,7 @@ import {
 } from '@features/cart/pricing'
 import { useCartStore } from '@features/cart/store'
 import type { CartCatalogItem } from '@features/cart/types'
+import { closeExpandDialogs } from '@lib/expandDialogCloser'
 import { useBodyScrollLock } from '@lib/useBodyScrollLock'
 import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
@@ -104,6 +105,11 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
         progress: summary.progress,
       }
 
+  const handleOpenCart = useCallback(() => {
+    closeExpandDialogs()
+    openCart()
+  }, [openCart])
+
   useBodyScrollLock(isOpen)
 
   const closedX = useSyncExternalStore(
@@ -132,7 +138,7 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
             freeShipping={bubbleMetrics.freeShipping}
             remaining={bubbleMetrics.remaining}
             progress={bubbleMetrics.progress}
-            onClick={openCart}
+            onClick={handleOpenCart}
           />
         </div>
       ) : null}
@@ -149,7 +155,7 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
               isOpen={isOpen}
               count={summary.totalCount}
               addBumpSeq={hydrated ? addBumpSeq : 0}
-              onClick={isOpen ? closeCart : openCart}
+              onClick={isOpen ? closeCart : handleOpenCart}
             />
           </div>
           <CartPanel
