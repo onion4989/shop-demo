@@ -1,6 +1,7 @@
 'use client'
 
-import { CartProgress } from '@features/cart/components/CartProgress'
+import { formatYen } from '@features/cart/pricing'
+import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
 
 type CartBubbleProps = {
@@ -16,26 +17,39 @@ export function CartBubble({
   progress,
   onClick,
 }: CartBubbleProps) {
+  const barPct = freeShipping ? 100 : Math.round(progress * 100)
+
   return (
     <motion.button
       type="button"
       onClick={onClick}
-      initial={{ opacity: 0, y: 8 }}
+      aria-label={freeShipping ? '送料無料。カートを開く' : '送料無料までの残額。カートを開く'}
+      initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 8 }}
-      transition={{ duration: 0.25 }}
-      className="relative w-[150px] rounded-[10px] bg-[#3B3B3B]/95 px-3 py-2.5 text-left shadow-lg backdrop-blur-md transition-opacity hover:opacity-90"
+      exit={{ opacity: 0, y: 6 }}
+      transition={{ duration: 0.2 }}
+      className="flex h-[80px] w-[120px] cursor-pointer flex-col items-stretch rounded-[5px] bg-[#6B4226] px-[11px] pt-[11px] pb-[13px] text-white shadow-lg transition-opacity hover:opacity-90"
     >
-      <CartProgress
-        freeShipping={freeShipping}
-        remaining={remaining}
-        progress={progress}
-        compact
-      />
-      <span
-        className="absolute -bottom-1.5 right-4 size-3 rotate-45 bg-[#3B3B3B]/95"
-        aria-hidden
-      />
+      {!freeShipping ? (
+        <div className="flex shrink-0 flex-col items-center gap-[5px] leading-none">
+          <p className="text-[12px] font-normal">送料無料まであと</p>
+          <p className="text-[20px] font-bold">{formatYen(remaining)}</p>
+        </div>
+      ) : (
+        <p className="shrink-0 text-center text-[20px] leading-none font-bold">
+          ￥5000以上で送料無料
+        </p>
+      )}
+
+      <div className="mt-[11px] h-[8px] w-full shrink-0 overflow-hidden rounded-[20px] bg-white">
+        <div
+          className={cn(
+            'h-full bg-[#72BFA3] transition-[width] duration-300',
+            barPct >= 100 ? 'rounded-[20px]' : 'rounded-l-[20px]',
+          )}
+          style={{ width: `${barPct}%` }}
+        />
+      </div>
     </motion.button>
   )
 }

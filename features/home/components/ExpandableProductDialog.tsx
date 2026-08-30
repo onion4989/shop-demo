@@ -1,7 +1,7 @@
 'use client'
 
 import { CategoryTag } from '@features/catalog/components/CategoryTag'
-import { MAX_QTY } from '@features/cart/pricing'
+import { MAX_QTY, isDeliveryProductId } from '@features/cart/pricing'
 import { useCartStore } from '@features/cart/store'
 import { useBodyScrollLock } from '@lib/useBodyScrollLock'
 import { cn } from '@lib/utils'
@@ -20,9 +20,11 @@ import { FaShoppingCart } from 'react-icons/fa'
 
 const DESKTOP_WIDTH = 588
 const DESKTOP_IMAGE_HEIGHT = 300
-const DESKTOP_TEXT_HEIGHT = 200
+const TABLET_WIDTH = 480
+const TABLET_IMAGE_HEIGHT = 240
 const MOBILE_IMAGE_HEIGHT = 196
 const MOBILE_TEXT_HEIGHT = 210
+const TEXT_FALLBACK = 200
 const SIDE_GUTTER = 16
 
 const IMAGE_DURATION = 0.55
@@ -59,17 +61,39 @@ type ExpandLayout = {
   isDesktop: boolean
 }
 
-function isDesktopViewport() {
-  return window.matchMedia('(min-width: 1024px)').matches
+function matchesMin(px: number) {
+  return window.matchMedia(`(min-width: ${px}px)`).matches
 }
 
-function getExpandLayout(): ExpandLayout {
-  if (isDesktopViewport()) {
+function maxTextH(imageH: number) {
+  return Math.max(0, window.innerHeight - imageH - SIDE_GUTTER * 2)
+}
+
+function resolveTextH(bodyH: number, imageH: number) {
+  const cap = maxTextH(imageH)
+  if (bodyH <= 0) return Math.min(TEXT_FALLBACK, cap)
+  return Math.min(bodyH, cap)
+}
+
+function getExpandLayout(bodyH: number): ExpandLayout {
+  if (matchesMin(1024)) {
+    const textHeight = resolveTextH(bodyH, DESKTOP_IMAGE_HEIGHT)
     return {
       width: DESKTOP_WIDTH,
       imageHeight: DESKTOP_IMAGE_HEIGHT,
-      textHeight: DESKTOP_TEXT_HEIGHT,
-      cardHeight: DESKTOP_IMAGE_HEIGHT + DESKTOP_TEXT_HEIGHT,
+      textHeight,
+      cardHeight: DESKTOP_IMAGE_HEIGHT + textHeight,
+      isDesktop: true,
+    }
+  }
+
+  if (matchesMin(768)) {
+    const textHeight = resolveTextH(bodyH, TABLET_IMAGE_HEIGHT)
+    return {
+      width: TABLET_WIDTH,
+      imageHeight: TABLET_IMAGE_HEIGHT,
+      textHeight,
+      cardHeight: TABLET_IMAGE_HEIGHT + textHeight,
       isDesktop: true,
     }
   }
@@ -191,10 +215,12 @@ export function ExpandableProductDialog({
 }: ExpandableProductDialogProps) {
   const titleId = useId()
   const thumbRef = useRef<HTMLButtonElement>(null)
+  const bodyRef = useRef<HTMLDivElement>(null)
   const phaseRef = useRef<Phase>('closed')
   const imageHeightRef = useRef(DESKTOP_IMAGE_HEIGHT)
   const [phase, setPhase] = useState<Phase>('closed')
   const [origin, setOrigin] = useState<Rect | null>(null)
+  const [bodyH, setBodyH] = useState(0)
   const [, setLayoutTick] = useState(0)
 
   const addToCart = useCartStore((state) => state.addItem)
@@ -206,13 +232,13 @@ export function ExpandableProductDialog({
 
   phaseRef.current = phase
   const isOpen = phase !== 'closed'
-  const layout = typeof window === 'undefined' ? null : getExpandLayout()
+  const layout = typeof window === 'undefined' ? null : getExpandLayout(bodyH)
   if (layout) {
     imageHeightRef.current = layout.imageHeight
   }
 
   const open = useCallback(() => {
-    if (desktopOnly && !isDesktopViewport()) return
+    if (desktopOnly && !matchesMin(768)) return
     const el = thumbRef.current
     if (!el) return
     const rect = el.getBoundingClientRect()
@@ -270,6 +296,18 @@ export function ExpandableProductDialog({
       window.removeEventListener('resize', syncLayout)
     }
   }, [isOpen])
+
+  // テキスト量に合わせてカード高さを同期する
+  useEffect(() => {
+    const el = bodyRef.current
+    if (!el || !isOpen) return
+
+    const apply = () => setBodyH(el.offsetHeight)
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [isOpen, description, ingredients, tags, price, categoryName])
 
   const handleCardAnimationComplete = useCallback(
     (definition: unknown) => {
@@ -335,7 +373,8 @@ export function ExpandableProductDialog({
       : IMAGE_DURATION
   const isDesktop = layout?.isDesktop ?? true
   const imageHeight = layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
-  const textHeight = layout?.textHeight ?? DESKTOP_TEXT_HEIGHT
+  const textHeight = layout?.textHeight ?? TEXT_FALLBACK
+  const textClipped = isDesktop && bodyH > textHeight
   const canAddToCart =
     Boolean(productId) && cartStep === 'cart' && qtyInCart < MAX_QTY
 
@@ -350,7 +389,7 @@ export function ExpandableProductDialog({
         className={cn(
           'appearance-none border-0 bg-transparent p-0 text-left',
           desktopOnly
-            ? 'max-lg:pointer-events-none lg:cursor-pointer'
+            ? 'max-md:pointer-events-none md:cursor-pointer'
             : 'cursor-pointer',
           isOpen ? 'invisible' : 'group',
           triggerClassName,
@@ -415,7 +454,7 @@ export function ExpandableProductDialog({
                       alt={alt}
                       fill
                       sizes={
-                        isDesktop ? `${DESKTOP_WIDTH}px` : '100vw'
+                        isDesktop ? `${layout?.width ?? DESKTOP_WIDTH}px` : '100vw'
                       }
                       className="object-cover"
                     />
@@ -449,7 +488,7 @@ export function ExpandableProductDialog({
                       onClick={(event) => {
                         event.stopPropagation()
                         if (!productId || !canAddToCart) return
-                        addToCart(productId)
+                        addToCart(productId, isDeliveryProductId(productId, tags))
                         dismiss()
                       }}
                     >
@@ -466,7 +505,10 @@ export function ExpandableProductDialog({
                   </div>
                 </div>
                 <motion.div
-                  className="overflow-hidden bg-white"
+                  className={cn(
+                    'bg-white',
+                    textClipped ? 'overflow-y-auto' : 'overflow-hidden',
+                  )}
                   initial={{ height: 0 }}
                   animate={{
                     height: showExpandedText ? textHeight : 0,
@@ -474,20 +516,23 @@ export function ExpandableProductDialog({
                   transition={{ duration: TEXT_DURATION, ease: EASE }}
                 >
                   {isDesktop ? (
-                    <div className="flex h-[200px] flex-col justify-between px-[19px] py-3">
+                    <div
+                      ref={bodyRef}
+                      className="flex flex-col gap-2.5 px-[19px] py-3"
+                    >
                       <DialogTagRow
                         categoryName={categoryName}
                         tags={tags}
                         gapClassName="gap-2"
                       />
-                      <p className="text-base leading-[25px] text-black">
+                      <p className="text-base leading-[25px] wrap-break-word text-black">
                         {description}
                       </p>
-                      <div className="flex items-center justify-between gap-4">
-                        <p className="h-14 w-96 overflow-hidden rounded-[10px] bg-[#E0E0E0] px-3.5 py-2 text-[12px] leading-5 text-black">
+                      <div className="flex items-start justify-between gap-4">
+                        <p className="min-w-0 flex-1 wrap-break-word rounded-[10px] bg-[#E0E0E0] px-3.5 py-2 text-[12px] leading-5 text-black">
                           {ingredients}
                         </p>
-                        <p className="shrink-0 text-[32px] font-bold text-black">
+                        <p className="shrink-0 text-2xl font-bold text-black lg:text-[32px]">
                           {price}
                         </p>
                       </div>

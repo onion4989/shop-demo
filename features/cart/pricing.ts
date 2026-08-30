@@ -53,6 +53,24 @@ export function fulfillmentOf(item: CartCatalogItem): Fulfillment {
   return item.shippingAvailable ? 'delivery' : 'pickup'
 }
 
+export function linesHadDelivery(
+  lines: CartLine[],
+  catalog: Map<string, CartCatalogItem>,
+): boolean {
+  return lines.some((line) => {
+    const item = catalog.get(line.productId)
+    return item != null && fulfillmentOf(item) === 'delivery'
+  })
+}
+
+/** ExpandableProductDialog などカタログ外から addItem するときの配送判定 */
+export function isDeliveryProductId(productId: string, tags: string[]): boolean {
+  const categoryId = productId.slice(0, 3)
+  if (PICKUP_ONLY_CATEGORIES.includes(categoryId)) return false
+  if (DELIVERY_ONLY_CATEGORIES.includes(categoryId)) return true
+  return tags.includes('配送可')
+}
+
 function groupRank(group: CartGroup) {
   const fulfillmentRank = group.fulfillment === 'delivery' ? 0 : 1
   const orderIndex = GROUP_ORDER.indexOf(group.categoryId)
