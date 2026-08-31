@@ -35,16 +35,18 @@ function SummaryRow({
   count?: number
 }) {
   return (
-    <div className="flex h-9 items-center justify-between gap-2 rounded-[5px] bg-white px-3">
-      <p className="text-[15px] font-bold text-black">{label}</p>
-      <div className="flex items-baseline gap-3">
-        {typeof count === 'number' ? (
-          <p className="text-[18px] font-bold text-black">
-            {count}
-            <span className="text-[13px]">個</span>
-          </p>
-        ) : null}
-        <p className="text-[18px] font-bold text-black">{formatYen(amount)}</p>
+    <div className="w-full border-b border-white/50 pb-0.5">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-[15px] font-bold text-white">{label}</p>
+        <div className="flex items-baseline gap-3">
+          {typeof count === 'number' ? (
+            <p className="text-[18px] font-bold text-white">
+              {count}
+              <span className="text-[13px]">個</span>
+            </p>
+          ) : null}
+          <p className="text-[18px] font-bold text-white">{formatYen(amount)}</p>
+        </div>
       </div>
     </div>
   )
@@ -119,7 +121,9 @@ export function CartPanel({
             </div>
           ) : null}
 
-          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 pb-4">
+          <div
+            className="hide-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto px-5 pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+          >
             {summary.isEmpty ? (
               <p className="pt-8 text-center text-[14px] leading-relaxed text-white/80">
                 カートにはまだ商品がありません。
@@ -158,21 +162,23 @@ export function CartPanel({
           </div>
 
           {summary.isEmpty ? null : (
-            <div className="shrink-0 space-y-2.5 border-t border-dashed border-white/40 px-5 pt-4 pb-5">
-              {summary.hasDelivery ? (
-                <SummaryRow label="送料" amount={summary.shippingFee} />
-              ) : null}
-              <SummaryRow
-                label="総合計"
-                amount={summary.total}
-                count={summary.totalCount}
-              />
+            <div className="shrink-0 border-t border-dashed border-white/40 px-5 pt-4 pb-5">
+              <div className="space-y-2.5">
+                {summary.hasDelivery ? (
+                  <SummaryRow label="送料" amount={summary.shippingFee} />
+                ) : null}
+                <SummaryRow
+                  label="総合計"
+                  amount={summary.total}
+                  count={summary.totalCount}
+                />
+              </div>
               <button
                 type={step === 'form' ? 'submit' : 'button'}
                 form={step === 'form' ? CART_CHECKOUT_FORM_ID : undefined}
                 onClick={step === 'form' ? undefined : onProceed}
                 disabled={busy}
-                className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[10px] bg-[#E4007E] text-[18px] font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-6 flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[10px] bg-[#E4007E] text-[18px] font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {busy ? (
                   <FaSpinner className="size-5 animate-spin" aria-hidden />

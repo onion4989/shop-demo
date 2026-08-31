@@ -31,9 +31,9 @@ export function CartToggleButton({
       className="pointer-events-auto relative flex h-[110px] w-[44px] cursor-pointer items-center justify-center rounded-l-[10px] bg-[#E4007E] shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
     >
       <span className="relative inline-flex size-12 items-center justify-center">
-        {showFx ? <CartAddParticles key={addBumpSeq} /> : null}
+        {showFx ? <CartAddParticles key={`particles-${addBumpSeq}`} /> : null}
         <motion.span
-          key={addBumpSeq}
+          key={`shake-${addBumpSeq}`}
           className="relative z-10 inline-flex"
           initial={false}
           animate={showFx ? SHAKE : { rotate: 0, scale: 1 }}

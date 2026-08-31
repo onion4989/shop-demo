@@ -15,6 +15,7 @@ import {
 import { CategoryTag } from '@features/catalog/components/CategoryTag'
 import { ExpandableProductDialog } from '@features/home/components/ExpandableProductDialog'
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
+import { IMAGE_HOVER_ZOOM } from '@lib/imageClasses'
 import { cn, resolveAssetPath } from '@/lib/utils'
 
 type ProductOption = {
@@ -105,7 +106,7 @@ function RankingCardFace({
             src={src}
             alt={name}
             fill
-            className="object-cover"
+            className={IMAGE_HOVER_ZOOM}
             sizes="(max-width: 1023px) 220px, 282px"
           />
         ) : (

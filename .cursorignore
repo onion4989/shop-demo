@@ -1,13 +1,43 @@
-# 機密情報
+# === 秘密 ===
 .env
 .env.*
 **/*.pem
 **/*.key
-**/secrets.ts
+**/secrets.*
+**/*credentials*
+**/*.sql
+**/*.dump
 
-# AIに読ませる必要のない巨大ファイル
+# === ログ ===
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === ビルド・キャッシュ ===
+**/.next/
+**/out/
+**/dist/
+**/build/
+**/.turbo/
+**/*.tsbuildinfo
+**/coverage/
+
+# === 依存 ===
+**/node_modules/
 package-lock.json
 pnpm-lock.yaml
-**/node_modules
-**/dist
-**/build
+
+# === Agent 成果物 ===
+cursor_.md
+dev-local.md
+**/.cursor/report/
+**/.cursor/test-reports/
+
+# === 案件固有（必要に応じて追記）===
+# /test-results/
+# /playwright-report/
+# /blob-report/
+# /playwright/.cache/
+# .playwright-sysroot/

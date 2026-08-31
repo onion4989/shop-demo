@@ -1,7 +1,79 @@
+import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import { HeroFanCards } from '@features/home/components/HeroFanCards'
-import { HeroRoundItems } from '@features/home/components/HeroRoundItems'
+import {
+  HeroRoundItems,
+  type HeroRoundItem,
+} from '@features/home/components/HeroRoundItems'
+import { heroRoundBadges } from '@features/home/data/hero'
+import { getHomeHeroProducts } from '@features/home/Loaders'
+import { resolveAssetPath } from '@lib/utils'
 
-export function Hero() {
+type HeroOption = {
+  giftAvailable: boolean
+  seasonal: boolean
+  bulkPurchase: boolean
+  frozenDelivery: boolean
+  couponAvailable: boolean
+  shippingAvailable: boolean
+  reservationRequired: boolean
+} | null
+
+function heroTags(option: HeroOption) {
+  if (!option) return []
+  const tags: string[] = []
+  if (option.giftAvailable) tags.push('ギフト対応')
+  if (option.seasonal) tags.push('季節限定')
+  if (option.bulkPurchase) tags.push('まとめ買い対象')
+  if (option.frozenDelivery) tags.push('冷凍配送')
+  if (option.couponAvailable) tags.push('クーポン可')
+  if (option.shippingAvailable) tags.push('配送可')
+  if (option.reservationRequired) tags.push('予約制')
+  return tags
+}
+
+function heroIngredients(
+  info:
+    | { ingredients: string | null }
+    | { ingredients: string | null }[]
+    | null
+    | undefined,
+) {
+  const row = Array.isArray(info) ? info[0] : info
+  return row?.ingredients ?? ''
+}
+
+function formatPrice(price: number) {
+  return `￥${Math.round(price).toLocaleString('ja-JP')}`
+}
+
+function buildHeroRoundItems(
+  products: Awaited<ReturnType<typeof getHomeHeroProducts>>,
+): HeroRoundItem[] {
+  return products.map((product, index) => {
+    const thumb = product.images[0]?.thumbnailUrl
+    const src = thumb ? resolveAssetPath(thumb) : ''
+    const title = flavorDisplayName(product.name)
+    const badge = heroRoundBadges[index] ?? heroRoundBadges[0]
+
+    return {
+      productId: product.productId,
+      src,
+      alt: title,
+      title,
+      categoryName: product.category?.name,
+      description: product.description ?? '',
+      tags: heroTags(product.option),
+      price: formatPrice(product.price),
+      ingredients: heroIngredients(product.nutritionalInfo),
+      badge,
+    }
+  })
+}
+
+export async function Hero() {
+  const products = await getHomeHeroProducts()
+  const roundItems = buildHeroRoundItems(products)
+
   return (
     // モバイルは後で差し替え。md+ は 768px=600px → 1920px=900px
     <section className="relative -mt-[100px] flex h-[1000px] w-full flex-col overflow-hidden md:h-[clamp(600px,calc(26.0417vw+400px),900px)]">
@@ -24,7 +96,7 @@ export function Hero() {
               />
 
               {/* 2. 丸アイテム（pill 中央より上にはみ出す）+ 1. タグ */}
-              <HeroRoundItems />
+              <HeroRoundItems items={roundItems} />
             </div>
           </div>
 
