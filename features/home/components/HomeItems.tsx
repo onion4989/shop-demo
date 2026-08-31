@@ -1,5 +1,8 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
-import { HomeItemsExpandablePhoto } from '@features/home/components/HomeItemsExpandablePhoto'
+import {
+  HomeItemsExpandablePhoto,
+  LimitedItemBadge,
+} from '@features/home/components/HomeItemsExpandablePhoto'
 import { HOME_ITEM_GROUPS, type Item, type ItemGroup } from '@features/home/data/itemGroups'
 import { getHomeItemsProducts } from '@features/home/Loaders'
 import Image from 'next/image'
@@ -44,14 +47,6 @@ function itemIngredients(
 
 function formatPrice(price: number) {
   return `￥${Math.round(price).toLocaleString('ja-JP')}`
-}
-
-function LimitedBadge() {
-  return (
-    <span className="absolute top-2 right-0 z-10 shrink-0 whitespace-nowrap rounded-full bg-[#E4007E] px-[10px] py-[6px] text-xs font-bold leading-none text-white md:text-[11px] lg:text-xs">
-      期間限定
-    </span>
-  )
 }
 
 function StaticItemThumb({
@@ -99,11 +94,14 @@ function ItemCard({
             tags={itemTags(product.option)}
             price={formatPrice(product.price)}
             ingredients={itemIngredients(product.nutritionalInfo)}
+            limited={item.limited}
           />
         ) : (
-          <StaticItemThumb folder={folder} item={item} />
+          <>
+            <StaticItemThumb folder={folder} item={item} />
+            {item.limited ? <LimitedItemBadge /> : null}
+          </>
         )}
-        {item.limited ? <LimitedBadge /> : null}
       </div>
       <p className="text-center text-sm font-bold text-[#070707] md:text-xs lg:text-sm">
         {item.label}
