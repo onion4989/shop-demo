@@ -23,14 +23,14 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#94D0BF]',
     wide: true,
     items: [
-      { file: 'CUP00001_ChocolateChip.jpg', label: 'チョコチップ' },
-      { file: 'CUP00002_HeartChip.jpg', label: 'ハートチップ', limited: true },
-      { file: 'CUP00003_CreamCup.jpg', label: 'クリーム' },
-      { file: 'CUP00004_HerbMint.jpg', label: 'ハーブミント' },
-      { file: 'CUP00005_Sakura.jpg', label: 'さくら' },
-      { file: 'CUP00006_Almond.jpg', label: 'アーモンド', limited: true },
-      { file: 'CUP00007_MilkVanilla.jpg', label: 'ミルクバニラ' },
-      { file: 'CUP00008_CherryVanilla.jpg', label: 'チェリーバニラ' },
+      { file: 'img_cup_CUP00001.jpg', label: 'チョコチップ' },
+      { file: 'img_cup_CUP00002.jpg', label: 'ハートチップ', limited: true },
+      { file: 'img_cup_CUP00003.jpg', label: 'クリーム' },
+      { file: 'img_cup_CUP00004.jpg', label: 'ハーブミント' },
+      { file: 'img_cup_CUP00005.jpg', label: 'さくら' },
+      { file: 'img_cup_CUP00006.jpg', label: 'アーモンド', limited: true },
+      { file: 'img_cup_CUP00007.jpg', label: 'ミルクバニラ' },
+      { file: 'img_cup_CUP00008.jpg', label: 'チェリーバニラ' },
     ],
   },
   {
@@ -38,8 +38,8 @@ const GROUPS: ItemGroup[] = [
     folder: 'ice-cake',
     tone: 'bg-[#FBC4C0]',
     items: [
-      { file: 'ICE00001_Miracle.jpg', label: 'ミラクル', limited: true },
-      { file: 'ICE00002_Deluxe.jpg', label: 'デラックス', limited: true },
+      { file: 'img_ice_ICE00001.jpg', label: 'ミラクル', limited: true },
+      { file: 'img_ice_ICE00002.jpg', label: 'デラックス', limited: true },
     ],
   },
   {
@@ -47,9 +47,9 @@ const GROUPS: ItemGroup[] = [
     folder: 'options',
     tone: 'bg-[#E4C1DB]',
     items: [
-      { file: 'Items_Topping.jpg', label: 'トッピングシュガー' },
-      { file: 'Items_Sugar.jpg', label: 'シュガースプレー' },
-      { file: 'Items_ChocoSpray.jpg', label: 'チョコスプレー' },
+      { file: 'img_opt_topping.jpg', label: 'トッピングシュガー' },
+      { file: 'img_opt_sugar.jpg', label: 'シュガースプレー' },
+      { file: 'img_opt_choco-spray.jpg', label: 'チョコスプレー' },
     ],
   },
   {
@@ -58,9 +58,9 @@ const GROUPS: ItemGroup[] = [
     tone: 'bg-[#D2B48CB4]',
     wide: true,
     items: [
-      { file: 'TAR00001_OrangeLemon.jpg', label: 'ミカン＆レモン' },
-      { file: 'TAR00002_FruitsMix.jpg', label: 'フルーツミックス' },
-      { file: 'TAR00003_StrawberryHoney.jpg', label: '木イチゴ＆ハチミツ', limited: true },
+      { file: 'img_tart_TAR00001.jpg', label: 'ミカン＆レモン' },
+      { file: 'img_tart_TAR00002.jpg', label: 'フルーツミックス' },
+      { file: 'img_tart_TAR00003.jpg', label: '木イチゴ＆ハチミツ', limited: true },
     ],
   },
 ]

@@ -5,8 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-const HERO_CARD_PATTERN = /^HeroCard-Images\d+\.(jpg|jpeg|png|webp|avif)$/i
-const HERO_ITEM_PATTERN = /^Hero_item_\d+\.(jpg|jpeg|png|webp|avif)$/i
+const HERO_CARD_PATTERN = /^img_top_hero-card_\d+\.(jpg|jpeg|png|webp|avif)$/i
+const HERO_ITEM_PATTERN = /^img_top_hero-round_\d+\.(jpg|jpeg|png|webp|avif)$/i
 
 export function resolveAssetPath(assetPath: string | null | undefined) {
   if (!assetPath) return ""

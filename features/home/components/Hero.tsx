@@ -36,7 +36,7 @@ export function Hero() {
 
       {/* 5. 背景：下部ウェーブ（section 高さに含む） */}
       <img
-        src="/assets/pages/top/hero/decorations/Hero_UnderWave.svg"
+        src="/assets/pages/top/hero/decorations/deco_top_under-wave.svg"
         alt=""
         className="relative z-0 block w-full shrink-0"
       />

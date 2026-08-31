@@ -209,25 +209,25 @@ ON CONFLICT ("productId") DO UPDATE SET
 
 INSERT INTO "ProductImage" ("productId", "thumbnailUrl")
 VALUES
-  ('CUP00001', 'pages/top/items/cupcake/CUP00001_ChocolateChip.jpg'),
-  ('CUP00002', 'pages/top/items/cupcake/CUP00002_HeartChip.jpg'),
-  ('CUP00003', 'pages/top/items/cupcake/CUP00003_CreamCup.jpg'),
-  ('CUP00004', 'pages/top/items/cupcake/CUP00004_HerbMint.jpg'),
-  ('CUP00005', 'pages/top/items/cupcake/CUP00005_Sakura.jpg'),
-  ('CUP00006', 'pages/top/items/cupcake/CUP00006_Almond.jpg'),
-  ('CUP00007', 'pages/top/items/cupcake/CUP00007_MilkVanilla.jpg'),
-  ('CUP00008', 'pages/top/items/cupcake/CUP00008_CherryVanilla.jpg'),
-  ('ICE00001', 'pages/top/items/ice-cake/ICE00001_Miracle.jpg'),
-  ('ICE00002', 'pages/top/items/ice-cake/ICE00002_Deluxe.jpg'),
-  ('GIF00001', 'pages/top/gift/photos/Gift_Waffles.jpg'),
-  ('GIF00002', 'pages/top/gift/photos/Gift_WholeCake.jpg'),
-  ('GIF00003', 'pages/top/gift/photos/Gift_Macaron.jpg'),
-  ('GIF00004', 'pages/top/gift/photos/Gift_WholeCake_Presents.jpg'),
-  ('GIF00005', 'pages/top/gift/photos/Gift_5CupCake.jpg'),
-  ('GIF00006', 'pages/top/gift/photos/Gift_3FruitTarts.jpg'),
-  ('TAR00001', 'pages/top/items/tart-cake/TAR00001_OrangeLemon.jpg'),
-  ('TAR00002', 'pages/top/items/tart-cake/TAR00002_FruitsMix.jpg'),
-  ('TAR00003', 'pages/top/items/tart-cake/TAR00003_StrawberryHoney.jpg')
+  ('CUP00001', 'pages/top/items/cupcake/img_cup_CUP00001.jpg'),
+  ('CUP00002', 'pages/top/items/cupcake/img_cup_CUP00002.jpg'),
+  ('CUP00003', 'pages/top/items/cupcake/img_cup_CUP00003.jpg'),
+  ('CUP00004', 'pages/top/items/cupcake/img_cup_CUP00004.jpg'),
+  ('CUP00005', 'pages/top/items/cupcake/img_cup_CUP00005.jpg'),
+  ('CUP00006', 'pages/top/items/cupcake/img_cup_CUP00006.jpg'),
+  ('CUP00007', 'pages/top/items/cupcake/img_cup_CUP00007.jpg'),
+  ('CUP00008', 'pages/top/items/cupcake/img_cup_CUP00008.jpg'),
+  ('ICE00001', 'pages/top/items/ice-cake/img_ice_ICE00001.jpg'),
+  ('ICE00002', 'pages/top/items/ice-cake/img_ice_ICE00002.jpg'),
+  ('GIF00001', 'pages/top/gift/photos/img_gift_GIF00001.jpg'),
+  ('GIF00002', 'pages/top/gift/photos/img_gift_GIF00002.jpg'),
+  ('GIF00003', 'pages/top/gift/photos/img_gift_GIF00003.jpg'),
+  ('GIF00004', 'pages/top/gift/photos/img_gift_GIF00004.jpg'),
+  ('GIF00005', 'pages/top/gift/photos/img_gift_GIF00005.jpg'),
+  ('GIF00006', 'pages/top/gift/photos/img_gift_GIF00006.jpg'),
+  ('TAR00001', 'pages/top/items/tart-cake/img_tart_TAR00001.jpg'),
+  ('TAR00002', 'pages/top/items/tart-cake/img_tart_TAR00002.jpg'),
+  ('TAR00003', 'pages/top/items/tart-cake/img_tart_TAR00003.jpg')
 ON CONFLICT ("productId") DO UPDATE SET
   "thumbnailUrl" = EXCLUDED."thumbnailUrl";
 

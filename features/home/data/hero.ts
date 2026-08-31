@@ -10,7 +10,7 @@ export type HeroFanCard = {
 export const heroFanCards: HeroFanCard[] = [
   {
     id: 1,
-    filename: 'HeroCard-Images1.jpg',
+    filename: 'img_top_hero-card_01.jpg',
     alt: '店舗外観',
     rotate: -16,
     offsetY: 20,
@@ -18,7 +18,7 @@ export const heroFanCards: HeroFanCard[] = [
   },
   {
     id: 2,
-    filename: 'HeroCard-Images2.jpg',
+    filename: 'img_top_hero-card_02.jpg',
     alt: 'アイスクリーム',
     rotate: 0,
     offsetY: 0,
@@ -26,7 +26,7 @@ export const heroFanCards: HeroFanCard[] = [
   },
   {
     id: 3,
-    filename: 'HeroCard-Images3.jpg',
+    filename: 'img_top_hero-card_03.jpg',
     alt: 'カップケーキ',
     rotate: 16,
     offsetY: 20,
@@ -63,31 +63,31 @@ export type HeroRoundImage = {
 export const heroRoundImages: HeroRoundImage[] = [
   {
     id: 1,
-    filename: 'Hero_item_1.jpg',
+    filename: 'img_top_hero-round_01.jpg',
     alt: '商品イメージ',
     badge: { label: 'New', color: '#FF0089' },
   },
   {
     id: 2,
-    filename: 'Hero_item_2.jpg',
+    filename: 'img_top_hero-round_02.jpg',
     alt: '商品イメージ',
     badge: { label: 'New', color: '#FF0089' },
   },
   {
     id: 3,
-    filename: 'Hero_item_3.jpg',
+    filename: 'img_top_hero-round_03.jpg',
     alt: '商品イメージ',
     badge: { label: '再販', color: '#2B56FF' },
   },
   {
     id: 4,
-    filename: 'Hero_item_4.jpg',
+    filename: 'img_top_hero-round_04.jpg',
     alt: '商品イメージ',
     badge: { label: '限定', color: '#FF2F00' },
   },
   {
     id: 5,
-    filename: 'Hero_item_5.jpg',
+    filename: 'img_top_hero-round_05.jpg',
     alt: '商品イメージ',
     badge: { label: '限定', color: '#FF2F00' },
   },
