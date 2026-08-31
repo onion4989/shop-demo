@@ -5,11 +5,11 @@ const PHOTO_DIR = '/assets/pages/top/footer/photos'
 const ICON_DIR = '/assets/pages/top/footer/icons'
 
 const SNS_ICONS = [
-  { file: 'Facebook_Icon.svg', label: 'Facebook' },
-  { file: 'Instagram_Icon.svg', label: 'Instagram' },
-  { file: 'Twitter_Icon.svg', label: 'Twitter' },
-  { file: 'Tiktok_Icon.svg', label: 'TikTok' },
-  { file: 'Line_Icon.svg', label: 'LINE' },
+  { file: 'ic_c_sns-facebook.svg', label: 'Facebook' },
+  { file: 'ic_c_sns-instagram.svg', label: 'Instagram' },
+  { file: 'ic_c_sns-twitter.svg', label: 'Twitter' },
+  { file: 'ic_c_sns-tiktok.svg', label: 'TikTok' },
+  { file: 'ic_c_sns-line.svg', label: 'LINE' },
 ] as const
 
 function StorePhoto({
@@ -50,7 +50,7 @@ export default function Footer() {
     <footer className="bg-[#373737] text-white">
       <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden md:h-[200px] lg:h-[377px]">
         <Image
-          src={`${PHOTO_DIR}/Footer_Head.png`}
+          src={`${PHOTO_DIR}/img_top_ftr-head.png`}
           alt=""
           fill
           className="object-cover object-center"
@@ -67,7 +67,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-[1fr_130px_130px] lg:grid-rows-[160px_149px_60px]">
             <div className="flex flex-col gap-5 lg:row-span-2">
               <StorePhoto
-                file="Store_img1.jpg"
+                file="img_top_ftr-store_01.jpg"
                 alt="店舗外観1"
                 className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:h-full lg:min-h-[330px] lg:max-w-none"
               />
@@ -85,18 +85,18 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-5 lg:contents">
               <StorePhoto
-                file="Store_img2.jpg"
+                file="img_top_ftr-store_02.jpg"
                 alt="店舗外観2"
                 className="mx-auto h-[146px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:col-span-2 lg:h-auto lg:max-w-none"
               />
               <div className="mx-auto grid w-full max-w-[342px] grid-cols-2 gap-5 md:mx-0 md:max-w-none lg:contents">
                 <StorePhoto
-                  file="Store_img3.jpg"
+                  file="img_top_ftr-store_03.jpg"
                   alt="店舗外観3"
                   className="h-[134px] lg:h-auto"
                 />
                 <StorePhoto
-                  file="Store_img4.jpg"
+                  file="img_top_ftr-store_04.jpg"
                   alt="店舗外観4"
                   className="h-[134px] lg:h-auto"
                 />

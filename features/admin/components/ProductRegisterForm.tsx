@@ -489,8 +489,8 @@ export function ProductRegisterForm({ categories }: ProductRegisterFormProps) {
                   <h2 className="text-sm font-semibold">画像設定</h2>
                   <div className="rounded-md border border-dashed border-muted-foreground/30 bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
                     <p>画像パス運用ガイド:</p>
-                    <p>・Cup / Ice / Tart: <code>public/assets/pages/top/items/cupcake/</code> など（例: <code>pages/top/items/cupcake/CUP00001_ChocolateChip.jpg</code>）。</p>
-                    <p>・Gift 用: <code>public/assets/pages/top/gift/photos/</code></p>
+                    <p>・Cup / Ice / Tart: <code>public/assets/pages/top/items/cupcake/</code> など（例: <code>pages/top/items/cupcake/img_cup_CUP00001.jpg</code>）。</p>
+                    <p>・Gift 用: <code>public/assets/pages/top/gift/photos/</code>（例: <code>pages/top/gift/photos/img_gift_GIF00001.jpg</code>）。</p>
                     <p>・保存値は <code>assets/</code> 以降のパス。</p>
                     <p>・ファイル名のみの旧データは <code>public/assets/common/items/</code> に解決されます。</p>
                   </div>

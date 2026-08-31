@@ -94,7 +94,7 @@ export async function HomeGift() {
         </div>
 
         <img
-          src="/assets/pages/top/gift/decorations/bg_under_drops.svg"
+          src="/assets/pages/top/gift/decorations/deco_top_under-drops.svg"
           alt=""
           width={385}
           height={94}
