@@ -1,6 +1,7 @@
 'use client'
 
 import { ExpandableProductDialog } from '@features/home/components/ExpandableProductDialog'
+import { IMAGE_HOVER_ZOOM } from '@lib/imageClasses'
 import { cn } from '@lib/utils'
 import Image from 'next/image'
 
@@ -51,7 +52,7 @@ export function HomeGiftExpandablePhoto({
         alt={alt}
         fill
         sizes="(max-width: 1024px) 100vw, 384px"
-        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.15]"
+        className={IMAGE_HOVER_ZOOM}
       />
       <span className={TITLE_BADGE_CLASS}>{title}</span>
     </ExpandableProductDialog>

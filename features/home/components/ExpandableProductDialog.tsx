@@ -51,6 +51,8 @@ type Rect = {
 
 type CloseMotion = 'intro' | 'thumb-crossfade'
 
+type ThumbShape = 'rect' | 'circle'
+
 type Phase =
   | 'closed'
   | 'expanding'
@@ -64,6 +66,12 @@ type ExpandLayout = {
   textHeight: number
   cardHeight: number
   isDesktop: boolean
+}
+
+type FittedLayout = ExpandLayout & {
+  top: number
+  left: number
+  maxHeight: number
 }
 
 function matchesMin(px: number) {
@@ -101,12 +109,44 @@ function getExpandLayout(): ExpandLayout {
   }
 }
 
-function getCenteredImageRect(layout: ExpandLayout): Rect {
+function getViewportFittedLayout(
+  layout: ExpandLayout,
+  withText: boolean,
+): FittedLayout {
+  const maxHeight = Math.max(0, window.innerHeight - SIDE_GUTTER * 2)
+  const textH = withText ? layout.textHeight : 0
+  let imageH = layout.imageHeight
+  let scaledTextH = textH
+  let totalH = imageH + textH
+
+  if (totalH > maxHeight && totalH > 0) {
+    const scale = maxHeight / totalH
+    imageH = Math.max(1, Math.floor(imageH * scale))
+    scaledTextH = Math.max(1, Math.floor(textH * scale))
+    totalH = imageH + scaledTextH
+  }
+
+  const left = Math.max(SIDE_GUTTER, (window.innerWidth - layout.width) / 2)
+  const top = Math.max(SIDE_GUTTER, (window.innerHeight - totalH) / 2)
+
   return {
-    width: layout.width,
-    height: layout.imageHeight,
-    left: Math.max(SIDE_GUTTER, (window.innerWidth - layout.width) / 2),
-    top: Math.max(SIDE_GUTTER, (window.innerHeight - layout.imageHeight) / 2),
+    ...layout,
+    imageHeight: imageH,
+    textHeight: scaledTextH,
+    cardHeight: totalH,
+    maxHeight,
+    top,
+    left,
+  }
+}
+
+function getCenteredImageRect(layout: ExpandLayout): Rect {
+  const fitted = getViewportFittedLayout(layout, false)
+  return {
+    width: fitted.width,
+    height: fitted.imageHeight,
+    left: fitted.left,
+    top: fitted.top,
   }
 }
 
@@ -127,8 +167,15 @@ function getCardRect(
     case 'expanding':
     case 'collapsing-text':
       return destImage
-    case 'open':
-      return destImage
+    case 'open': {
+      const fitted = getViewportFittedLayout(layout, true)
+      return {
+        width: fitted.width,
+        height: fitted.cardHeight,
+        left: fitted.left,
+        top: fitted.top,
+      }
+    }
     case 'collapsing-image':
     case 'closed':
       return origin
@@ -162,6 +209,29 @@ function DialogTagRow({
       ))}
     </div>
   )
+}
+
+function getCardRadiusClass(
+  thumbShape: ThumbShape,
+  phase: Phase,
+  collapsingThumb: boolean,
+  isDesktop: boolean,
+) {
+  if (thumbShape === 'circle' && phase === 'collapsing-image') {
+    return undefined
+  }
+
+  if (collapsingThumb) return 'rounded-[10px]'
+
+  return isDesktop ? 'rounded-[25px]' : 'rounded-[15px]'
+}
+
+function getMotionBorderRadius(thumbShape: ThumbShape, phase: Phase) {
+  if (thumbShape === 'circle' && phase === 'collapsing-image') {
+    return '50%'
+  }
+
+  return undefined
 }
 
 function DesktopTextBody({
@@ -213,6 +283,7 @@ export type ExpandableProductDialogProps = {
   triggerClassName?: string
   onOpenChange?: (open: boolean) => void
   closeMotion?: CloseMotion
+  thumbShape?: ThumbShape
   thumbPreview?: ReactNode
   children: ReactNode
 }
@@ -231,6 +302,7 @@ export function ExpandableProductDialog({
   triggerClassName,
   onOpenChange,
   closeMotion = 'intro',
+  thumbShape = 'rect',
   thumbPreview,
   children,
 }: ExpandableProductDialogProps) {
@@ -252,7 +324,12 @@ export function ExpandableProductDialog({
   phaseRef.current = phase
   const isOpen = phase !== 'closed'
   const layout = typeof window === 'undefined' ? null : getExpandLayout()
-  if (layout) {
+  const viewportLayout = layout
+    ? getViewportFittedLayout(layout, phase === 'open')
+    : null
+  if (viewportLayout) {
+    imageHeightRef.current = viewportLayout.imageHeight
+  } else if (layout) {
     imageHeightRef.current = layout.imageHeight
   }
 
@@ -395,10 +472,23 @@ export function ExpandableProductDialog({
         ? TEXT_DURATION
         : IMAGE_DURATION
   const isDesktop = layout?.isDesktop ?? true
-  const imageHeight = layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
-  const textHeight = layout?.textHeight ?? MOBILE_TEXT_HEIGHT
+  const imageHeight =
+    viewportLayout?.imageHeight ?? layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
+  const textHeight =
+    viewportLayout?.textHeight ?? layout?.textHeight ?? MOBILE_TEXT_HEIGHT
   const canAddToCart =
     Boolean(productId) && cartStep === 'cart' && qtyInCart < MAX_QTY
+  const cardRadiusClass = getCardRadiusClass(
+    thumbShape,
+    phase,
+    collapsingThumb,
+    isDesktop,
+  )
+  const motionBorderRadius = getMotionBorderRadius(thumbShape, phase)
+  const motionAnimate =
+    motionTarget && motionBorderRadius !== undefined
+      ? { ...motionTarget, borderRadius: motionBorderRadius }
+      : motionTarget
 
   return (
     <>
@@ -420,7 +510,7 @@ export function ExpandableProductDialog({
         {children}
       </button>
 
-      {isOpen && origin && motionTarget
+      {isOpen && origin && motionAnimate
         ? createPortal(
             <div
               className={cn(
@@ -443,23 +533,15 @@ export function ExpandableProductDialog({
               <motion.div
                 className={cn(
                   'absolute overflow-hidden shadow-2xl',
-                  cardHeightAuto && 'overflow-y-auto',
-                  collapsingThumb
-                    ? 'rounded-[10px]'
-                    : isDesktop
-                      ? 'rounded-[25px]'
-                      : 'rounded-[15px]',
+                  cardHeightAuto &&
+                    'hide-scrollbar overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden',
+                  cardRadiusClass,
                 )}
                 initial={origin}
-                animate={motionTarget}
+                animate={motionAnimate}
                 style={
-                  cardHeightAuto && target
-                    ? {
-                        maxHeight: Math.max(
-                          0,
-                          window.innerHeight - target.top - SIDE_GUTTER,
-                        ),
-                      }
+                  cardHeightAuto && viewportLayout
+                    ? { maxHeight: viewportLayout.maxHeight }
                     : undefined
                 }
                 transition={{ duration: cardDuration, ease: EASE }}
@@ -562,7 +644,10 @@ export function ExpandableProductDialog({
                     }}
                     transition={{ duration: textAnimDur, ease: EASE }}
                   >
-                    <div className="flex h-[210px] flex-col justify-between px-3 py-2.5">
+                    <div
+                      className="flex flex-col justify-between px-3 py-2.5"
+                      style={{ height: textHeight }}
+                    >
                       <DialogTagRow
                         categoryName={categoryName}
                         tags={tags}

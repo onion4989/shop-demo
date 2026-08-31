@@ -53,42 +53,11 @@ export type HeroBadge = {
   color: string
 }
 
-export type HeroRoundImage = {
-  id: number
-  filename: string
-  alt: string
-  badge: HeroBadge
-}
-
-export const heroRoundImages: HeroRoundImage[] = [
-  {
-    id: 1,
-    filename: 'img_top_hero-round_01.jpg',
-    alt: '商品イメージ',
-    badge: { label: 'New', color: '#FF0089' },
-  },
-  {
-    id: 2,
-    filename: 'img_top_hero-round_02.jpg',
-    alt: '商品イメージ',
-    badge: { label: 'New', color: '#FF0089' },
-  },
-  {
-    id: 3,
-    filename: 'img_top_hero-round_03.jpg',
-    alt: '商品イメージ',
-    badge: { label: '再販', color: '#2B56FF' },
-  },
-  {
-    id: 4,
-    filename: 'img_top_hero-round_04.jpg',
-    alt: '商品イメージ',
-    badge: { label: '限定', color: '#FF2F00' },
-  },
-  {
-    id: 5,
-    filename: 'img_top_hero-round_05.jpg',
-    alt: '商品イメージ',
-    badge: { label: '限定', color: '#FF2F00' },
-  },
+/** デモ用。将来は管理画面のバッジ選択と DB 連動 */
+export const heroRoundBadges: HeroBadge[] = [
+  { label: 'New', color: '#FF0089' },
+  { label: 'New', color: '#FF0089' },
+  { label: '再販', color: '#2B56FF' },
+  { label: '限定', color: '#FF2F00' },
+  { label: '限定', color: '#FF2F00' },
 ]

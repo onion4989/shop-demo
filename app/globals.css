@@ -64,6 +64,15 @@
   }
 }
 
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 *:focus {
   outline: none !important;
   box-shadow: none !important;

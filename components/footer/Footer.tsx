@@ -65,13 +65,13 @@ export default function Footer() {
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-4 py-12 lg:grid-cols-[578px_1fr] lg:gap-8 lg:px-0">
         <div>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-[1fr_130px_130px] lg:grid-rows-[160px_149px_60px]">
-            <div className="flex flex-col gap-5 lg:row-span-2">
+            <div className="flex flex-col gap-5 lg:row-span-3">
               <StorePhoto
                 file="img_top_ftr-store_01.jpg"
                 alt="店舗外観1"
-                className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:h-full lg:min-h-[330px] lg:max-w-none"
+                className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:max-w-none lg:min-h-0 lg:flex-1"
               />
-              <div className="flex h-[60px] items-center justify-start gap-5 rounded-[10px] bg-[#838383] px-5 md:flex lg:hidden">
+              <div className="hidden h-[60px] w-full shrink-0 items-center justify-start gap-5 rounded-[10px] bg-[#838383] px-5 md:flex lg:justify-between lg:px-2.5">
                 {SNS_ICONS.map((icon) => (
                   <Image
                     key={icon.file}
@@ -100,17 +100,6 @@ export default function Footer() {
                   alt="店舗外観4"
                   className="h-[134px] lg:h-auto"
                 />
-              </div>
-              <div className="hidden h-[60px] items-center justify-between rounded-[10px] bg-[#838383] px-2.5 lg:col-span-2 lg:flex">
-                {SNS_ICONS.map((icon) => (
-                  <Image
-                    key={icon.file}
-                    src={`${ICON_DIR}/${icon.file}`}
-                    alt={icon.label}
-                    width={34}
-                    height={36}
-                  />
-                ))}
               </div>
             </div>
           </div>
