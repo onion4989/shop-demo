@@ -1,5 +1,8 @@
 import { HomeGiftExpandablePhoto } from '@features/home/components/HomeGiftExpandablePhoto'
-import { HOME_GIFT_SLOTS } from '@features/home/data/giftSlots'
+import {
+  HOME_GIFT_MOBILE_ORDER,
+  HOME_GIFT_SLOTS,
+} from '@features/home/data/giftSlots'
 import { getHomeGiftProducts } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
 
@@ -48,48 +51,64 @@ function formatPrice(price: number) {
   return `￥${Math.round(price).toLocaleString('ja-JP')}`
 }
 
+function orderedGiftSlots() {
+  const byId = new Map(
+    HOME_GIFT_SLOTS.map((slot) => [slot.productId, slot]),
+  )
+  const mobile = HOME_GIFT_MOBILE_ORDER.map(
+    (id) => byId.get(id),
+  ).filter((slot): slot is (typeof HOME_GIFT_SLOTS)[number] => Boolean(slot))
+  return { mobile, desktop: [...HOME_GIFT_SLOTS] }
+}
+
 export async function HomeGift() {
   const products = await getHomeGiftProducts()
   const byId = new Map(products.map((product) => [product.productId, product]))
+  const { mobile, desktop } = orderedGiftSlots()
+
+  function renderSlot(slot: (typeof HOME_GIFT_SLOTS)[number]) {
+    const product = byId.get(slot.productId)
+    if (!product) return null
+    const thumb = product.images[0]?.thumbnailUrl
+    const src = thumb ? resolveAssetPath(thumb) : ''
+
+    return (
+      <HomeGiftExpandablePhoto
+        key={slot.productId}
+        src={src}
+        alt={product.name}
+        className={slot.className}
+        title={product.name}
+        productId={product.productId}
+        description={product.description ?? ''}
+        tags={giftTags(product.option)}
+        price={formatPrice(product.price)}
+        ingredients={giftIngredients(product.nutritionalInfo)}
+      />
+    )
+  }
 
   return (
-    <section className="relative mb-[93px] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA] lg:mb-32">
-      <div className="relative mx-auto min-h-[900px] w-full max-w-[1440px]">
+    <section className="relative mb-0 bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA] lg:mb-32">
+      <div className="relative mx-auto w-full max-w-[1440px] md:min-h-[900px]">
         {bubbles.map((bubble) => (
           <span
             key={bubble.className}
             aria-hidden
-            className={`pointer-events-none absolute rounded-full bg-white/40 ${bubble.className}`}
+            className={`pointer-events-none absolute hidden rounded-full bg-white/40 md:block ${bubble.className}`}
             style={{ width: bubble.size, height: bubble.size }}
           />
         ))}
 
         <div className="relative z-10 mx-auto w-full max-w-[1200px] px-4 lg:px-0">
-          <h2 className="pt-[30px] pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
+          <h2 className="pt-[30px] pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
             ギフト / Gift
           </h2>
-          <div className="grid grid-cols-1 gap-6 pb-8 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
-          {HOME_GIFT_SLOTS.map((slot) => {
-            const product = byId.get(slot.productId)
-            if (!product) return null
-            const thumb = product.images[0]?.thumbnailUrl
-            const src = thumb ? resolveAssetPath(thumb) : ''
-
-            return (
-              <HomeGiftExpandablePhoto
-                key={slot.productId}
-                src={src}
-                alt={product.name}
-                className={slot.className}
-                title={product.name}
-                productId={product.productId}
-                description={product.description ?? ''}
-                tags={giftTags(product.option)}
-                price={formatPrice(product.price)}
-                ingredients={giftIngredients(product.nutritionalInfo)}
-              />
-            )
-          })}
+          <div className="grid grid-cols-2 gap-2 pb-8 md:hidden">
+            {mobile.map(renderSlot)}
+          </div>
+          <div className="hidden gap-6 pb-8 sm:grid sm:grid-cols-2 md:grid lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
+            {desktop.map(renderSlot)}
           </div>
         </div>
 

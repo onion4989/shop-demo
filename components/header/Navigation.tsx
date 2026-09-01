@@ -7,17 +7,16 @@ const navLinks = [
 
 export default function Navigations() {
   return (
-    // sticky + pt-10 で「画面上端から 40px」をスクロール中も維持
-    <div className="pointer-events-none sticky top-0 z-50 w-full px-4 pt-10 md:px-6">
+    <div className="pointer-events-none sticky top-0 z-50 w-full px-4 pt-4 md:px-6 md:pt-10">
       <header
-        className="pointer-events-auto mx-auto flex h-[60px] w-full max-w-[1200px] items-center justify-between rounded-[10px] border border-white/50 bg-white/55 px-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-md md:px-8"
+        className="pointer-events-auto mx-auto flex h-10 w-full max-w-[1200px] items-center justify-between rounded-[10px] border border-white/50 bg-white/55 px-3 shadow-[0_8px_30px_rgb(0,0,0,0.06)] backdrop-blur-md md:h-[60px] md:px-8"
         role="banner"
       >
-        <Link href="/" className="min-w-0 shrink">
-          <span className="block truncate text-sm font-bold tracking-wide text-black md:text-base">
+        <Link href="/" className="min-w-0 shrink leading-none">
+          <span className="block truncate text-[11px] font-bold leading-none tracking-wide text-black md:text-base">
             Sugar Alice
           </span>
-          <span className="block truncate text-[10px] leading-tight text-black/60 md:text-xs">
+          <span className="mt-0.5 block truncate text-[10px] leading-none text-black/60 md:mt-0 md:text-xs">
             シュガー・アリス
           </span>
         </Link>

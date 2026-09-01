@@ -7,6 +7,20 @@ import {
   HERO_ITEMS_START_DELAY,
 } from '@features/home/data/hero'
 import { motion } from 'framer-motion'
+import { useSyncExternalStore } from 'react'
+
+const MOBILE_QUERY = '(max-width: 767px)'
+const MOBILE_ITEM_LIMIT = 3
+
+function subscribeMobile(onChange: () => void) {
+  const mq = window.matchMedia(MOBILE_QUERY)
+  mq.addEventListener('change', onChange)
+  return () => mq.removeEventListener('change', onChange)
+}
+
+function getIsMobile() {
+  return window.matchMedia(MOBILE_QUERY).matches
+}
 
 export type HeroRoundItem = {
   productId: string
@@ -31,7 +45,7 @@ function HeroBadge({ label, color }: HeroBadge) {
       width={width}
       height={svgHeight}
       viewBox={`0 0 ${width} ${svgHeight}`}
-      className="pointer-events-none absolute -top-0.5 -right-1 z-40 overflow-visible"
+      className="pointer-events-none absolute -top-0.5 -right-1 z-40 origin-top-right scale-75 overflow-visible md:scale-100"
       role="img"
       aria-label={label}
     >
@@ -58,15 +72,22 @@ type HeroRoundItemsProps = {
 }
 
 export function HeroRoundItems({ items }: HeroRoundItemsProps) {
+  const isMobile = useSyncExternalStore(
+    subscribeMobile,
+    getIsMobile,
+    () => false,
+  )
+  const visibleItems = isMobile ? items.slice(0, MOBILE_ITEM_LIMIT) : items
+
   return (
-    <div className="relative z-30 mx-auto mb-8 flex w-fit items-center justify-center gap-5 md:mb-6 lg:mb-8">
-      {items.map((item, index) => {
+    <div className="relative z-30 mx-auto flex w-full items-end justify-center gap-3 px-[50px] md:mb-6 md:w-fit md:max-w-none md:justify-center md:gap-5 md:px-0 lg:mb-8">
+      {visibleItems.map((item, index) => {
         const itemDelay = HERO_ITEMS_START_DELAY + index * HERO_ITEM_STAGGER
 
         return (
           <motion.div
             key={item.productId}
-            className="relative size-[100px] shrink-0 sm:size-[130px] md:size-[clamp(80px,calc(4.3403vw+46.667px),130px)]"
+            className="relative size-20 shrink-0 md:size-[clamp(80px,calc(4.3403vw+46.667px),130px)]"
             initial={{ opacity: 0, y: 28, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{

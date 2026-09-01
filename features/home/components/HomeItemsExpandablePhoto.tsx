@@ -8,13 +8,13 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const THUMB_CLASS =
-  'relative block size-40 md:size-[120px] lg:size-40'
+  'relative block size-[100px] md:size-[120px] lg:size-40'
 
 const CIRCLE_CLASS =
   'relative size-full overflow-hidden rounded-full border-2 border-white'
 
 const IMAGE_SIZES =
-  '(min-width: 1024px) 160px, (min-width: 768px) 120px, 160px'
+  '(max-width: 767px) 100px, (min-width: 1024px) 160px, 120px'
 
 const LIMITED_BADGE_CLASS =
   'absolute top-2 right-0 z-10 shrink-0 whitespace-nowrap rounded-full bg-[#E4007E] px-[10px] py-[6px] text-xs font-bold leading-none text-white md:text-[11px] lg:text-xs'

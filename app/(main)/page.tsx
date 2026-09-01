@@ -7,7 +7,7 @@ import { HomeRanking } from '@features/home/components/HomeRanking'
 
 export default function Home() {
   return (
-    <main className="w-full">
+    <main className="flex w-full flex-col pb-10 max-md:gap-10 md:pb-0">
       <Hero />
       <HomeRanking />
       <HomeGift />

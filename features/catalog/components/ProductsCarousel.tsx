@@ -275,7 +275,6 @@ export function ProductsCarousel({ products }: ProductsCarouselProps) {
       plugins={[autoplay.current]}
       className="relative w-full"
     >
-      <div className="relative w-full">
         <CarouselContent className="-ml-6">
           {products.map((product, index) => (
             <CarouselItem
@@ -307,7 +306,6 @@ export function ProductsCarousel({ products }: ProductsCarouselProps) {
             !showArrowsLg && 'lg:hidden'
           )}
         />
-      </div>
     </Carousel>
   )
 }
