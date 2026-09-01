@@ -3,7 +3,9 @@
 import { CartBubble } from '@features/cart/components/CartBubble'
 import { CartPanel } from '@features/cart/components/CartPanel'
 import { CartToggleButton } from '@features/cart/components/CartToggleButton'
+import { MobileCartToggleBar } from '@features/cart/components/MobileCartToggleBar'
 import { useCartHydration } from '@features/cart/hooks'
+import { useFooterInView } from '@features/cart/hooks/useFooterInView'
 import {
   buildCartSummary,
   FREE_SHIPPING_THRESHOLD,
@@ -45,6 +47,7 @@ const INITIAL_BUBBLE = {
 
 export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
   const hydrated = useCartHydration()
+  const footerInView = useFooterInView()
 
   const lines = useCartStore((state) => state.lines)
   const isOpen = useCartStore((state) => state.isOpen)
@@ -118,6 +121,14 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
     () => PANEL_WIDTH,
   )
 
+  const mobileBarMetrics = summary.hasDelivery
+    ? {
+        freeShipping: summary.freeShipping,
+        remaining: summary.remaining,
+        progress: summary.progress,
+      }
+    : INITIAL_BUBBLE
+
   return (
     <>
       {isOpen ? (
@@ -133,7 +144,7 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
       ) : null}
 
       {showBubble ? (
-        <div className="pointer-events-auto fixed right-[10px] bottom-[10px] z-[65]">
+        <div className="pointer-events-auto fixed right-[10px] bottom-[10px] z-[65] hidden md:block">
           <CartBubble
             freeShipping={bubbleMetrics.freeShipping}
             remaining={bubbleMetrics.remaining}
@@ -143,7 +154,18 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
         </div>
       ) : null}
 
-      <div className="pointer-events-none fixed inset-y-0 right-0 z-[70] flex items-center">
+      <MobileCartToggleBar
+        isOpen={isOpen}
+        hiddenByScroll={footerInView}
+        count={summary.totalCount}
+        addBumpSeq={hydrated ? addBumpSeq : 0}
+        freeShipping={mobileBarMetrics.freeShipping}
+        remaining={mobileBarMetrics.remaining}
+        progress={mobileBarMetrics.progress}
+        onClick={isOpen ? closeCart : handleOpenCart}
+      />
+
+      <div className="pointer-events-none fixed inset-y-0 right-0 z-[70] hidden items-center md:flex">
         <motion.div
           className="pointer-events-none flex items-center"
           initial={false}
@@ -172,6 +194,26 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
           />
         </motion.div>
       </div>
+
+      <motion.div
+        className="pointer-events-none fixed inset-y-0 right-0 z-[70] flex items-center md:hidden"
+        initial={false}
+        animate={{ x: isOpen ? 0 : closedX }}
+        transition={{ duration: SLIDE_DURATION, ease: SLIDE_EASE }}
+      >
+        <CartPanel
+          summary={summary}
+          step={step}
+          busy={busy}
+          inactive={!isOpen}
+          onClose={closeCart}
+          onChangeQty={handleChangeQty}
+          onRemove={handleRemove}
+          onProceed={proceedToForm}
+          onBack={backToCart}
+          onConfirm={confirmOrder}
+        />
+      </motion.div>
     </>
   )
 }

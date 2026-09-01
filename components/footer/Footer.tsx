@@ -4,6 +4,13 @@ import Link from 'next/link'
 const PHOTO_DIR = '/assets/pages/top/footer/photos'
 const ICON_DIR = '/assets/pages/top/footer/icons'
 
+const STORE_PHOTOS = [
+  { file: 'img_top_ftr-store_01.jpg', alt: '店舗外観1' },
+  { file: 'img_top_ftr-store_02.jpg', alt: '店舗外観2' },
+  { file: 'img_top_ftr-store_03.jpg', alt: '店舗外観3' },
+  { file: 'img_top_ftr-store_04.jpg', alt: '店舗外観4' },
+] as const
+
 const SNS_ICONS = [
   { file: 'ic_c_sns-facebook.svg', label: 'Facebook' },
   { file: 'ic_c_sns-instagram.svg', label: 'Instagram' },
@@ -29,7 +36,7 @@ function StorePhoto({
         src={`${PHOTO_DIR}/${file}`}
         alt={alt}
         fill
-        sizes="(max-width: 1024px) 100vw, 384px"
+        sizes="(max-width: 768px) 170px, 384px"
         className="object-cover"
       />
     </div>
@@ -45,10 +52,39 @@ function FooterHeading({ children }: { children: string }) {
   )
 }
 
+function MobileStoreGallery() {
+  return (
+    <div className="px-2.5 pt-2.5 md:hidden">
+      <div className="mx-auto grid w-full max-w-[350px] grid-cols-2 gap-2.5">
+        {STORE_PHOTOS.map((photo) => (
+          <StorePhoto
+            key={photo.file}
+            file={photo.file}
+            alt={photo.alt}
+            className="h-[136px] w-[170px] justify-self-center"
+          />
+        ))}
+      </div>
+      <div className="mx-auto mt-2.5 flex w-full max-w-[350px] items-center justify-between rounded-[10px] bg-white/80 px-4 py-3">
+        {SNS_ICONS.map((icon) => (
+          <Image
+            key={icon.file}
+            src={`${ICON_DIR}/${icon.file}`}
+            alt={icon.label}
+            width={34}
+            height={36}
+            className="shrink-0"
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function Footer() {
   return (
     <footer className="bg-[#373737] text-white">
-      <div className="relative flex h-[280px] w-full items-center justify-center overflow-hidden md:h-[200px] lg:h-[377px]">
+      <div className="relative flex h-[200px] max-h-[200px] w-full items-center justify-center overflow-hidden lg:h-[377px] lg:max-h-none">
         <Image
           src={`${PHOTO_DIR}/img_top_ftr-head.png`}
           alt=""
@@ -57,18 +93,20 @@ export default function Footer() {
           sizes="100vw"
           priority={false}
         />
-        <p className="relative z-10 px-4 text-center text-4xl font-black tracking-wider text-black sm:text-6xl md:text-[64px] lg:text-[96px]">
+        <p className="relative z-10 px-4 text-center text-[40px] font-black tracking-wider text-black md:text-[64px] lg:text-[96px]">
           Sugar Alice
         </p>
       </div>
 
+      <MobileStoreGallery />
+
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-4 py-12 lg:grid-cols-[578px_1fr] lg:gap-8 lg:px-0">
-        <div>
+        <div className="hidden md:block">
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-[1fr_130px_130px] lg:grid-rows-[160px_149px_60px]">
             <div className="flex flex-col gap-5 lg:row-span-3">
               <StorePhoto
-                file="img_top_ftr-store_01.jpg"
-                alt="店舗外観1"
+                file={STORE_PHOTOS[0].file}
+                alt={STORE_PHOTOS[0].alt}
                 className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:max-w-none lg:min-h-0 lg:flex-1"
               />
               <div className="hidden h-[60px] w-full shrink-0 items-center justify-start gap-5 rounded-[10px] bg-[#838383] px-5 md:flex lg:justify-between lg:px-2.5">
@@ -85,19 +123,19 @@ export default function Footer() {
             </div>
             <div className="flex flex-col gap-5 lg:contents">
               <StorePhoto
-                file="img_top_ftr-store_02.jpg"
-                alt="店舗外観2"
+                file={STORE_PHOTOS[1].file}
+                alt={STORE_PHOTOS[1].alt}
                 className="mx-auto h-[146px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:col-span-2 lg:h-auto lg:max-w-none"
               />
               <div className="mx-auto grid w-full max-w-[342px] grid-cols-2 gap-5 md:mx-0 md:max-w-none lg:contents">
                 <StorePhoto
-                  file="img_top_ftr-store_03.jpg"
-                  alt="店舗外観3"
+                  file={STORE_PHOTOS[2].file}
+                  alt={STORE_PHOTOS[2].alt}
                   className="h-[134px] lg:h-auto"
                 />
                 <StorePhoto
-                  file="img_top_ftr-store_04.jpg"
-                  alt="店舗外観4"
+                  file={STORE_PHOTOS[3].file}
+                  alt={STORE_PHOTOS[3].alt}
                   className="h-[134px] lg:h-auto"
                 />
               </div>

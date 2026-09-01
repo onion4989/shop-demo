@@ -57,13 +57,13 @@ function StaticItemThumb({
   item: Item
 }) {
   return (
-    <div className="relative size-40 overflow-hidden rounded-full border-2 border-white md:size-[120px] lg:size-40">
+    <div className="relative size-[100px] overflow-hidden rounded-full border-2 border-white md:size-[120px] lg:size-40">
       <Image
         src={`${ITEMS_DIR}/${folder}/${item.file}`}
         alt={item.label}
         fill
         className="object-cover"
-        sizes="(min-width: 1024px) 160px, (min-width: 768px) 120px, 160px"
+        sizes="(max-width: 767px) 100px, (min-width: 1024px) 160px, 120px"
       />
     </div>
   )
@@ -81,8 +81,8 @@ function ItemCard({
   const src = `${ITEMS_DIR}/${folder}/${item.file}`
 
   return (
-    <div className="flex w-40 flex-col items-center gap-3 md:w-[120px] lg:w-40">
-      <div className="relative size-40 md:size-[120px] lg:size-40">
+    <div className="flex w-full flex-col items-center gap-1 md:w-[120px] lg:w-40 lg:gap-3">
+      <div className="relative size-[100px] md:size-[120px] lg:size-40">
         {product ? (
           <HomeItemsExpandablePhoto
             src={src}
@@ -103,7 +103,7 @@ function ItemCard({
           </>
         )}
       </div>
-      <p className="text-center text-sm font-bold text-[#070707] md:text-xs lg:text-sm">
+      <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] md:text-xs lg:text-sm">
         {item.label}
       </p>
     </div>
@@ -119,11 +119,11 @@ function ItemCategory({
 }) {
   return (
     <section className={group.wide ? 'lg:col-span-2' : undefined}>
-      <h2 className="pb-[20px] text-[32px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
+      <h2 className="pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
         {group.title}
       </h2>
       <div
-        className={`flex flex-wrap gap-x-6 gap-y-8 rounded-[25px] px-7 py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
+        className={`grid grid-cols-3 gap-x-4 gap-y-[18px] rounded-[15px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:rounded-[25px] md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
       >
         {group.items.map((item) => (
           <ItemCard
@@ -148,8 +148,8 @@ export async function HomeItems() {
   const [cupcake, ice, options, tart] = HOME_ITEM_GROUPS
 
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-4 pb-24 md:pt-24 lg:px-0 lg:pt-0 lg:pb-32">
-      <div className="flex flex-col gap-12">
+    <section className="mx-auto w-full max-w-[1200px] px-4 pb-0 md:pt-24 md:pb-24 lg:px-0 lg:pt-0 lg:pb-32">
+      <div className="flex flex-col gap-10 md:gap-12">
         <ItemCategory group={cupcake} productsById={productsById} />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <ItemCategory group={ice} productsById={productsById} />

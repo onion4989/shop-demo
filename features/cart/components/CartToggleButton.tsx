@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import { FaShoppingCart } from 'react-icons/fa'
 
 const SHAKE = {
-  rotate: [0, -12, 12, -8, 8, 0],
-  scale: [1, 1.08, 1],
-} as const
+  rotate: [0, -12, 12, -8, 8, 0] as number[],
+  scale: [1, 1.08, 1] as number[],
+}
 
 export function CartToggleButton({
   isOpen,
