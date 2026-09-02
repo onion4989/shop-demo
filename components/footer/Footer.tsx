@@ -73,7 +73,7 @@ function MobileStoreGallery() {
             alt={icon.label}
             width={34}
             height={36}
-            className="shrink-0"
+            className="shrink-0 brightness-0"
           />
         ))}
       </div>
@@ -89,15 +89,15 @@ export default function Footer() {
           src={`${PHOTO_DIR}/img_top_ftr-head.png`}
           alt=""
           fill
-          className="object-cover object-center"
+          className="object-cover object-center brightness-50"
           sizes="100vw"
           priority={false}
         />
-        <div className="absolute inset-0 z-10 flex -translate-y-3 flex-col items-center justify-center gap-2.5 px-4 text-center">
+        <div className="absolute inset-0 z-10 flex -translate-y-5 flex-col items-center justify-center gap-2.5 px-4 text-center">
           <p className="text-[40px] font-black leading-none tracking-wider text-white drop-shadow-md md:text-[64px] lg:text-[96px]">
             Sugar Alice
           </p>
-          <p className="text-[16px] leading-none text-white drop-shadow-md">
+          <p className="text-[16px] leading-none text-white drop-shadow-md md:text-[32px]">
             シュガー・アリス
           </p>
         </div>
@@ -122,6 +122,7 @@ export default function Footer() {
                     alt={icon.label}
                     width={34}
                     height={36}
+                    className="brightness-0"
                   />
                 ))}
               </div>

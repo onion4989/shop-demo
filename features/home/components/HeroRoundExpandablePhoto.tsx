@@ -73,6 +73,7 @@ export function HeroRoundExpandablePhoto({
       tags={tags}
       price={price}
       ingredients={ingredients}
+      titleBadgeTone="neutral"
       thumbShape="circle"
       closeMotion="thumb-crossfade"
       triggerClassName={cn(THUMB_CLASS, 'cursor-pointer')}
