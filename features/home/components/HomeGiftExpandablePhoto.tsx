@@ -6,12 +6,13 @@ import { cn } from '@lib/utils'
 import Image from 'next/image'
 
 const TITLE_BADGE_CLASS =
-  'absolute top-4 left-4 z-10 hidden items-center justify-center rounded-[25px] bg-white/25 px-2.5 py-2 text-sm font-bold text-[#E4007E] backdrop-blur-md lg:flex'
+  'absolute top-4 left-4 z-10 flex items-center justify-center rounded-[25px] bg-white/25 px-2.5 py-2 text-sm font-bold text-[#E4007E] backdrop-blur-md'
 
 type HomeGiftExpandablePhotoProps = {
   src: string
   alt: string
   className?: string
+  layout: 'mobile' | 'desktop'
   title: string
   productId: string
   description: string
@@ -24,6 +25,7 @@ export function HomeGiftExpandablePhoto({
   src,
   alt,
   className,
+  layout,
   title,
   productId,
   description,
@@ -31,34 +33,49 @@ export function HomeGiftExpandablePhoto({
   price,
   ingredients,
 }: HomeGiftExpandablePhotoProps) {
-  return (
-    <div className="flex flex-col gap-1">
-      <ExpandableProductDialog
+  const photo = (
+    <ExpandableProductDialog
+      src={src}
+      alt={alt}
+      title={title}
+      productId={productId}
+      description={description}
+      tags={tags}
+      price={price}
+      ingredients={ingredients}
+      triggerClassName={cn(
+        'relative h-full w-full overflow-hidden',
+        layout === 'mobile' ? 'rounded-[10px]' : 'rounded-[25px]',
+        className,
+      )}
+    >
+      <Image
         src={src}
         alt={alt}
-        title={title}
-        productId={productId}
-        description={description}
-        tags={tags}
-        price={price}
-        ingredients={ingredients}
-        triggerClassName={cn(
-          'relative h-full w-full overflow-hidden rounded-[10px] lg:rounded-[25px]',
-          className,
-        )}
-      >
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes="(max-width: 1024px) 50vw, 384px"
-          className={IMAGE_HOVER_ZOOM}
-        />
+        fill
+        sizes={
+          layout === 'mobile'
+            ? '(max-width: 767px) 50vw, 384px'
+            : '(max-width: 1024px) 50vw, 384px'
+        }
+        className={IMAGE_HOVER_ZOOM}
+      />
+      {layout === 'desktop' ? (
         <span className={TITLE_BADGE_CLASS}>{title}</span>
-      </ExpandableProductDialog>
-      <p className="text-[14px] leading-snug break-words text-[#070707] lg:hidden">
-        {title}
-      </p>
-    </div>
+      ) : null}
+    </ExpandableProductDialog>
   )
+
+  if (layout === 'mobile') {
+    return (
+      <div className="flex flex-col gap-1">
+        {photo}
+        <p className="text-[14px] leading-snug break-words text-[#070707]">
+          {title}
+        </p>
+      </div>
+    )
+  }
+
+  return photo
 }

@@ -1,7 +1,7 @@
 import { HomeGiftExpandablePhoto } from '@features/home/components/HomeGiftExpandablePhoto'
 import {
-  HOME_GIFT_MOBILE_ORDER,
-  HOME_GIFT_SLOTS,
+  HOME_GIFT_DESKTOP_SLOTS,
+  HOME_GIFT_MOBILE_SLOTS,
 } from '@features/home/data/giftSlots'
 import { getHomeGiftProducts } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
@@ -25,6 +25,11 @@ type GiftOption = {
   shippingAvailable: boolean
   reservationRequired: boolean
 } | null
+
+type GiftSlot = {
+  productId: string
+  className: string
+}
 
 function giftTags(option: GiftOption) {
   if (!option) return []
@@ -51,22 +56,11 @@ function formatPrice(price: number) {
   return `￥${Math.round(price).toLocaleString('ja-JP')}`
 }
 
-function orderedGiftSlots() {
-  const byId = new Map(
-    HOME_GIFT_SLOTS.map((slot) => [slot.productId, slot]),
-  )
-  const mobile = HOME_GIFT_MOBILE_ORDER.map(
-    (id) => byId.get(id),
-  ).filter((slot): slot is (typeof HOME_GIFT_SLOTS)[number] => Boolean(slot))
-  return { mobile, desktop: [...HOME_GIFT_SLOTS] }
-}
-
 export async function HomeGift() {
   const products = await getHomeGiftProducts()
   const byId = new Map(products.map((product) => [product.productId, product]))
-  const { mobile, desktop } = orderedGiftSlots()
 
-  function renderSlot(slot: (typeof HOME_GIFT_SLOTS)[number]) {
+  function renderSlot(slot: GiftSlot, layout: 'mobile' | 'desktop') {
     const product = byId.get(slot.productId)
     if (!product) return null
     const thumb = product.images[0]?.thumbnailUrl
@@ -74,7 +68,8 @@ export async function HomeGift() {
 
     return (
       <HomeGiftExpandablePhoto
-        key={slot.productId}
+        key={`${layout}-${slot.productId}`}
+        layout={layout}
         src={src}
         alt={product.name}
         className={slot.className}
@@ -89,7 +84,7 @@ export async function HomeGift() {
   }
 
   return (
-    <section className="relative mb-0 bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA] lg:mb-32">
+    <section className="relative mb-[var(--space-drop-deco)] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA]">
       <div className="relative mx-auto w-full max-w-[1440px] md:min-h-[900px]">
         {bubbles.map((bubble) => (
           <span
@@ -105,10 +100,10 @@ export async function HomeGift() {
             ギフト / Gift
           </h2>
           <div className="grid grid-cols-2 gap-2 pb-8 md:hidden">
-            {mobile.map(renderSlot)}
+            {HOME_GIFT_MOBILE_SLOTS.map((slot) => renderSlot(slot, 'mobile'))}
           </div>
-          <div className="hidden gap-6 pb-8 sm:grid sm:grid-cols-2 md:grid lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
-            {desktop.map(renderSlot)}
+          <div className="hidden gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
+            {HOME_GIFT_DESKTOP_SLOTS.map((slot) => renderSlot(slot, 'desktop'))}
           </div>
         </div>
 

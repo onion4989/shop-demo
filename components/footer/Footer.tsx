@@ -93,9 +93,14 @@ export default function Footer() {
           sizes="100vw"
           priority={false}
         />
-        <p className="relative z-10 px-4 text-center text-[40px] font-black tracking-wider text-black md:text-[64px] lg:text-[96px]">
-          Sugar Alice
-        </p>
+        <div className="absolute inset-0 z-10 flex -translate-y-3 flex-col items-center justify-center gap-2.5 px-4 text-center">
+          <p className="text-[40px] font-black leading-none tracking-wider text-white drop-shadow-md md:text-[64px] lg:text-[96px]">
+            Sugar Alice
+          </p>
+          <p className="text-[16px] leading-none text-white drop-shadow-md">
+            シュガー・アリス
+          </p>
+        </div>
       </div>
 
       <MobileStoreGallery />

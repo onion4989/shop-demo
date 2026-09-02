@@ -61,10 +61,12 @@ function productIngredients(product: MobileRankingProduct) {
 function MobileRankBadge({ rank }: { rank: number }) {
   return (
     <div
-      className="pointer-events-none absolute top-0 left-0 z-10 flex h-[25px] w-[30px] items-center justify-center rounded-br-[4px] bg-[#3CB371]"
+      className="pointer-events-none absolute -top-7 -left-7 z-10 flex size-14 items-center justify-center rounded-full bg-[#3CB371]"
       aria-hidden
     >
-      <span className="text-[16px] font-bold text-white">{rank}</span>
+      <span className="translate-x-3 translate-y-3 text-base font-bold text-white">
+        {rank}
+      </span>
     </div>
   )
 }

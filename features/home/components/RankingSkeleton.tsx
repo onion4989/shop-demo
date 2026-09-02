@@ -1,6 +1,6 @@
 export function RankingSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-[708px] px-4 md:px-0 lg:max-w-none" aria-hidden>
+    <div className="mx-auto w-full max-w-[708px] md:px-0 lg:max-w-none" aria-hidden>
       <div className="h-6 w-48 animate-pulse rounded bg-pink-100 md:h-9 md:w-56" />
       <div className="my-10 flex flex-col gap-[15px] md:hidden">
         {Array.from({ length: 3 }).map((_, index) => (
