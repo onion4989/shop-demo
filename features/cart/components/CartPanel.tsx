@@ -10,6 +10,7 @@ import { CartProgress } from '@features/cart/components/CartProgress'
 import { formatYen, type CartSummary } from '@features/cart/pricing'
 import type { CartStep } from '@features/cart/store'
 import { cn } from '@lib/utils'
+import { useEffect, useRef } from 'react'
 import { FaSpinner, FaTimes } from 'react-icons/fa'
 
 type CartPanelProps = {
@@ -67,11 +68,33 @@ export function CartPanel({
   const locked = step !== 'cart'
   const isComplete = step === 'complete'
   const ctaLabel = step === 'form' ? '購入を確定する' : '購入画面へ進む'
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLDivElement>(null)
+
+  // step は store の setTimeout 後に form へ遷移するため、マウント後にパネル内スクロール
+  useEffect(() => {
+    if (step !== 'form') return
+
+    const frame = requestAnimationFrame(() => {
+      const container = scrollRef.current
+      const form = formRef.current
+      if (!container || !form) return
+
+      const top =
+        form.getBoundingClientRect().top -
+        container.getBoundingClientRect().top +
+        container.scrollTop
+
+      container.scrollTo({ top, behavior: 'smooth' })
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [step])
 
   return (
     <aside
       className={cn(
-        'flex h-dvh w-full shrink-0 flex-col bg-[#3B3B3B]/95 shadow-2xl backdrop-blur-md md:w-[500px]',
+        'flex h-dvh w-screen max-w-full shrink-0 flex-col bg-[#3B3B3B]/95 shadow-2xl backdrop-blur-md md:w-[500px] md:max-w-none',
         inactive ? 'pointer-events-none' : 'pointer-events-auto',
       )}
       role="dialog"
@@ -122,6 +145,7 @@ export function CartPanel({
           ) : null}
 
           <div
+            ref={scrollRef}
             className="hide-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto px-5 pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
             {summary.isEmpty ? (
@@ -153,11 +177,13 @@ export function CartPanel({
             )}
 
             {step === 'form' ? (
-              <CartCheckoutForm
-                onBack={onBack}
-                onConfirm={onConfirm}
-                disabled={busy}
-              />
+              <div ref={formRef}>
+                <CartCheckoutForm
+                  onBack={onBack}
+                  onConfirm={onConfirm}
+                  disabled={busy}
+                />
+              </div>
             ) : null}
           </div>
 
