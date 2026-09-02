@@ -172,6 +172,7 @@ function MobileRankingCard({
       tags={tags}
       price={formatPrice(product.price)}
       ingredients={productIngredients(product)}
+      titleBadgeTone="neutral"
       triggerClassName="block w-full"
       closeMotion="thumb-crossfade"
       thumbPreview={

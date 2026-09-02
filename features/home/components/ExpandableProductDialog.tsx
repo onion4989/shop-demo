@@ -34,6 +34,8 @@ const IMAGE_DURATION = 0.55
 const TEXT_DURATION = 0.4
 const CLOSE_IMAGE_DUR = 0.38
 const CLOSE_TEXT_DUR = 0.28
+const OVERLAY_FADE_DUR = 0.15
+const TITLE_SLIDE_DUR = 0.2
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const TITLE_BADGE_DESKTOP =
@@ -41,6 +43,12 @@ const TITLE_BADGE_DESKTOP =
 
 const TITLE_BADGE_MOBILE =
   'min-w-0 max-w-[171px] rounded-[24px] bg-white/25 px-2.5 py-2 text-[14px] font-bold leading-normal break-words text-[#E4007E] backdrop-blur-md'
+
+const TITLE_BADGE_DESKTOP_NEUTRAL =
+  'flex items-center justify-center rounded-[24px] bg-white/35 px-2.5 py-2 text-md font-bold text-black backdrop-blur-md'
+
+const TITLE_BADGE_MOBILE_NEUTRAL =
+  'min-w-0 max-w-[171px] rounded-[24px] bg-white/35 px-2.5 py-2 text-[14px] font-bold leading-normal break-words text-black backdrop-blur-md'
 
 type Rect = {
   top: number
@@ -280,6 +288,7 @@ export type ExpandableProductDialogProps = {
   price: string
   ingredients: string
   desktopOnly?: boolean
+  titleBadgeTone?: 'brand' | 'neutral'
   triggerClassName?: string
   onOpenChange?: (open: boolean) => void
   closeMotion?: CloseMotion
@@ -299,6 +308,7 @@ export function ExpandableProductDialog({
   price,
   ingredients,
   desktopOnly = false,
+  titleBadgeTone = 'brand',
   triggerClassName,
   onOpenChange,
   closeMotion = 'intro',
@@ -462,6 +472,8 @@ export function ExpandableProductDialog({
     : null
   const isCollapseText = phase === 'collapsing-text'
   const isCollapseImage = phase === 'collapsing-image'
+  const showTriggerEarly = isCollapseImage
+  const showDialogTitle = !isCollapseImage
   const textAnimDur = isCollapseText ? CLOSE_TEXT_DUR : TEXT_DURATION
   const imageAnimDur = isCollapseImage ? CLOSE_IMAGE_DUR : IMAGE_DURATION
   const cardDuration = isCollapseText
@@ -485,6 +497,14 @@ export function ExpandableProductDialog({
     isDesktop,
   )
   const motionBorderRadius = getMotionBorderRadius(thumbShape, phase)
+  const titleBadgeClass =
+    titleBadgeTone === 'neutral'
+      ? isDesktop
+        ? TITLE_BADGE_DESKTOP_NEUTRAL
+        : TITLE_BADGE_MOBILE_NEUTRAL
+      : isDesktop
+        ? TITLE_BADGE_DESKTOP
+        : TITLE_BADGE_MOBILE
   const motionAnimate =
     motionTarget && motionBorderRadius !== undefined
       ? { ...motionTarget, borderRadius: motionBorderRadius }
@@ -503,7 +523,7 @@ export function ExpandableProductDialog({
           desktopOnly
             ? 'max-md:pointer-events-none md:cursor-pointer'
             : 'cursor-pointer',
-          isOpen ? 'invisible' : 'group',
+          isOpen && !showTriggerEarly ? 'invisible' : 'group',
           triggerClassName,
         )}
       >
@@ -576,47 +596,74 @@ export function ExpandableProductDialog({
                   ) : (
                     <div className="size-full bg-[#D2B48CB4]" />
                   )}
-                  <div className="absolute inset-x-3 top-3 z-10 flex items-start justify-between gap-2 sm:inset-x-4 sm:top-4 sm:gap-3">
-                    <span
-                      id={titleId}
-                      className={
-                        isDesktop ? TITLE_BADGE_DESKTOP : TITLE_BADGE_MOBILE
-                      }
-                    >
-                      {title}
-                    </span>
-                    <button
-                      type="button"
-                      disabled={!canAddToCart}
-                      title={
-                        qtyInCart >= MAX_QTY
-                          ? `カートは${MAX_QTY}個までです`
-                          : undefined
-                      }
-                      className={cn(
-                        'flex shrink-0 items-center justify-center gap-1.5 rounded-[10px] bg-[#E4007E] text-[14px] font-bold text-white',
-                        isDesktop
-                          ? 'h-[45px] w-[155px]'
-                          : 'h-[45px] w-[146px]',
-                        canAddToCart ? 'cursor-pointer' : 'opacity-60',
-                      )}
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        if (!productId || !canAddToCart) return
-                        addToCart(productId, isDeliveryProductId(productId, tags))
-                        dismiss()
-                      }}
-                    >
-                      <FaShoppingCart
-                        className={
-                          isDesktop
-                            ? 'size-[22px] shrink-0'
-                            : 'size-[18px] shrink-0'
+                  <div
+                    className={cn(
+                      'absolute inset-x-3 top-3 z-10 sm:inset-x-4 sm:top-4',
+                      showDialogTitle &&
+                        'flex items-start justify-between gap-2 sm:gap-3',
+                    )}
+                  >
+                    {showDialogTitle ? (
+                      <motion.span
+                        id={titleId}
+                        className={titleBadgeClass}
+                        animate={
+                          isClosing
+                            ? { opacity: 0, y: 8 }
+                            : { opacity: 1, y: 0 }
                         }
-                        aria-hidden
-                      />
-                      カートに入れる
-                    </button>
+                        transition={{ duration: TITLE_SLIDE_DUR, ease: EASE }}
+                        style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
+                      >
+                        {title}
+                      </motion.span>
+                    ) : (
+                      <span id={titleId} className="sr-only">
+                        {title}
+                      </span>
+                    )}
+                    {showDialogTitle ? (
+                      <motion.button
+                        type="button"
+                        disabled={!canAddToCart}
+                        title={
+                          qtyInCart >= MAX_QTY
+                            ? `カートは${MAX_QTY}個までです`
+                            : undefined
+                        }
+                        animate={{ opacity: isClosing ? 0 : 1 }}
+                        transition={{ duration: OVERLAY_FADE_DUR, ease: EASE }}
+                        style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
+                        aria-hidden={isClosing}
+                        className={cn(
+                          'flex shrink-0 items-center justify-center gap-1.5 rounded-[10px] bg-[#E4007E] text-[14px] font-bold text-white',
+                          isDesktop
+                            ? 'h-[45px] w-[155px]'
+                            : 'h-[45px] w-[146px]',
+                          canAddToCart ? 'cursor-pointer' : 'opacity-60',
+                          isClosing && 'absolute top-0 right-0',
+                        )}
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          if (!productId || !canAddToCart) return
+                          addToCart(
+                            productId,
+                            isDeliveryProductId(productId, tags),
+                          )
+                          dismiss()
+                        }}
+                      >
+                        <FaShoppingCart
+                          className={
+                            isDesktop
+                              ? 'size-[22px] shrink-0'
+                              : 'size-[18px] shrink-0'
+                          }
+                          aria-hidden
+                        />
+                        カートに入れる
+                      </motion.button>
+                    ) : null}
                   </div>
                 </div>
                 {isDesktop ? (

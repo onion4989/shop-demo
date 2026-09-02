@@ -184,6 +184,7 @@ function RankingCard({
       tags={tags}
       price={formatPrice(product.price)}
       ingredients={productIngredients(product)}
+      titleBadgeTone="neutral"
       triggerClassName="block w-[220px] lg:w-full"
       onOpenChange={onDialogOpenChange}
       closeMotion="thumb-crossfade"

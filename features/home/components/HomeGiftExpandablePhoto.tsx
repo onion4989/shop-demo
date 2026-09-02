@@ -1,12 +1,15 @@
 'use client'
 
 import { ExpandableProductDialog } from '@features/home/components/ExpandableProductDialog'
+import { thumbTitleMotionProps } from '@features/home/components/expandDialogThumbMotion'
 import { IMAGE_HOVER_ZOOM } from '@lib/imageClasses'
 import { cn } from '@lib/utils'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useState } from 'react'
 
 const TITLE_BADGE_CLASS =
-  'absolute top-4 left-4 z-10 flex items-center justify-center rounded-[25px] bg-white/25 px-2.5 py-2 text-sm font-bold text-[#E4007E] backdrop-blur-md'
+  'absolute top-4 left-4 z-10 flex items-center justify-center rounded-[24px] bg-white/25 px-2.5 py-2 text-md font-bold text-[black] backdrop-blur-md'
 
 type HomeGiftExpandablePhotoProps = {
   src: string
@@ -33,6 +36,9 @@ export function HomeGiftExpandablePhoto({
   price,
   ingredients,
 }: HomeGiftExpandablePhotoProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const titleMotion = thumbTitleMotionProps(isDialogOpen)
+
   const photo = (
     <ExpandableProductDialog
       src={src}
@@ -43,6 +49,8 @@ export function HomeGiftExpandablePhoto({
       tags={tags}
       price={price}
       ingredients={ingredients}
+      titleBadgeTone="neutral"
+      onOpenChange={setIsDialogOpen}
       triggerClassName={cn(
         'relative h-full w-full overflow-hidden',
         layout === 'mobile' ? 'rounded-[10px]' : 'rounded-[25px]',
@@ -61,7 +69,9 @@ export function HomeGiftExpandablePhoto({
         className={IMAGE_HOVER_ZOOM}
       />
       {layout === 'desktop' ? (
-        <span className={TITLE_BADGE_CLASS}>{title}</span>
+        <motion.span className={TITLE_BADGE_CLASS} {...titleMotion}>
+          {title}
+        </motion.span>
       ) : null}
     </ExpandableProductDialog>
   )
@@ -70,9 +80,12 @@ export function HomeGiftExpandablePhoto({
     return (
       <div className="flex flex-col gap-1">
         {photo}
-        <p className="text-[14px] leading-snug break-words text-[#070707]">
+        <motion.p
+          className="text-[14px] leading-snug wrap-break-word text-[#070707]"
+          {...titleMotion}
+        >
           {title}
-        </p>
+        </motion.p>
       </div>
     )
   }
