@@ -9,6 +9,20 @@ import {
 import { cn, resolveAssetPath } from '@lib/utils'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { useSyncExternalStore } from 'react'
+
+const MOBILE_QUERY = '(max-width: 767px)'
+const MOBILE_CENTER_FAN_OFFSET = 16
+
+function subscribeMobile(onChange: () => void) {
+  const mq = window.matchMedia(MOBILE_QUERY)
+  mq.addEventListener('change', onChange)
+  return () => mq.removeEventListener('change', onChange)
+}
+
+function getIsMobile() {
+  return window.matchMedia(MOBILE_QUERY).matches
+}
 
 const MOBILE_CARD_CLASS = [
   'max-md:h-[175px] max-md:w-[110px]',
@@ -17,6 +31,12 @@ const MOBILE_CARD_CLASS = [
 ] as const
 
 export function HeroFanCards() {
+  const isMobile = useSyncExternalStore(
+    subscribeMobile,
+    getIsMobile,
+    () => false,
+  )
+
   return (
     <div className="pointer-events-none flex items-end justify-center">
       {heroFanCards.map((card, index) => (
@@ -36,7 +56,10 @@ export function HeroFanCards() {
             scale: 1,
             rotate: card.rotate,
             x: 0,
-            y: card.offsetY,
+            y:
+              isMobile && index === 1
+                ? MOBILE_CENTER_FAN_OFFSET
+                : card.offsetY,
           }}
           transition={{
             duration: HERO_FAN_CARD_DURATION,

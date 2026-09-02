@@ -196,7 +196,7 @@ export function CartShell({ catalog }: { catalog: CartCatalogItem[] }) {
       </div>
 
       <motion.div
-        className="pointer-events-none fixed inset-y-0 right-0 z-[70] flex items-center md:hidden"
+        className="pointer-events-none fixed inset-x-0 inset-y-0 z-[70] flex w-full md:hidden"
         initial={false}
         animate={{ x: isOpen ? 0 : closedX }}
         transition={{ duration: SLIDE_DURATION, ease: SLIDE_EASE }}
