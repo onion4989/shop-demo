@@ -3,6 +3,20 @@
 @custom-variant dark (&:is(.dark *));
 @config '../tailwind.config.js';
 
+:root {
+  --space-section: 2.5rem;
+  --space-section-md: 6rem;
+  --space-section-lg: 8rem;
+  --space-drop-deco: 5.875rem;
+}
+
+@theme {
+  --spacing-section: var(--space-section);
+  --spacing-section-md: var(--space-section-md);
+  --spacing-section-lg: var(--space-section-lg);
+  --spacing-drop-deco: var(--space-drop-deco);
+}
+
 @layer base {
   html {
     scrollbar-gutter: stable;

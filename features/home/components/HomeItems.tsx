@@ -119,7 +119,7 @@ function ItemCategory({
 }) {
   return (
     <section className={group.wide ? 'lg:col-span-2' : undefined}>
-      <h2 className="pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
+      <h2 className="pb-[10px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:pb-[20px] lg:text-[32px]">
         {group.title}
       </h2>
       <div
@@ -148,10 +148,10 @@ export async function HomeItems() {
   const [cupcake, ice, options, tart] = HOME_ITEM_GROUPS
 
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-4 pb-0 md:pt-24 md:pb-24 lg:px-0 lg:pt-0 lg:pb-32">
+    <section className="mx-auto w-full max-w-[1200px] px-4 pb-0 md:pb-24 lg:px-0 lg:pb-32">
       <div className="flex flex-col gap-10 md:gap-12">
         <ItemCategory group={cupcake} productsById={productsById} />
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 md:gap-12 lg:grid-cols-2 lg:gap-6">
           <ItemCategory group={ice} productsById={productsById} />
           <ItemCategory group={options} productsById={productsById} />
         </div>
