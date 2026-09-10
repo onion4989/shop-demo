@@ -1,9 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM node:22-alpine AS base
+# Alpine の musl/OpenSSL と Prisma の相性問題を避けるため Debian slim を使用
+FROM node:22-bookworm-slim AS base
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -21,7 +24,6 @@ RUN npm run build
 # migrate deploy 用に Prisma CLI を隔離保持
 # prisma は devDependency のため omit=dev にしない
 FROM base AS prisma
-RUN apk add --no-cache libc6-compat
 WORKDIR /prisma-cli
 COPY package.json package-lock.json ./
 RUN npm ci
@@ -31,9 +33,8 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN apk add --no-cache libc6-compat
-RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs \
+  && useradd --system --uid 1001 --gid nodejs nextjs
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
