@@ -19,11 +19,12 @@ ENV POSTGRES_URL_NON_POOLING="postgresql://postgres:postgres@localhost:5432/buil
 RUN npm run build
 
 # migrate deploy 用に Prisma CLI を隔離保持
+# prisma は devDependency のため omit=dev にしない
 FROM base AS prisma
 RUN apk add --no-cache libc6-compat
 WORKDIR /prisma-cli
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 COPY prisma ./prisma
 
 FROM base AS runner
