@@ -1,0 +1,17 @@
+node_modules
+.next
+out
+coverage
+dist
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+*.log
+npm-debug.log*
+.cursor
+.agents
+**/*.md
+!package.json
+docker-compose.yml
