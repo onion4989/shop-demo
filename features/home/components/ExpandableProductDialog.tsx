@@ -1,5 +1,12 @@
 'use client'
 
+import {
+  CartFlyDot,
+  type FlyPath,
+  type FlyPoint,
+  getCartFlyPoint,
+  prefersReducedMotion,
+} from '@features/cart/components/CartFlyDot'
 import { CategoryTag } from '@features/catalog/components/CategoryTag'
 import { MAX_QTY, isDeliveryProductId } from '@features/cart/pricing'
 import { useCartStore } from '@features/cart/store'
@@ -319,9 +326,15 @@ export function ExpandableProductDialog({
   const titleId = useId()
   const thumbRef = useRef<HTMLButtonElement>(null)
   const phaseRef = useRef<Phase>('closed')
+  const flyingRef = useRef(false)
   const imageHeightRef = useRef(DESKTOP_IMAGE_HEIGHT)
   const [phase, setPhase] = useState<Phase>('closed')
   const [origin, setOrigin] = useState<Rect | null>(null)
+  const [fly, setFly] = useState<{
+    from: FlyPoint
+    to: FlyPoint
+    path: FlyPath
+  } | null>(null)
   const [, setLayoutTick] = useState(0)
 
   const addToCart = useCartStore((state) => state.addItem)
@@ -373,6 +386,7 @@ export function ExpandableProductDialog({
   }, [closer, desktopOnly, onOpenChange])
 
   const dismiss = useCallback(() => {
+    if (flyingRef.current) return
     const current = phaseRef.current
     if (current === 'closed') return
     if (current === 'open') {
@@ -384,6 +398,19 @@ export function ExpandableProductDialog({
     }
   }, [])
   dismissRef.current = dismiss
+
+  const commitAddToCart = useCallback(() => {
+    if (!productId) return
+    addToCart(productId, isDeliveryProductId(productId, tags))
+    dismiss()
+  }, [addToCart, dismiss, productId, tags])
+
+  const handleFlyDone = useCallback(() => {
+    if (!flyingRef.current) return
+    flyingRef.current = false
+    setFly(null)
+    commitAddToCart()
+  }, [commitAddToCart])
 
   useEffect(() => () => removeExpandCloser(closer), [closer])
 
@@ -488,8 +515,12 @@ export function ExpandableProductDialog({
     viewportLayout?.imageHeight ?? layout?.imageHeight ?? DESKTOP_IMAGE_HEIGHT
   const textHeight =
     viewportLayout?.textHeight ?? layout?.textHeight ?? MOBILE_TEXT_HEIGHT
+  const isFlying = fly !== null
   const canAddToCart =
-    Boolean(productId) && cartStep === 'cart' && qtyInCart < MAX_QTY
+    Boolean(productId) &&
+    cartStep === 'cart' &&
+    qtyInCart < MAX_QTY &&
+    !isFlying
   const cardRadiusClass = getCardRadiusClass(
     thumbShape,
     phase,
@@ -645,12 +676,32 @@ export function ExpandableProductDialog({
                         )}
                         onClick={(event) => {
                           event.stopPropagation()
-                          if (!productId || !canAddToCart) return
-                          addToCart(
-                            productId,
-                            isDeliveryProductId(productId, tags),
-                          )
-                          dismiss()
+                          if (!productId || !canAddToCart || flyingRef.current) {
+                            return
+                          }
+
+                          const useFly = !prefersReducedMotion()
+                          if (!useFly) {
+                            commitAddToCart()
+                            return
+                          }
+
+                          const to = getCartFlyPoint()
+                          if (!to) {
+                            commitAddToCart()
+                            return
+                          }
+
+                          const rect = event.currentTarget.getBoundingClientRect()
+                          flyingRef.current = true
+                          setFly({
+                            from: {
+                              x: rect.left + rect.width / 2,
+                              y: rect.top + rect.height / 2,
+                            },
+                            to,
+                            path: matchesMin(768) ? 'arc' : 'line',
+                          })
                         }}
                       >
                         <FaShoppingCart
@@ -732,6 +783,14 @@ export function ExpandableProductDialog({
             document.body,
           )
         : null}
+      {fly ? (
+        <CartFlyDot
+          from={fly.from}
+          to={fly.to}
+          path={fly.path}
+          onDone={handleFlyDone}
+        />
+      ) : null}
     </>
   )
 }
