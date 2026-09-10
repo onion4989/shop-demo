@@ -7,6 +7,9 @@ import SignOutButton from "@features/auth/components/SignOutButton";
 import DashboardSideNav from "@features/admin/components/DashboardSideNav";
 import ClientProviders from "./client-providers"; // 既存ファイルに合わせてパス調整
 
+// Docker ビルド時は DB が無いため、Prisma / auth を使うセグメントは静的生成しない
+export const dynamic = "force-dynamic";
+
 type DashboardLayoutProps = {
   children: ReactNode;
 };
