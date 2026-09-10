@@ -1,5 +1,6 @@
 'use client'
 
+import { CartAddParticles } from '@features/cart/components/CartAddParticles'
 import { formatYen } from '@features/cart/pricing'
 import { cn } from '@lib/utils'
 import { motion } from 'framer-motion'
@@ -49,15 +50,23 @@ export function MobileCartToggleBar({
         className="flex h-10 w-full cursor-pointer items-center justify-center bg-[#E4007E] px-3 text-white shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
       >
         <span className="flex items-center justify-center gap-[3px]">
-          <motion.span
-            key={`shake-${addBumpSeq}`}
-            className="inline-flex shrink-0"
-            initial={false}
-            animate={showFx ? SHAKE : { rotate: 0, scale: 1 }}
-            transition={{ duration: 0.45, ease: 'easeInOut' }}
+          <span
+            data-cart-fly-target=""
+            className="relative inline-flex size-12 shrink-0 items-center justify-center"
           >
-            <FaShoppingCart className="size-5 shrink-0" aria-hidden />
-          </motion.span>
+            {showFx ? (
+              <CartAddParticles key={`particles-${addBumpSeq}`} />
+            ) : null}
+            <motion.span
+              key={`shake-${addBumpSeq}`}
+              className="relative z-10 inline-flex shrink-0"
+              initial={false}
+              animate={showFx ? SHAKE : { rotate: 0, scale: 1 }}
+              transition={{ duration: 0.45, ease: 'easeInOut' }}
+            >
+              <FaShoppingCart className="size-5 shrink-0" aria-hidden />
+            </motion.span>
+          </span>
 
           <span
             aria-hidden

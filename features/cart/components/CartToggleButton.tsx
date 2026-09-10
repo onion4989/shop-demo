@@ -26,6 +26,7 @@ export function CartToggleButton({
     <button
       type="button"
       onClick={onClick}
+      data-cart-fly-target=""
       aria-label={isOpen ? 'カートを閉じる' : 'カートを開く'}
       aria-expanded={isOpen}
       className="pointer-events-auto relative flex h-[110px] w-[44px] cursor-pointer items-center justify-center rounded-l-[10px] bg-[#E4007E] shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
