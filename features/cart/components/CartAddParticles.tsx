@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useId } from 'react'
 
 const PINK = '#E4007E'
 const WHITE = '#FFFFFF'
@@ -50,6 +51,9 @@ const RING = {
 }
 
 export function CartAddParticles() {
+  const reactId = useId()
+  const glowId = `cart-particle-glow-${reactId.replace(/:/g, '')}`
+
   return (
     <svg
       viewBox={`0 0 ${VIEW} ${VIEW}`}
@@ -57,7 +61,7 @@ export function CartAddParticles() {
       aria-hidden
     >
       <defs>
-        <filter id="cart-particle-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <filter id={glowId} x="-50%" y="-50%" width="200%" height="200%">
           <feDropShadow dx="0" dy="0" stdDeviation="1.2" floodColor="#FFFFFF" floodOpacity="0.85" />
         </filter>
       </defs>
@@ -83,7 +87,7 @@ export function CartAddParticles() {
             cy={CENTER}
             r={p.size / 2}
             fill={p.fill}
-            filter="url(#cart-particle-glow)"
+            filter={`url(#${glowId})`}
             initial={{ opacity: 1, x: 0, y: 0, scale: 0.3 }}
             animate={{
               opacity: [1, 1, 0],
@@ -106,7 +110,7 @@ export function CartAddParticles() {
             }}
             transition={POP_FLY}
             style={{ transformOrigin: ORIGIN }}
-            filter="url(#cart-particle-glow)"
+            filter={`url(#${glowId})`}
           >
             <path
               d={STAR_PATH}
