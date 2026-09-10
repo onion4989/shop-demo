@@ -11,6 +11,13 @@ const ARC_STEPS = 24
 const PINK = '#E4007E'
 const CART_FLY_SEL = '[data-cart-fly-target]'
 
+/** 弧飛行時のみ。遅延・薄さ・縮小で残像を作る */
+const GHOSTS = [
+  { delay: 0.04, opacity: 0.45, scale: 0.85 },
+  { delay: 0.08, opacity: 0.28, scale: 0.7 },
+  { delay: 0.12, opacity: 0.14, scale: 0.55 },
+] as const
+
 export type FlyPoint = { x: number; y: number }
 export type FlyPath = 'arc' | 'line'
 
@@ -59,6 +66,7 @@ export function CartFlyDot({
   const dy = to.y - from.y
   const endScale = DOT_END / DOT_START
   const half = DOT_START / 2
+  const showGhosts = path === 'arc'
 
   const pos =
     path === 'line'
@@ -69,35 +77,67 @@ export function CartFlyDot({
           return { x: xs, y: ys }
         })()
 
+  const baseStyle = {
+    left: from.x - half,
+    top: from.y - half,
+    width: DOT_START,
+    height: DOT_START,
+    backgroundColor: PINK,
+  } as const
+
   return createPortal(
-    <motion.div
-      aria-hidden
-      className="pointer-events-none fixed z-80 rounded-full"
-      style={{
-        left: from.x - half,
-        top: from.y - half,
-        width: DOT_START,
-        height: DOT_START,
-        backgroundColor: PINK,
-      }}
-      initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-      animate={{
-        x: pos.x,
-        y: pos.y,
-        scale: endScale,
-        opacity: [1, 1, 0],
-      }}
-      transition={{
-        duration: FLY_SEC,
-        ease: 'easeInOut',
-        opacity: {
+    <>
+      {showGhosts
+        ? GHOSTS.map((ghost, index) => (
+            <motion.div
+              key={index}
+              aria-hidden
+              className="pointer-events-none fixed z-80 rounded-full"
+              style={baseStyle}
+              initial={{ x: 0, y: 0, scale: ghost.scale, opacity: 0 }}
+              animate={{
+                x: pos.x,
+                y: pos.y,
+                scale: endScale * ghost.scale,
+                opacity: [0, ghost.opacity, ghost.opacity, 0],
+              }}
+              transition={{
+                duration: FLY_SEC,
+                delay: ghost.delay,
+                ease: 'easeInOut',
+                opacity: {
+                  duration: FLY_SEC,
+                  delay: ghost.delay,
+                  times: [0, 0.1, 0.85, 1],
+                  ease: 'easeOut',
+                },
+              }}
+            />
+          ))
+        : null}
+      <motion.div
+        aria-hidden
+        className="pointer-events-none fixed z-80 rounded-full"
+        style={baseStyle}
+        initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+        animate={{
+          x: pos.x,
+          y: pos.y,
+          scale: endScale,
+          opacity: [1, 1, 0],
+        }}
+        transition={{
           duration: FLY_SEC,
-          times: [0, 0.95, 1],
-          ease: 'easeOut',
-        },
-      }}
-      onAnimationComplete={onDone}
-    />,
+          ease: 'easeInOut',
+          opacity: {
+            duration: FLY_SEC,
+            times: [0, 0.95, 1],
+            ease: 'easeOut',
+          },
+        }}
+        onAnimationComplete={onDone}
+      />
+    </>,
     document.body,
   )
 }
