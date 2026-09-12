@@ -24,3 +24,4 @@ alwaysApply: true
 - UI / 配置: `.cursor/rules/frontend.mdc`
 - Prisma: `.cursor/rules/database.mdc`
 - カート: `.cursor/rules/cart.mdc`
+- デプロイ／Dokploy 復旧／本番 seed: `.cursor/rules/manual/deployment-ci-cd.md`
