@@ -1,4 +1,3 @@
-import { AuthProvider } from '@features/auth/AuthProvider'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
@@ -19,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`min-h-dvh antialiased ${inter.className}`}>
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </body>
     </html>
   )

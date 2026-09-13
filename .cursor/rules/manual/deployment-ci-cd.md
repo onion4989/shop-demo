@@ -53,7 +53,7 @@ GitHub Actions + GHCR + Dokploy の **本リポジトリ固有**の手順。
 | Actions 画面 | https://github.com/onion4989/shop-demo/actions |
 | Packages | https://github.com/onion4989?tab=packages |
 | 必須 Env（アプリ） | `POSTGRES_PRISMA_URL` / `POSTGRES_URL_NON_POOLING` |
-| 任意 Env（認証等） | `AUTH_SECRET` / `RESEND_API_KEY` / `EMAIL_FROM` / `NEXT_PUBLIC_APP_URL` など |
+| 任意 Env | `NEXT_PUBLIC_APP_URL` など（認証 Env は未使用） |
 | 起動時 migrate | `scripts/docker-entrypoint.sh` → `prisma migrate deploy` |
 | Seed コマンド | `npm run db:seed`（`prisma/seed.sql`） |
 | ローカル DB（compose） | `localhost:5433` / user・pass・db は `docker-compose.yml`（例: `shop`） |

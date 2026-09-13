@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 
 const PHOTO_DIR = '/assets/pages/top/footer/photos'
 const ICON_DIR = '/assets/pages/top/footer/icons'
@@ -153,12 +152,8 @@ export default function Footer() {
           <nav>
             <FooterHeading>MENU</FooterHeading>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/catalog">・商品一覧</Link>
-              </li>
-              <li>
-                <Link href="/contact">・お問い合わせ</Link>
-              </li>
+              <li>・商品一覧</li>
+              <li>・お問い合わせ</li>
             </ul>
           </nav>
           <nav>
