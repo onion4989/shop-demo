@@ -8,7 +8,7 @@ import {
   heroRoundBadges,
   heroRoundFallbacks,
 } from '@features/home/data/hero'
-import { getHomeHeroProducts } from '@features/home/Loaders'
+import { getHomeHeroProducts, type HomeProductRow } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
 
 type HeroOption = {
@@ -49,9 +49,7 @@ function formatPrice(price: number) {
   return `￥${Math.round(price).toLocaleString('ja-JP')}`
 }
 
-function buildHeroRoundItems(
-  products: Awaited<ReturnType<typeof getHomeHeroProducts>>,
-): HeroRoundItem[] {
+function buildHeroRoundItems(products: HomeProductRow[]): HeroRoundItem[] {
   return products.map((product, index) => {
     const thumb = product.images[0]?.thumbnailUrl
     const src = thumb ? resolveAssetPath(thumb) : ''
@@ -86,7 +84,8 @@ function buildHeroRoundFallbacks(): HeroRoundItem[] {
 }
 
 export async function Hero() {
-  const products = await getHomeHeroProducts()
+  const result = await getHomeHeroProducts()
+  const products = result.ok ? result.data : []
   const roundItems =
     products.length > 0
       ? buildHeroRoundItems(products)

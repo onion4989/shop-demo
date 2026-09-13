@@ -1,6 +1,7 @@
 # === 秘密 ===
 .env
 .env.*
+!.env.example
 **/*.pem
 **/*.key
 **/secrets.*

@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "",
-    "ignoreDeprecations": "5.0",
     "target": "ES2022",
     "lib": [
       "dom",
@@ -27,37 +25,37 @@
     "paths": {
       // 新しい推奨エイリアス（機能別レイアウト）
       "@app/*": [
-        "app/*"
+        "./app/*"
       ],
       "@features/*": [
-        "features/*"
+        "./features/*"
       ],
       "@components/*": [
-        "components/*"
+        "./components/*"
       ],
       "@lib/*": [
-        "lib/*"
+        "./lib/*"
       ],
       "@ui/*": [
-        "features/ui/*"
+        "./features/ui/*"
       ],
       // 互換レイヤ（既存の "@/..." インポートを当面許容）
       "@/*": [
         "./*"
       ],
       "@/components/*": [
-        "components/*"
+        "./components/*"
       ],
       "@/lib/*": [
-        "lib/*"
+        "./lib/*"
       ],
       "@/ui/*": [
-        "features/ui/*"
+        "./features/ui/*"
       ]
       /* 旧 "@/providers/*" や "@/cards/*" をまだ使っているなら、一時的に以下を追加してもOK
          ただし広すぎるマッピングになるので、最終的には置換で消すのが安全です。
-         "@/providers/*": ["features/auth/*"],
-         "@/cards/*": ["features/catalog/components/*"]
+         "@/providers/*": ["./features/auth/*"],
+         "@/cards/*": ["./features/catalog/components/*"]
       */
     }
   },

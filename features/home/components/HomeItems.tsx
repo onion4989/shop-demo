@@ -1,5 +1,7 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
+import { UnavailableProductsMessage } from '@features/home/components/UnavailableProductsMessage'
+import type { HomeProductRow } from '@features/home/Loaders'
 import {
   HomeItemsExpandablePhoto,
   LimitedItemBadge,
@@ -21,7 +23,7 @@ type ItemOption = {
   reservationRequired: boolean
 } | null
 
-type ItemProduct = Awaited<ReturnType<typeof getHomeItemsProducts>>[number]
+type ItemProduct = HomeProductRow
 
 function itemTags(option: ItemOption) {
   if (!option) return []
@@ -160,7 +162,17 @@ function ItemCategory({
 }
 
 export async function HomeItems() {
-  const products = await getHomeItemsProducts()
+  const result = await getHomeItemsProducts()
+
+  if (!result.ok) {
+    return (
+      <section className="mx-auto w-full max-w-[1200px] px-4 pb-0 md:pb-24 lg:px-0 lg:pb-32">
+        <UnavailableProductsMessage />
+      </section>
+    )
+  }
+
+  const products = result.data
 
   if (!products.length) {
     return (

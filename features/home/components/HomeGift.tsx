@@ -1,5 +1,6 @@
 import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
 import { HomeGiftExpandablePhoto } from '@features/home/components/HomeGiftExpandablePhoto'
+import { UnavailableProductsMessage } from '@features/home/components/UnavailableProductsMessage'
 import {
   HOME_GIFT_DESKTOP_SLOTS,
   HOME_GIFT_MOBILE_SLOTS,
@@ -58,7 +59,21 @@ function formatPrice(price: number) {
 }
 
 export async function HomeGift() {
-  const products = await getHomeGiftProducts()
+  const result = await getHomeGiftProducts()
+  if (!result.ok) {
+    return (
+      <section className="relative mb-[var(--space-drop-deco)] bg-gradient-to-b from-[#FBDCC0] to-[#F4B2BA]">
+        <div className="relative mx-auto w-full max-w-[1200px] px-4 lg:px-0">
+          <h2 className="pt-[30px] pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
+            ギフト / Gift
+          </h2>
+          <UnavailableProductsMessage />
+        </div>
+      </section>
+    )
+  }
+
+  const products = result.data
   const byId = new Map(products.map((product) => [product.productId, product]))
 
   function renderSlot(slot: GiftSlot, layout: 'mobile' | 'desktop') {

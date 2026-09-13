@@ -1,14 +1,21 @@
 import { getTopProducts } from '@features/catalog/Loaders'
 import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
+import { UnavailableProductsMessage } from '@features/home/components/UnavailableProductsMessage'
 import { MobileRankingList } from './MobileRankingList'
 import { ProductsCarousel } from './ProductsCarousel'
 
 export default async function ProductsItems() {
-  const products = await getTopProducts(10)
+  const result = await getTopProducts(10)
 
-  if (!products.length) {
+  if (!result.ok) {
+    return <UnavailableProductsMessage />
+  }
+
+  if (!result.data.length) {
     return <EmptyProductsMessage />
   }
+
+  const products = result.data
 
   return (
     <div className="mx-auto w-full max-w-[708px] md:px-0 lg:max-w-none">

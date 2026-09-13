@@ -11,7 +11,8 @@
     "db:migrate": "npx prisma migrate deploy",
     "db:seed": "npx prisma db execute --file prisma/seed.sql --schema prisma/schema.prisma",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
