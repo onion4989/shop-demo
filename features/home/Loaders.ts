@@ -28,11 +28,17 @@ export function getHomeGiftProducts() {
   const productIds = HOME_GIFT_SLOTS.map((slot) => slot.productId)
 
   return unstable_cache(
-    () =>
-      prisma.product.findMany({
-        where: { productId: { in: [...productIds] } },
-        select: HOME_PRODUCT_SELECT,
-      }),
+    async () => {
+      try {
+        return await prisma.product.findMany({
+          where: { productId: { in: [...productIds] } },
+          select: HOME_PRODUCT_SELECT,
+        })
+      } catch (error) {
+        console.error('[getHomeGiftProducts]', error)
+        return []
+      }
+    },
     ['home-gift-products'],
     { revalidate: 300 },
   )()
@@ -40,11 +46,17 @@ export function getHomeGiftProducts() {
 
 export function getHomeItemsProducts() {
   return unstable_cache(
-    () =>
-      prisma.product.findMany({
-        where: { productId: { in: [...HOME_ITEMS_PRODUCT_IDS] } },
-        select: HOME_PRODUCT_SELECT,
-      }),
+    async () => {
+      try {
+        return await prisma.product.findMany({
+          where: { productId: { in: [...HOME_ITEMS_PRODUCT_IDS] } },
+          select: HOME_PRODUCT_SELECT,
+        })
+      } catch (error) {
+        console.error('[getHomeItemsProducts]', error)
+        return []
+      }
+    },
     ['home-items-products'],
     { revalidate: 300 },
   )()
@@ -54,13 +66,19 @@ const HERO_ROUND_LIMIT = 5
 
 export function getHomeHeroProducts() {
   return unstable_cache(
-    () =>
-      prisma.product.findMany({
-        take: HERO_ROUND_LIMIT,
-        where: { recommend: { gt: 0 } },
-        orderBy: { recommend: 'asc' },
-        select: HOME_PRODUCT_SELECT,
-      }),
+    async () => {
+      try {
+        return await prisma.product.findMany({
+          take: HERO_ROUND_LIMIT,
+          where: { recommend: { gt: 0 } },
+          orderBy: { recommend: 'asc' },
+          select: HOME_PRODUCT_SELECT,
+        })
+      } catch (error) {
+        console.error('[getHomeHeroProducts]', error)
+        return []
+      }
+    },
     ['home-hero-products'],
     { revalidate: 300 },
   )()

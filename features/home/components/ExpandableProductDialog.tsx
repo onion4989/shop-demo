@@ -36,6 +36,20 @@ const TABLET_IMAGE_HEIGHT = 240
 const MOBILE_IMAGE_HEIGHT = 196
 const MOBILE_TEXT_HEIGHT = 210
 const SIDE_GUTTER = 16
+/** ダイアログ用。巨大 w= を避けつつ画質を確保 */
+const DIALOG_IMAGE_WIDTH = 640
+
+function dialogImageLoader({
+  src,
+  quality,
+}: {
+  src: string
+  width: number
+  quality?: number
+}) {
+  const q = quality ?? 75
+  return `/_next/image?url=${encodeURIComponent(src)}&w=${DIALOG_IMAGE_WIDTH}&q=${q}`
+}
 
 const IMAGE_DURATION = 0.55
 const TEXT_DURATION = 0.4
@@ -499,7 +513,6 @@ export function ExpandableProductDialog({
     : null
   const isCollapseText = phase === 'collapsing-text'
   const isCollapseImage = phase === 'collapsing-image'
-  const showTriggerEarly = isCollapseImage
   const showDialogTitle = !isCollapseImage
   const textAnimDur = isCollapseText ? CLOSE_TEXT_DUR : TEXT_DURATION
   const imageAnimDur = isCollapseImage ? CLOSE_IMAGE_DUR : IMAGE_DURATION
@@ -554,7 +567,7 @@ export function ExpandableProductDialog({
           desktopOnly
             ? 'max-md:pointer-events-none md:cursor-pointer'
             : 'cursor-pointer',
-          isOpen && !showTriggerEarly ? 'invisible' : 'group',
+          isOpen ? 'invisible' : 'group',
           triggerClassName,
         )}
       >
@@ -609,7 +622,7 @@ export function ExpandableProductDialog({
                     transition={{ duration: imageAnimDur, ease: EASE }}
                   >
                 <div
-                  className="relative w-full shrink-0"
+                  className="relative w-full shrink-0 bg-[#D2B48CB4]"
                   style={{
                     height: imageFillsCard ? '100%' : imageHeight,
                   }}
@@ -619,14 +632,12 @@ export function ExpandableProductDialog({
                       src={src}
                       alt={alt}
                       fill
-                      sizes={
-                        isDesktop ? `${layout?.width ?? DESKTOP_WIDTH}px` : '100vw'
-                      }
+                      priority
+                      loader={dialogImageLoader}
+                      sizes={`${DIALOG_IMAGE_WIDTH}px`}
                       className="object-cover"
                     />
-                  ) : (
-                    <div className="size-full bg-[#D2B48CB4]" />
-                  )}
+                  ) : null}
                   <div
                     className={cn(
                       'absolute inset-x-3 top-3 z-10 sm:inset-x-4 sm:top-4',

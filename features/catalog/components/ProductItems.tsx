@@ -1,4 +1,5 @@
 import { getTopProducts } from '@features/catalog/Loaders'
+import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
 import { MobileRankingList } from './MobileRankingList'
 import { ProductsCarousel } from './ProductsCarousel'
 
@@ -6,11 +7,7 @@ export default async function ProductsItems() {
   const products = await getTopProducts(10)
 
   if (!products.length) {
-    return (
-      <div className="my-24 text-center font-bold">
-        <p>登録された商品がありません。</p>
-      </div>
-    )
+    return <EmptyProductsMessage />
   }
 
   return (

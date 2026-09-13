@@ -61,3 +61,33 @@ export const heroRoundBadges: HeroBadge[] = [
   { label: '限定', color: '#FF2F00' },
   { label: '限定', color: '#FF2F00' },
 ]
+
+/** DB 未取得時の丸画像（本番と同ファイル） */
+export const heroRoundFallbacks = [
+  {
+    id: 'hero-round-01',
+    filename: 'img_top_hero-round_01.jpg',
+    alt: 'おすすめ商品 1',
+  },
+  {
+    id: 'hero-round-02',
+    filename: 'img_top_hero-round_02.jpg',
+    alt: 'おすすめ商品 2',
+  },
+  {
+    id: 'hero-round-03',
+    filename: 'img_top_hero-round_03.jpg',
+    alt: 'おすすめ商品 3',
+  },
+  {
+    id: 'hero-round-04',
+    filename: 'img_top_hero-round_04.jpg',
+    alt: 'おすすめ商品 4',
+  },
+  {
+    id: 'hero-round-05',
+    filename: 'img_top_hero-round_05.jpg',
+    alt: 'おすすめ商品 5',
+  },
+] as const
+

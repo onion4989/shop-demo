@@ -4,7 +4,10 @@ import {
   HeroRoundItems,
   type HeroRoundItem,
 } from '@features/home/components/HeroRoundItems'
-import { heroRoundBadges } from '@features/home/data/hero'
+import {
+  heroRoundBadges,
+  heroRoundFallbacks,
+} from '@features/home/data/hero'
 import { getHomeHeroProducts } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
 
@@ -56,6 +59,7 @@ function buildHeroRoundItems(
     const badge = heroRoundBadges[index] ?? heroRoundBadges[0]
 
     return {
+      id: product.productId,
       productId: product.productId,
       src,
       alt: title,
@@ -66,13 +70,27 @@ function buildHeroRoundItems(
       price: formatPrice(product.price),
       ingredients: heroIngredients(product.nutritionalInfo),
       badge,
+      interactive: true,
     }
   })
 }
 
+function buildHeroRoundFallbacks(): HeroRoundItem[] {
+  return heroRoundFallbacks.map((item, index) => ({
+    id: item.id,
+    src: resolveAssetPath(item.filename),
+    alt: item.alt,
+    badge: heroRoundBadges[index] ?? heroRoundBadges[0],
+    interactive: false,
+  }))
+}
+
 export async function Hero() {
   const products = await getHomeHeroProducts()
-  const roundItems = buildHeroRoundItems(products)
+  const roundItems =
+    products.length > 0
+      ? buildHeroRoundItems(products)
+      : buildHeroRoundFallbacks()
 
   return (
     <section className="relative -mt-[100px] flex h-[400px] max-h-[400px] w-full flex-col overflow-hidden md:h-[clamp(600px,calc(26.0417vw+400px),900px)] md:max-h-none">

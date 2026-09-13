@@ -1,6 +1,9 @@
 'use client'
 
-import { HeroRoundExpandablePhoto } from '@features/home/components/HeroRoundExpandablePhoto'
+import {
+  HeroCircleThumb,
+  HeroRoundExpandablePhoto,
+} from '@features/home/components/HeroRoundExpandablePhoto'
 import {
   type HeroBadge,
   HERO_ITEM_STAGGER,
@@ -23,19 +26,21 @@ function getIsMobile() {
 }
 
 export type HeroRoundItem = {
-  productId: string
+  id: string
   src: string
   alt: string
-  title: string
-  categoryName?: string
-  description: string
-  tags: string[]
-  price: string
-  ingredients: string
   badge: HeroBadge
+  interactive?: boolean
+  productId?: string
+  title?: string
+  categoryName?: string
+  description?: string
+  tags?: string[]
+  price?: string
+  ingredients?: string
 }
 
-function HeroBadge({ label, color }: HeroBadge) {
+function HeroBadgeMark({ label, color }: HeroBadge) {
   const width = 52
   const height = 23
   const svgHeight = 30
@@ -83,10 +88,13 @@ export function HeroRoundItems({ items }: HeroRoundItemsProps) {
     <div className="relative z-30 mx-auto flex w-full items-end justify-center gap-3 px-[50px] md:mb-6 md:w-fit md:max-w-none md:justify-center md:gap-5 md:px-0 lg:mb-8">
       {visibleItems.map((item, index) => {
         const itemDelay = HERO_ITEMS_START_DELAY + index * HERO_ITEM_STAGGER
+        const canOpen =
+          item.interactive !== false &&
+          Boolean(item.productId && item.title != null)
 
         return (
           <motion.div
-            key={item.productId}
+            key={item.id}
             className="relative size-20 shrink-0 md:size-[clamp(80px,calc(4.3403vw+46.667px),130px)]"
             initial={{ opacity: 0, y: 28, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -96,18 +104,22 @@ export function HeroRoundItems({ items }: HeroRoundItemsProps) {
               scale: { duration: 0.65, ease: 'backOut', delay: itemDelay },
             }}
           >
-            <HeroRoundExpandablePhoto
-              src={item.src}
-              alt={item.alt}
-              title={item.title}
-              productId={item.productId}
-              categoryName={item.categoryName}
-              description={item.description}
-              tags={item.tags}
-              price={item.price}
-              ingredients={item.ingredients}
-            />
-            <HeroBadge label={item.badge.label} color={item.badge.color} />
+            {canOpen ? (
+              <HeroRoundExpandablePhoto
+                src={item.src}
+                alt={item.alt}
+                title={item.title!}
+                productId={item.productId!}
+                categoryName={item.categoryName}
+                description={item.description ?? ''}
+                tags={item.tags ?? []}
+                price={item.price ?? ''}
+                ingredients={item.ingredients ?? ''}
+              />
+            ) : (
+              <HeroCircleThumb src={item.src} alt={item.alt} />
+            )}
+            <HeroBadgeMark label={item.badge.label} color={item.badge.color} />
           </motion.div>
         )
       })}

@@ -11,6 +11,9 @@ import { useState } from 'react'
 const TITLE_BADGE_CLASS =
   'absolute top-4 left-4 z-10 flex items-center justify-center rounded-[24px] bg-white/25 px-2.5 py-2 text-md font-bold text-[black] backdrop-blur-md'
 
+const IMAGE_SIZES_MOBILE = '(max-width: 767px) 50vw, 384px'
+const IMAGE_SIZES_DESKTOP = '(max-width: 1024px) 50vw, 384px'
+
 type HomeGiftExpandablePhotoProps = {
   src: string
   alt: string
@@ -22,6 +25,39 @@ type HomeGiftExpandablePhotoProps = {
   tags: string[]
   price: string
   ingredients: string
+}
+
+function GiftThumbFace({
+  src,
+  alt,
+  layout,
+  title,
+  showTitle,
+}: {
+  src: string
+  alt: string
+  layout: 'mobile' | 'desktop'
+  title: string
+  showTitle?: boolean
+}) {
+  return (
+    <div className="relative size-full overflow-hidden">
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={layout === 'mobile' ? IMAGE_SIZES_MOBILE : IMAGE_SIZES_DESKTOP}
+          className="object-cover"
+        />
+      ) : (
+        <div className="size-full bg-[#D2B48CB4]" />
+      )}
+      {showTitle && layout === 'desktop' ? (
+        <span className={TITLE_BADGE_CLASS}>{title}</span>
+      ) : null}
+    </div>
+  )
 }
 
 export function HomeGiftExpandablePhoto({
@@ -38,6 +74,8 @@ export function HomeGiftExpandablePhoto({
 }: HomeGiftExpandablePhotoProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const titleMotion = thumbTitleMotionProps(isDialogOpen)
+  const imageSizes =
+    layout === 'mobile' ? IMAGE_SIZES_MOBILE : IMAGE_SIZES_DESKTOP
 
   const photo = (
     <ExpandableProductDialog
@@ -51,6 +89,16 @@ export function HomeGiftExpandablePhoto({
       ingredients={ingredients}
       titleBadgeTone="neutral"
       onOpenChange={setIsDialogOpen}
+      closeMotion="thumb-crossfade"
+      thumbPreview={
+        <GiftThumbFace
+          src={src}
+          alt={alt}
+          layout={layout}
+          title={title}
+          showTitle
+        />
+      }
       triggerClassName={cn(
         'relative h-full w-full overflow-hidden',
         layout === 'mobile' ? 'rounded-[10px]' : 'rounded-[25px]',
@@ -61,11 +109,7 @@ export function HomeGiftExpandablePhoto({
         src={src}
         alt={alt}
         fill
-        sizes={
-          layout === 'mobile'
-            ? '(max-width: 767px) 50vw, 384px'
-            : '(max-width: 1024px) 50vw, 384px'
-        }
+        sizes={imageSizes}
         className={IMAGE_HOVER_ZOOM}
       />
       {layout === 'desktop' ? (

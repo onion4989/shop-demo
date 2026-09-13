@@ -16,7 +16,7 @@ type HeroCircleThumbProps = {
   alt: string
 }
 
-function HeroCircleThumb({ src, alt }: HeroCircleThumbProps) {
+export function HeroCircleThumb({ src, alt }: HeroCircleThumbProps) {
   return (
     <div className="relative size-full overflow-hidden rounded-full border-3 border-white">
       <Image
