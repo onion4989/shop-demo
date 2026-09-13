@@ -1,10 +1,12 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
+import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
 import {
   HomeItemsExpandablePhoto,
   LimitedItemBadge,
 } from '@features/home/components/HomeItemsExpandablePhoto'
 import { HOME_ITEM_GROUPS, type Item, type ItemGroup } from '@features/home/data/itemGroups'
 import { getHomeItemsProducts } from '@features/home/Loaders'
+import { resolveAssetPath } from '@lib/utils'
 import Image from 'next/image'
 
 const ITEMS_DIR = '/assets/pages/top/items'
@@ -78,33 +80,44 @@ function ItemCard({
   item: Item
   product?: ItemProduct
 }) {
-  const src = `${ITEMS_DIR}/${folder}/${item.file}`
+  if (!item.productId) {
+    return (
+      <div className="flex w-full flex-col items-center gap-1 md:w-[120px] lg:w-40 lg:gap-3">
+        <div className="relative size-[100px] md:size-[120px] lg:size-40">
+          <StaticItemThumb folder={folder} item={item} />
+          {item.limited ? <LimitedItemBadge /> : null}
+        </div>
+        <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] md:text-xs lg:text-sm">
+          {item.label}
+        </p>
+      </div>
+    )
+  }
+
+  if (!product) return null
+
+  const thumb = product.images[0]?.thumbnailUrl
+  const src = thumb ? resolveAssetPath(thumb) : ''
+  const label = flavorDisplayName(product.name) || item.label
 
   return (
     <div className="flex w-full flex-col items-center gap-1 md:w-[120px] lg:w-40 lg:gap-3">
       <div className="relative size-[100px] md:size-[120px] lg:size-40">
-        {product ? (
-          <HomeItemsExpandablePhoto
-            src={src}
-            alt={item.label}
-            title={flavorDisplayName(product.name)}
-            productId={product.productId}
-            categoryName={product.category?.name}
-            description={product.description ?? ''}
-            tags={itemTags(product.option)}
-            price={formatPrice(product.price)}
-            ingredients={itemIngredients(product.nutritionalInfo)}
-            limited={item.limited}
-          />
-        ) : (
-          <>
-            <StaticItemThumb folder={folder} item={item} />
-            {item.limited ? <LimitedItemBadge /> : null}
-          </>
-        )}
+        <HomeItemsExpandablePhoto
+          src={src}
+          alt={label}
+          title={label}
+          productId={product.productId}
+          categoryName={product.category?.name}
+          description={product.description ?? ''}
+          tags={itemTags(product.option)}
+          price={formatPrice(product.price)}
+          ingredients={itemIngredients(product.nutritionalInfo)}
+          limited={item.limited}
+        />
       </div>
       <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] md:text-xs lg:text-sm">
-        {item.label}
+        {label}
       </p>
     </div>
   )
@@ -117,6 +130,21 @@ function ItemCategory({
   group: ItemGroup
   productsById: Map<string, ItemProduct>
 }) {
+  const cards = group.items
+    .map((item) => (
+      <ItemCard
+        key={item.file}
+        folder={group.folder}
+        item={item}
+        product={
+          item.productId ? productsById.get(item.productId) : undefined
+        }
+      />
+    ))
+    .filter(Boolean)
+
+  if (cards.length === 0) return null
+
   return (
     <section className={group.wide ? 'lg:col-span-2' : undefined}>
       <h2 className="pb-[10px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:pb-[20px] lg:text-[32px]">
@@ -125,16 +153,7 @@ function ItemCategory({
       <div
         className={`grid grid-cols-3 gap-x-4 gap-y-[18px] rounded-[15px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:rounded-[25px] md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
       >
-        {group.items.map((item) => (
-          <ItemCard
-            key={item.file}
-            folder={group.folder}
-            item={item}
-            product={
-              item.productId ? productsById.get(item.productId) : undefined
-            }
-          />
-        ))}
+        {cards}
       </div>
     </section>
   )
@@ -142,6 +161,15 @@ function ItemCategory({
 
 export async function HomeItems() {
   const products = await getHomeItemsProducts()
+
+  if (!products.length) {
+    return (
+      <section className="mx-auto w-full max-w-[1200px] px-4 pb-0 md:pb-24 lg:px-0 lg:pb-32">
+        <EmptyProductsMessage />
+      </section>
+    )
+  }
+
   const productsById = new Map(
     products.map((product) => [product.productId, product]),
   )

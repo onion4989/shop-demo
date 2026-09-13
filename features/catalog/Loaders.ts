@@ -113,33 +113,40 @@ export function getNutritionalInfoCached(productId: string) {
 // 参考）トップ用は引数（limit）で結果が変わるので、limit もキーに含める
 export function getTopProducts(limit = 9) {
   return unstable_cache(
-    () => prisma.product.findMany({
-      take: limit,
-      where: { recommend: { gt: 0 } },
-      orderBy: { recommend: "asc" },
-      select: {
-        id: true,
-        productId: true,
-        name: true,
-        price: true,
-        recommend: true,
-        description: true,
-        category: { select: { name: true } },
-        images: { select: { thumbnailUrl: true } },
-        nutritionalInfo: { select: { ingredients: true } },
-        option: {
-            select: {
-              giftAvailable: true,
-              seasonal: true,
-              bulkPurchase: true,
-              frozenDelivery: true,
-              couponAvailable: true,
-              shippingAvailable: true,
-              reservationRequired: true,
+    async () => {
+      try {
+        return await prisma.product.findMany({
+          take: limit,
+          where: { recommend: { gt: 0 } },
+          orderBy: { recommend: "asc" },
+          select: {
+            id: true,
+            productId: true,
+            name: true,
+            price: true,
+            recommend: true,
+            description: true,
+            category: { select: { name: true } },
+            images: { select: { thumbnailUrl: true } },
+            nutritionalInfo: { select: { ingredients: true } },
+            option: {
+              select: {
+                giftAvailable: true,
+                seasonal: true,
+                bulkPurchase: true,
+                frozenDelivery: true,
+                couponAvailable: true,
+                shippingAvailable: true,
+                reservationRequired: true,
+              },
             },
-        },
-      },
-    }),
+          },
+        });
+      } catch (error) {
+        console.error("[getTopProducts]", error);
+        return [];
+      }
+    },
     ["top-products", "ranked", "with-category", String(limit)],
     { revalidate: 300 }
   )();

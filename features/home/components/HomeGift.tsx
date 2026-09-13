@@ -1,3 +1,4 @@
+import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
 import { HomeGiftExpandablePhoto } from '@features/home/components/HomeGiftExpandablePhoto'
 import {
   HOME_GIFT_DESKTOP_SLOTS,
@@ -99,12 +100,22 @@ export async function HomeGift() {
           <h2 className="pt-[30px] pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]">
             ギフト / Gift
           </h2>
-          <div className="grid grid-cols-2 gap-2 pb-8 md:hidden">
-            {HOME_GIFT_MOBILE_SLOTS.map((slot) => renderSlot(slot, 'mobile'))}
-          </div>
-          <div className="hidden gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
-            {HOME_GIFT_DESKTOP_SLOTS.map((slot) => renderSlot(slot, 'desktop'))}
-          </div>
+          {products.length === 0 ? (
+            <EmptyProductsMessage />
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-2 pb-8 md:hidden">
+                {HOME_GIFT_MOBILE_SLOTS.map((slot) =>
+                  renderSlot(slot, 'mobile'),
+                )}
+              </div>
+              <div className="hidden gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[280px_280px_128px]">
+                {HOME_GIFT_DESKTOP_SLOTS.map((slot) =>
+                  renderSlot(slot, 'desktop'),
+                )}
+              </div>
+            </>
+          )}
         </div>
 
         <img
