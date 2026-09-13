@@ -25,3 +25,33 @@ alwaysApply: true
 - Prisma: `.cursor/rules/database.mdc`
 - カート: `.cursor/rules/cart.mdc`
 - デプロイ／Dokploy 復旧／本番 seed: `.cursor/rules/manual/deployment-ci-cd.md`
+
+# 要件の適用
+正本: `~/projects/_knowledge/10-standards/web-requirements.md`
+文書の体裁: `~/projects/_knowledge/10-standards/doc-writing.md`
+段階: デモ
+画面確認: `~/projects/_knowledge/10-standards/viewport-check.md`
+- モバイル 幅 390 × 高さ 844
+- タブレット 幅 768 × 高さ 1024
+- デスクトップ 幅 1440 × 高さ 800
+決定: `~/projects/_knowledge/40-decisions/web-requirements-2026-09.md`
+
+【このプロジェクトで必須（デモ）】
+・上記3サイズでの主要画面確認、見た目の安定、基本の Meta
+・秘密情報をコードに書かない、XSS 等の基本対策、seed は架空のみ
+・画像の最適化、DB 接続の単一入口
+・デモだと分かる表示、価格など正しい値の置き場所の明示
+・lint と型チェック、デプロイの戻し方が分かること（`.cursor/rules/manual/deployment-ci-cd.md`）
+
+【このプロジェクトで免除（デモ。本番化までやらない）】
+・実支払い・注文の DB 保存・購入完了の実メール
+・本格的なエラー監視ツール、E2E／単体テストの必須化
+・応答ヘッダーの厳密な内容制限、アクセシビリティの全ページ監査
+・プライバシーポリシー必須（サーバーに新しい個人情報を貯めない前提）
+・管理画面の改修・DB スキーマ変更（依頼があるまで触らない）
+
+【本番または試験公開へ上げるときに先に足すもの】
+・権限のサーバー確認の棚卸し、連続アクセスの抑制、基本的な安全ヘッダー
+・異常検知、生存確認、バックアップ
+・lint／型チェックを通さないまま本番へ出さないこと
+・シェア用の見た目、検索案内ファイル、法律・案内文（収集・販売に応じて）
