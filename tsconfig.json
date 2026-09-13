@@ -52,11 +52,6 @@
       "@/ui/*": [
         "./features/ui/*"
       ]
-      /* 旧 "@/providers/*" や "@/cards/*" をまだ使っているなら、一時的に以下を追加してもOK
-         ただし広すぎるマッピングになるので、最終的には置換で消すのが安全です。
-         "@/providers/*": ["./features/auth/*"],
-         "@/cards/*": ["./features/catalog/components/*"]
-      */
     }
   },
   "include": [

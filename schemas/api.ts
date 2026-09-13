@@ -36,24 +36,3 @@ export const SearchQuerySchema = z.object({
       return Math.min(100, Math.max(1, num));
     }),
 });
-
-/**
- * 管理者商品検索API用のバリデーションスキーマ
- */
-export const AdminProductSearchSchema = z.object({
-  keyword: z.string().optional(),
-  categoryId: z.string().nullable().optional(),
-  priceRange: z
-    .enum(["ALL", "UNDER_500", "BETWEEN_500_999", "BETWEEN_1000_1999", "OVER_2000"])
-    .optional()
-    .default("ALL"),
-  giftAvailable: z.boolean().optional().default(false),
-  seasonal: z.boolean().optional().default(false),
-  bulkPurchase: z.boolean().optional().default(false),
-  frozenDelivery: z.boolean().optional().default(false),
-  couponAvailable: z.boolean().optional().default(false),
-  shippingAvailable: z.boolean().optional().default(false),
-  reservationRequired: z.boolean().optional().default(false),
-  recommendedOnly: z.boolean().optional().default(false),
-});
-

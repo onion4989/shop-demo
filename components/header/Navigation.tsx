@@ -1,9 +1,6 @@
 import Link from 'next/link'
 
-const navLinks = [
-  { href: '/catalog', label: '商品一覧' },
-  { href: '/contact', label: 'お問い合わせ' },
-] as const
+const navLabels = ['商品一覧', 'お問い合わせ'] as const
 
 export default function Navigations() {
   return (
@@ -25,14 +22,13 @@ export default function Navigations() {
           className="hidden items-center gap-6 md:flex lg:gap-8"
           aria-label="グローバルナビ"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-[#2B56FF] transition-opacity hover:opacity-70"
+          {navLabels.map((label) => (
+            <span
+              key={label}
+              className="text-sm font-medium text-[#2B56FF]"
             >
-              {link.label}
-            </Link>
+              {label}
+            </span>
           ))}
         </nav>
       </header>
