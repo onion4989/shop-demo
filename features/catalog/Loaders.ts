@@ -1,6 +1,7 @@
 // features/catalog/Loaders.ts
-import { unstable_cache } from "next/cache";
+import type { LoadResult } from "@lib/server/loadResult";
 import { prisma } from "@lib/server/prisma"; // 既に用意済みの Prisma シングルトン
+import { unstable_cache } from "next/cache";
 
 // ✅ 商品詳細：IDごとにキャッシュ
 export function getProductDetailCached(productId: string) {
@@ -111,45 +112,50 @@ export function getNutritionalInfoCached(productId: string) {
 }
 
 // 参考）トップ用は引数（limit）で結果が変わるので、limit もキーに含める
-export function getTopProducts(limit = 9) {
-  return unstable_cache(
-    async () => {
-      try {
-        return await prisma.product.findMany({
-          take: limit,
-          where: { recommend: { gt: 0 } },
-          orderBy: { recommend: "asc" },
-          select: {
-            id: true,
-            productId: true,
-            name: true,
-            price: true,
-            recommend: true,
-            description: true,
-            category: { select: { name: true } },
-            images: { select: { thumbnailUrl: true } },
-            nutritionalInfo: { select: { ingredients: true } },
-            option: {
-              select: {
-                giftAvailable: true,
-                seasonal: true,
-                bulkPurchase: true,
-                frozenDelivery: true,
-                couponAvailable: true,
-                shippingAvailable: true,
-                reservationRequired: true,
-              },
-            },
-          },
-        });
-      } catch (error) {
-        console.error("[getTopProducts]", error);
-        return [];
-      }
+export async function getTopProducts(
+  limit = 9,
+): Promise<LoadResult<Awaited<ReturnType<typeof fetchTopProducts>>>> {
+  try {
+    const data = await unstable_cache(
+      () => fetchTopProducts(limit),
+      ["top-products", "ranked", "with-category", String(limit)],
+      { revalidate: 300 },
+    )();
+    return { ok: true, data };
+  } catch (error) {
+    console.error("[getTopProducts]", error);
+    return { ok: false, reason: "unavailable" };
+  }
+}
+
+function fetchTopProducts(limit: number) {
+  return prisma.product.findMany({
+    take: limit,
+    where: { recommend: { gt: 0 } },
+    orderBy: { recommend: "asc" },
+    select: {
+      id: true,
+      productId: true,
+      name: true,
+      price: true,
+      recommend: true,
+      description: true,
+      category: { select: { name: true } },
+      images: { select: { thumbnailUrl: true } },
+      nutritionalInfo: { select: { ingredients: true } },
+      option: {
+        select: {
+          giftAvailable: true,
+          seasonal: true,
+          bulkPurchase: true,
+          frozenDelivery: true,
+          couponAvailable: true,
+          shippingAvailable: true,
+          reservationRequired: true,
+        },
+      },
     },
-    ["top-products", "ranked", "with-category", String(limit)],
-    { revalidate: 300 }
-  )();
+  });
 }
 
 // ✅ カテゴリ一覧：固定データなので固定キーでOK（5〜10分程度で十分）

@@ -1,5 +1,6 @@
 import { HOME_ITEMS_PRODUCT_IDS } from '@features/home/data/itemGroups'
 import { HOME_GIFT_SLOTS } from '@features/home/data/giftSlots'
+import type { LoadResult } from '@lib/server/loadResult'
 import { prisma } from '@lib/server/prisma'
 import { unstable_cache } from 'next/cache'
 
@@ -24,62 +25,60 @@ const HOME_PRODUCT_SELECT = {
   option: { select: PRODUCT_OPTION_SELECT },
 } as const
 
-export function getHomeGiftProducts() {
+function fetchHomeGift() {
   const productIds = HOME_GIFT_SLOTS.map((slot) => slot.productId)
-
-  return unstable_cache(
-    async () => {
-      try {
-        return await prisma.product.findMany({
-          where: { productId: { in: [...productIds] } },
-          select: HOME_PRODUCT_SELECT,
-        })
-      } catch (error) {
-        console.error('[getHomeGiftProducts]', error)
-        return []
-      }
-    },
-    ['home-gift-products'],
-    { revalidate: 300 },
-  )()
+  return prisma.product.findMany({
+    where: { productId: { in: [...productIds] } },
+    select: HOME_PRODUCT_SELECT,
+  })
 }
 
-export function getHomeItemsProducts() {
-  return unstable_cache(
-    async () => {
-      try {
-        return await prisma.product.findMany({
-          where: { productId: { in: [...HOME_ITEMS_PRODUCT_IDS] } },
-          select: HOME_PRODUCT_SELECT,
-        })
-      } catch (error) {
-        console.error('[getHomeItemsProducts]', error)
-        return []
-      }
-    },
-    ['home-items-products'],
-    { revalidate: 300 },
-  )()
+function fetchHomeItems() {
+  return prisma.product.findMany({
+    where: { productId: { in: [...HOME_ITEMS_PRODUCT_IDS] } },
+    select: HOME_PRODUCT_SELECT,
+  })
 }
 
 const HERO_ROUND_LIMIT = 5
 
+function fetchHomeHero() {
+  return prisma.product.findMany({
+    take: HERO_ROUND_LIMIT,
+    where: { recommend: { gt: 0 } },
+    orderBy: { recommend: 'asc' },
+    select: HOME_PRODUCT_SELECT,
+  })
+}
+
+export type HomeProductRow = Awaited<ReturnType<typeof fetchHomeGift>>[number]
+
+async function wrapCached<T>(
+  key: string[],
+  query: () => Promise<T>,
+  label: string,
+): Promise<LoadResult<T>> {
+  try {
+    const data = await unstable_cache(query, key, { revalidate: 300 })()
+    return { ok: true, data }
+  } catch (error) {
+    console.error(`[${label}]`, error)
+    return { ok: false, reason: 'unavailable' }
+  }
+}
+
+export function getHomeGiftProducts() {
+  return wrapCached(['home-gift-products'], fetchHomeGift, 'getHomeGiftProducts')
+}
+
+export function getHomeItemsProducts() {
+  return wrapCached(
+    ['home-items-products'],
+    fetchHomeItems,
+    'getHomeItemsProducts',
+  )
+}
+
 export function getHomeHeroProducts() {
-  return unstable_cache(
-    async () => {
-      try {
-        return await prisma.product.findMany({
-          take: HERO_ROUND_LIMIT,
-          where: { recommend: { gt: 0 } },
-          orderBy: { recommend: 'asc' },
-          select: HOME_PRODUCT_SELECT,
-        })
-      } catch (error) {
-        console.error('[getHomeHeroProducts]', error)
-        return []
-      }
-    },
-    ['home-hero-products'],
-    { revalidate: 300 },
-  )()
+  return wrapCached(['home-hero-products'], fetchHomeHero, 'getHomeHeroProducts')
 }

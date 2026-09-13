@@ -3,23 +3,22 @@ import { prisma } from '@lib/server/prisma'
 import { resolveAssetPath } from '@lib/utils'
 import { unstable_cache } from 'next/cache'
 
-export async function getCartCatalog(): Promise<CartCatalogItem[]> {
-  const products = await unstable_cache(
-    () =>
-      prisma.product.findMany({
-        select: {
-          productId: true,
-          name: true,
-          price: true,
-          category: { select: { categoryId: true, name: true } },
-          images: { select: { thumbnailUrl: true } },
-          option: { select: { shippingAvailable: true } },
-        },
-      }),
-    ['cart-catalog'],
-    { revalidate: 300 },
-  )()
+function fetchCartProducts() {
+  return prisma.product.findMany({
+    select: {
+      productId: true,
+      name: true,
+      price: true,
+      category: { select: { categoryId: true, name: true } },
+      images: { select: { thumbnailUrl: true } },
+      option: { select: { shippingAvailable: true } },
+    },
+  })
+}
 
+function toCartItems(
+  products: Awaited<ReturnType<typeof fetchCartProducts>>,
+): CartCatalogItem[] {
   return products.map((product) => ({
     productId: product.productId,
     name: product.name,
@@ -29,4 +28,16 @@ export async function getCartCatalog(): Promise<CartCatalogItem[]> {
     categoryName: product.category.name,
     shippingAvailable: product.option?.shippingAvailable ?? false,
   }))
+}
+
+export async function getCartCatalog(): Promise<CartCatalogItem[]> {
+  try {
+    const products = await unstable_cache(fetchCartProducts, ['cart-catalog'], {
+      revalidate: 300,
+    })()
+    return toCartItems(products)
+  } catch (error) {
+    console.error('[getCartCatalog]', error)
+    return []
+  }
 }
