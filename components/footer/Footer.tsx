@@ -113,7 +113,7 @@ export default function Footer() {
                 alt={STORE_PHOTOS[0].alt}
                 className="mx-auto h-[300px] w-full max-w-[342px] md:mx-0 md:max-w-none lg:max-w-none lg:min-h-0 lg:flex-1"
               />
-              <div className="hidden h-[60px] w-full shrink-0 items-center justify-start gap-5 rounded-[10px] bg-[#838383] px-5 md:flex lg:justify-between lg:px-2.5">
+              <div className="hidden h-[60px] w-full shrink-0 items-center justify-start gap-5 rounded-[10px] bg-white/80 px-5 md:flex lg:justify-between lg:px-2.5">
                 {SNS_ICONS.map((icon) => (
                   <Image
                     key={icon.file}

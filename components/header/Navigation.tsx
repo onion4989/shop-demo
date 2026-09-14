@@ -25,7 +25,7 @@ export default function Navigations() {
           {navLabels.map((label) => (
             <span
               key={label}
-              className="text-sm font-medium text-[#2B56FF]"
+              className="text-sm font-medium text-black"
             >
               {label}
             </span>
