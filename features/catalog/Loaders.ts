@@ -2,8 +2,9 @@
 import type { LoadResult } from "@lib/server/loadResult";
 import { prisma } from "@lib/server/prisma"; // 既に用意済みの Prisma シングルトン
 import { unstable_cache } from "next/cache";
+import { cache } from "react";
 
-// ✅ 商品詳細：IDごとにキャッシュ
+// ✅ 商品詳細：IDごとにキャッシュ（栄養も含め 1 クエリ）
 export function getProductDetailCached(productId: string) {
   return unstable_cache(
     async () => {
@@ -26,93 +27,32 @@ export function getProductDetailCached(productId: string) {
               imageUrl_6: true,
             },
           },
-        },
-      });
-    },
-    ["product-detail", productId],
-    { revalidate: 300 }
-  )();
-}
-
-// ✅ 管理画面の編集詳細：IDごとにキャッシュ
-export function getDashboardProductCached(productId: string) {
-  return unstable_cache(
-    async () => {
-      return prisma.product.findUnique({
-        where: { productId },
-        select: {
-          productId: true,
-          name: true,
-          price: true,
-          description: true,
-          images: {
+          nutritionalInfo: {
             select: {
-              thumbnailUrl: true,
-              imageUrl_1: true,
-              imageUrl_2: true,
-              imageUrl_3: true,
-              imageUrl_4: true,
-              imageUrl_5: true,
-              imageUrl_6: true,
-            },
-          },
-          category: { select: { name: true, categoryId: true } },
-          option: {
-            select: {
-              giftAvailable: true,
-              seasonal: true,
-              bulkPurchase: true,
-              frozenDelivery: true,
-              couponAvailable: true,
-              shippingAvailable: true,
-              reservationRequired: true,
+              energy: true,
+              protein: true,
+              fat: true,
+              carbohydrates: true,
+              saltEquivalent: true,
+              allergen: true,
             },
           },
         },
       });
     },
-    ["dashboard-product", productId],
+    ["product-detail-with-nutri", productId],
     { revalidate: 300 }
   )();
 }
 
-// ✅ オプション：IDごとにキャッシュ
-export function getOptionsCached(productId: string) {
-  return unstable_cache(
-    async () => {
-      return prisma.option.findUnique({
-        where: { productId },
-        select: {
-          giftAvailable: true,
-          seasonal: true,
-          bulkPurchase: true,
-          frozenDelivery: true,
-          couponAvailable: true,
-          shippingAvailable: true,
-          reservationRequired: true,
-        },
-      });
-    },
-    ["product-options", productId],
-    { revalidate: 300 }
-  )();
-}
+export type ProductDetail = NonNullable<
+  Awaited<ReturnType<typeof getProductDetailCached>>
+>;
 
-// ✅ 栄養情報：IDごとにキャッシュ
-export function getNutritionalInfoCached(productId: string) {
-  return unstable_cache(
-    async () => {
-      return prisma.nutritionalInfo.findUnique({
-        where: { productId },
-      });
-    },
-    ["product-nutri", productId],
-    { revalidate: 300 }
-  )();
-}
+export type ProductNutriRow = ProductDetail["nutritionalInfo"][number];
 
-// 参考）トップ用は引数（limit）で結果が変わるので、limit もキーに含める
-export async function getTopProducts(
+// Top / Hero 共用: recommend 上位。同一リクエスト内は React cache で 1 回にまとめる
+export const getTopProducts = cache(async function getTopProducts(
   limit = 9,
 ): Promise<LoadResult<Awaited<ReturnType<typeof fetchTopProducts>>>> {
   try {
@@ -126,7 +66,9 @@ export async function getTopProducts(
     console.error("[getTopProducts]", error);
     return { ok: false, reason: "unavailable" };
   }
-}
+});
+
+export type TopProduct = Awaited<ReturnType<typeof fetchTopProducts>>[number];
 
 function fetchTopProducts(limit: number) {
   return prisma.product.findMany({
@@ -156,18 +98,4 @@ function fetchTopProducts(limit: number) {
       },
     },
   });
-}
-
-// ✅ カテゴリ一覧：固定データなので固定キーでOK（5〜10分程度で十分）
-export function getCategoriesCached() {
-  return unstable_cache(
-    async () => {
-      return prisma.category.findMany({
-        select: { id: true, categoryId: true, name: true },
-        orderBy: { name: "asc" },
-      });
-    },
-    ["categories"],
-    { revalidate: 600 } // 10分
-  )();
 }

@@ -16,7 +16,7 @@ export async function GET(req: Request) {
       price: searchParams.get("price") ?? "",
       options: searchParams.get("options") ?? "",
       page: searchParams.get("page") ?? "1",
-      limit: searchParams.get("limit") ?? "50",
+      limit: searchParams.get("limit") ?? "30",
     };
     
     const validated = SearchQuerySchema.safeParse(params);

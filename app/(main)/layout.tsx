@@ -21,6 +21,7 @@ export default async function MainLayout({
       {children}
       <Footer />
       <FooterBar />
+      {/* デモ: 全ページで全件カタログを渡す（features/cart/Loaders の方針） */}
       <CartShell catalog={cartCatalog} />
     </Providers>
   )

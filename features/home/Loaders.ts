@@ -1,3 +1,4 @@
+import { getTopProducts } from '@features/catalog/Loaders'
 import { HOME_ITEMS_PRODUCT_IDS } from '@features/home/data/itemGroups'
 import { HOME_GIFT_SLOTS } from '@features/home/data/giftSlots'
 import type { LoadResult } from '@lib/server/loadResult'
@@ -41,15 +42,7 @@ function fetchHomeItems() {
 }
 
 const HERO_ROUND_LIMIT = 5
-
-function fetchHomeHero() {
-  return prisma.product.findMany({
-    take: HERO_ROUND_LIMIT,
-    where: { recommend: { gt: 0 } },
-    orderBy: { recommend: 'asc' },
-    select: HOME_PRODUCT_SELECT,
-  })
-}
+const TOP_PRODUCT_LIMIT = 10
 
 export type HomeProductRow = Awaited<ReturnType<typeof fetchHomeGift>>[number]
 
@@ -79,6 +72,12 @@ export function getHomeItemsProducts() {
   )
 }
 
-export function getHomeHeroProducts() {
-  return wrapCached(['home-hero-products'], fetchHomeHero, 'getHomeHeroProducts')
+/** Hero 用。正本は getTopProducts(10)。先頭 5 件のみ返す */
+export async function getHomeHeroProducts() {
+  const result = await getTopProducts(TOP_PRODUCT_LIMIT)
+  if (!result.ok) return result
+  return {
+    ok: true as const,
+    data: result.data.slice(0, HERO_ROUND_LIMIT),
+  }
 }
