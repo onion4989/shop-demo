@@ -14,6 +14,7 @@ export default function InputTerm() {
   const handleSearch = useDebouncedCallback((term) => {
     const params = new URLSearchParams(searchParams);
     params.delete("query");
+    params.delete("page");
     if (term) params.set("query", term);
     replace(`${pathname}?${params.toString()}`, { scroll:false });
   }, 300);

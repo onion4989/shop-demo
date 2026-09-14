@@ -33,6 +33,7 @@ export default function SelectPrice() {
     } else {
       params.delete("price");
     }
+    params.delete("page");
 
     replace(`${pathname}?${params.toString()}`);
   };

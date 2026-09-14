@@ -20,6 +20,7 @@ export default function CheackdOptions() {
     } else {
       params.delete("options");
     }
+    params.delete("page");
     replace(`${pathname}?${params.toString()}`);
   }
 

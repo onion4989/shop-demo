@@ -1,36 +1,23 @@
 // features/catalog/components/ProductDetailInfo.tsx
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { getProductDetailCached } from "@features/catalog/Loaders";
+import type { ProductDetail } from "@features/catalog/Loaders";
 import { resolveAssetPath } from "@/lib/utils";
+import Image from "next/image";
 
-export default async function ProductDetailInfo({
-  productId,
+export default function ProductDetailInfo({
+  product,
 }: {
-  productId: string;
+  product: ProductDetail;
 }) {
-  const product = await getProductDetailCached(productId);
-
-  if (!product) {
-    notFound();
-  }
-
-  // 画像が存在しない場合のエラーハンドリング
-  if (!product.images || product.images.length === 0 || !product.images[0]?.thumbnailUrl) {
-    notFound();
-  }
-
-  const hasImages = 
-    product.images.some((item) =>
-      [
-        item.imageUrl_1, 
-        item.imageUrl_2, 
-        item.imageUrl_3, 
-        item.imageUrl_4, 
-        item.imageUrl_5, 
-        item.imageUrl_6
-      ].some((url) => url !== null)
-    );
+  const hasImages = product.images.some((item) =>
+    [
+      item.imageUrl_1,
+      item.imageUrl_2,
+      item.imageUrl_3,
+      item.imageUrl_4,
+      item.imageUrl_5,
+      item.imageUrl_6,
+    ].some((url) => url !== null),
+  );
 
   return (
     <>
@@ -59,12 +46,12 @@ export default async function ProductDetailInfo({
         <div className="grid grid-cols-6 bg-gray-100 rounded-2xl my-6 p-4">
           {product.images.map((item, index) =>
             [
-              item.imageUrl_1, 
-              item.imageUrl_2, 
-              item.imageUrl_3, 
-              item.imageUrl_4, 
-              item.imageUrl_5, 
-              item.imageUrl_6
+              item.imageUrl_1,
+              item.imageUrl_2,
+              item.imageUrl_3,
+              item.imageUrl_4,
+              item.imageUrl_5,
+              item.imageUrl_6,
             ]
               .filter(Boolean)
               .map((url, i) => (
@@ -77,7 +64,7 @@ export default async function ProductDetailInfo({
                   className="rounded-large object-cover w-40 h-40"
                   priority={false}
                 />
-              ))
+              )),
           )}
         </div>
       )}
