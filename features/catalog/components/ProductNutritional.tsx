@@ -1,16 +1,11 @@
 // features/catalog/components/ProductNutritional.tsx
-//import { notFound } from "next/navigation";
-import { getNutritionalInfoCached } from "@features/catalog/Loaders";
+import type { ProductNutriRow } from "@features/catalog/Loaders";
 
-export default async function NutritionalTable({
-  productId,
+export default function NutritionalTable({
+  nutri,
 }: {
-  productId: string;
+  nutri?: ProductNutriRow | null;
 }) {
-  const product = await getNutritionalInfoCached(productId);
-  // if (!product) {
-  //   notFound();
-  // }
   return (
     <table className="block whitespace-nowrap">
       <thead>
@@ -26,9 +21,9 @@ export default async function NutritionalTable({
       <tbody>
         <tr className="flex gap-2 text-center p-2">
           <td className="w-[100px]">
-            {product?.energy ? (
+            {nutri?.energy ? (
               <>
-                {product?.energy}
+                {nutri.energy}
                 <span className="text-xs ml-1">kcal</span>
               </>
             ) : (
@@ -36,9 +31,9 @@ export default async function NutritionalTable({
             )}
           </td>
           <td className="w-[100px]">
-            {product?.protein ? (
+            {nutri?.protein ? (
               <>
-                {product?.protein}
+                {nutri.protein}
                 <span className="text-xs ml-1">g</span>
               </>
             ) : (
@@ -46,9 +41,9 @@ export default async function NutritionalTable({
             )}
           </td>
           <td className="w-[100px]">
-            {product?.fat ? (
+            {nutri?.fat ? (
               <>
-                {product?.fat}
+                {nutri.fat}
                 <span className="text-xs ml-1">g</span>
               </>
             ) : (
@@ -56,9 +51,9 @@ export default async function NutritionalTable({
             )}
           </td>
           <td className="w-[100px]">
-            {product?.carbohydrates ? (
+            {nutri?.carbohydrates ? (
               <>
-                {product?.carbohydrates}
+                {nutri.carbohydrates}
                 <span className="text-xs ml-1">g</span>
               </>
             ) : (
@@ -66,16 +61,16 @@ export default async function NutritionalTable({
             )}
           </td>
           <td className="w-[100px]">
-            {product?.saltEquivalent ? (
+            {nutri?.saltEquivalent ? (
               <>
-                {product?.saltEquivalent}
+                {nutri.saltEquivalent}
                 <span className="text-xs ml-1">g</span>
               </>
             ) : (
               "-"
             )}
           </td>
-          <td className="w-[200px]">{product?.allergen ? product?.allergen : "-"}</td>
+          <td className="w-[200px]">{nutri?.allergen ? nutri.allergen : "-"}</td>
         </tr>
       </tbody>
     </table>

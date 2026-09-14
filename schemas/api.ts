@@ -32,7 +32,7 @@ export const SearchQuerySchema = z.object({
     .string()
     .optional()
     .transform((val) => {
-      const num = parseInt(val || "50", 10);
+      const num = parseInt(val || "30", 10);
       return Math.min(100, Math.max(1, num));
     }),
 });

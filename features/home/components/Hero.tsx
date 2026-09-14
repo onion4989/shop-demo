@@ -1,4 +1,5 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
+import type { TopProduct } from '@features/catalog/Loaders'
 import { HeroFanCards } from '@features/home/components/HeroFanCards'
 import {
   HeroRoundItems,
@@ -8,7 +9,7 @@ import {
   heroRoundBadges,
   heroRoundFallbacks,
 } from '@features/home/data/hero'
-import { getHomeHeroProducts, type HomeProductRow } from '@features/home/Loaders'
+import { getHomeHeroProducts } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
 
 type HeroOption = {
@@ -49,7 +50,7 @@ function formatPrice(price: number) {
   return `￥${Math.round(price).toLocaleString('ja-JP')}`
 }
 
-function buildHeroRoundItems(products: HomeProductRow[]): HeroRoundItem[] {
+function buildHeroRoundItems(products: TopProduct[]): HeroRoundItem[] {
   return products.map((product, index) => {
     const thumb = product.images[0]?.thumbnailUrl
     const src = thumb ? resolveAssetPath(thumb) : ''

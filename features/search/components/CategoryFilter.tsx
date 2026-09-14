@@ -39,6 +39,7 @@ export default function SelectCategory({ category }: { category: CategoryProps }
       } else {
         params.delete("category");
       }
+      params.delete("page");
 
       // 非ブロッキングにルーター更新（スクロールなし）
       startTransition(() => {
