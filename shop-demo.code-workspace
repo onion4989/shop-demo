@@ -1,11 +1,15 @@
 {
 	"folders": [
 		{
+			"name": "shop-demo",
 			"path": "."
 		},
 		{
+			"name": "_knowledge",
 			"path": "../_knowledge"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"terminal.integrated.cwd": "${workspaceFolder:shop-demo}"
+	}
 }
