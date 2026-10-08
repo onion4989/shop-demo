@@ -41,6 +41,16 @@ export const HERO_ITEMS_START_DELAY =
   HERO_FAN_CARD_DURATION -
   0.2
 export const HERO_ITEM_STAGGER = 0.12
+export const HERO_ITEM_DURATION = 0.65
+export const HERO_MOBILE_QUERY = '(max-width: 767px)'
+export const HERO_MOBILE_LIMIT = 3
+
+export function getHeroTextDelay(count: number) {
+  const last = Math.max(count - 1, 0)
+  return (
+    HERO_ITEMS_START_DELAY + last * HERO_ITEM_STAGGER + HERO_ITEM_DURATION
+  )
+}
 
 export function getHeroFanInitialX(index: number) {
   if (index === 0) return 80
