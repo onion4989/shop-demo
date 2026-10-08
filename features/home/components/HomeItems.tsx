@@ -6,10 +6,14 @@ import {
   HomeItemsExpandablePhoto,
   LimitedItemBadge,
 } from '@features/home/components/HomeItemsExpandablePhoto'
+import { WordsPullSection } from '@features/home/components/WordsPullUp'
 import { HOME_ITEM_GROUPS, type Item, type ItemGroup } from '@features/home/data/itemGroups'
 import { getHomeItemsProducts } from '@features/home/Loaders'
 import { resolveAssetPath } from '@lib/utils'
 import Image from 'next/image'
+
+const ITEM_TITLE_CLASS =
+  'pb-[20px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:text-[32px]'
 
 const ITEMS_DIR = '/assets/pages/top/items'
 
@@ -147,17 +151,23 @@ function ItemCategory({
 
   if (cards.length === 0) return null
 
+  const wideClass = group.wide ? 'lg:col-span-2' : undefined
+  const cardGrid = (
+    <div
+      className={`grid grid-cols-3 gap-x-4 gap-y-[18px] rounded-[15px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:rounded-[25px] md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
+    >
+      {cards}
+    </div>
+  )
+
   return (
-    <section className={group.wide ? 'lg:col-span-2' : undefined}>
-      <h2 className="pb-[10px] text-[16px] font-bold text-[#E4007E] md:text-[24px] lg:pb-[20px] lg:text-[32px]">
-        {group.title}
-      </h2>
-      <div
-        className={`grid grid-cols-3 gap-x-4 gap-y-[18px] rounded-[15px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:rounded-[25px] md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
-      >
-        {cards}
-      </div>
-    </section>
+    <WordsPullSection
+      title={group.title}
+      titleClass={ITEM_TITLE_CLASS}
+      className={wideClass}
+    >
+      {cardGrid}
+    </WordsPullSection>
   )
 }
 

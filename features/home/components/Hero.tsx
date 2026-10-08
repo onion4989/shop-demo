@@ -1,6 +1,7 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import type { TopProduct } from '@features/catalog/Loaders'
 import { HeroFanCards } from '@features/home/components/HeroFanCards'
+import { LettersPullUp } from '@features/home/components/LettersPullUp'
 import {
   HeroRoundItems,
   type HeroRoundItem,
@@ -115,8 +116,12 @@ export async function Hero() {
             </div>
           </div>
 
-          <h1 className="relative z-10 shrink-0 pb-1 text-center text-2xl font-black tracking-wider text-black max-md:mt-4 md:max-lg:-mt-4 md:text-[clamp(48px,calc(3.2986vw+22.667px),86px)] md:leading-none lg:mt-6 xl:mt-8">
-            CAKE SHOP DEMO
+          <h1 className="relative z-10 shrink-0 pb-1 text-center max-md:mt-4 md:max-lg:-mt-4 lg:mt-6 xl:mt-8">
+            <LettersPullUp
+              text="CAKE SHOP DEMO"
+              itemCount={roundItems.length}
+              className="text-2xl font-black tracking-wider text-black md:text-[clamp(48px,calc(3.2986vw+22.667px),86px)] md:leading-none"
+            />
           </h1>
         </div>
       </div>

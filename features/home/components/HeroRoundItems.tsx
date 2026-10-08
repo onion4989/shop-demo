@@ -6,23 +6,23 @@ import {
 } from '@features/home/components/HeroRoundExpandablePhoto'
 import {
   type HeroBadge,
+  HERO_ITEM_DURATION,
   HERO_ITEM_STAGGER,
   HERO_ITEMS_START_DELAY,
+  HERO_MOBILE_LIMIT,
+  HERO_MOBILE_QUERY,
 } from '@features/home/data/hero'
 import { motion } from 'framer-motion'
 import { useSyncExternalStore } from 'react'
 
-const MOBILE_QUERY = '(max-width: 767px)'
-const MOBILE_ITEM_LIMIT = 3
-
 function subscribeMobile(onChange: () => void) {
-  const mq = window.matchMedia(MOBILE_QUERY)
+  const mq = window.matchMedia(HERO_MOBILE_QUERY)
   mq.addEventListener('change', onChange)
   return () => mq.removeEventListener('change', onChange)
 }
 
 function getIsMobile() {
-  return window.matchMedia(MOBILE_QUERY).matches
+  return window.matchMedia(HERO_MOBILE_QUERY).matches
 }
 
 export type HeroRoundItem = {
@@ -82,7 +82,7 @@ export function HeroRoundItems({ items }: HeroRoundItemsProps) {
     getIsMobile,
     () => false,
   )
-  const visibleItems = isMobile ? items.slice(0, MOBILE_ITEM_LIMIT) : items
+  const visibleItems = isMobile ? items.slice(0, HERO_MOBILE_LIMIT) : items
 
   return (
     <div className="relative z-30 mx-auto flex w-full items-end justify-center gap-3 px-[50px] md:mb-6 md:w-fit md:max-w-none md:justify-center md:gap-5 md:px-0 lg:mb-8">
@@ -100,8 +100,12 @@ export function HeroRoundItems({ items }: HeroRoundItemsProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{
               opacity: { duration: 0.35, ease: 'easeOut', delay: itemDelay },
-              y: { duration: 0.65, ease: 'backOut', delay: itemDelay },
-              scale: { duration: 0.65, ease: 'backOut', delay: itemDelay },
+              y: { duration: HERO_ITEM_DURATION, ease: 'backOut', delay: itemDelay },
+              scale: {
+                duration: HERO_ITEM_DURATION,
+                ease: 'backOut',
+                delay: itemDelay,
+              },
             }}
           >
             {canOpen ? (
