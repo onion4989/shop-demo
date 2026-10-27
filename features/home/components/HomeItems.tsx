@@ -65,13 +65,13 @@ function StaticItemThumb({
   item: Item
 }) {
   return (
-    <div className="relative size-[100px] overflow-hidden rounded-full border-2 border-white md:size-[120px] lg:size-40">
+    <div className="relative size-[100px] overflow-hidden rounded-full border-2 border-white md:size-[130px] lg:size-40">
       <Image
         src={`${ITEMS_DIR}/${folder}/${item.file}`}
         alt={item.label}
         fill
         className="object-cover"
-        sizes="(max-width: 767px) 100px, (min-width: 1024px) 160px, 120px"
+        sizes="(max-width: 767px) 100px, (min-width: 1024px) 160px, 130px"
       />
     </div>
   )
@@ -88,12 +88,12 @@ function ItemCard({
 }) {
   if (!item.productId) {
     return (
-      <div className="flex w-full flex-col items-center gap-1 md:w-[120px] lg:w-40 lg:gap-3">
-        <div className="relative size-[100px] md:size-[120px] lg:size-40">
+      <div className="flex w-full flex-col items-center gap-1 md:w-[130px] lg:w-40 lg:gap-3">
+        <div className="relative size-[100px] md:size-[130px] lg:size-40">
           <StaticItemThumb folder={folder} item={item} />
           {item.limited ? <LimitedItemBadge /> : null}
         </div>
-        <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] md:text-xs lg:text-sm">
+        <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] lg:text-sm">
           {item.label}
         </p>
       </div>
@@ -107,8 +107,8 @@ function ItemCard({
   const label = flavorDisplayName(product.name) || item.label
 
   return (
-    <div className="flex w-full flex-col items-center gap-1 md:w-[120px] lg:w-40 lg:gap-3">
-      <div className="relative size-[100px] md:size-[120px] lg:size-40">
+    <div className="flex w-full flex-col items-center gap-1 md:w-[130px] lg:w-40 lg:gap-3">
+      <div className="relative size-[100px] md:size-[130px] lg:size-40">
         <HomeItemsExpandablePhoto
           src={src}
           alt={label}
@@ -122,7 +122,7 @@ function ItemCard({
           limited={item.limited}
         />
       </div>
-      <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] md:text-xs lg:text-sm">
+      <p className="w-full text-center text-[14px] leading-snug font-normal break-words text-[#070707] lg:text-sm">
         {label}
       </p>
     </div>

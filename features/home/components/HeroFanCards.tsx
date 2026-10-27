@@ -7,9 +7,12 @@ import {
   heroFanCards,
 } from '@features/home/data/hero'
 import { cn, resolveAssetPath } from '@lib/utils'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import Image from 'next/image'
 import { useSyncExternalStore } from 'react'
+
+const FAN_SIZES =
+  '(max-width: 767px) 115px, (max-width: 1024px) 200px, 272px'
 
 const MOBILE_QUERY = '(max-width: 767px)'
 const MOBILE_CENTER_FAN_OFFSET = 16
@@ -38,49 +41,53 @@ export function HeroFanCards() {
   )
 
   return (
-    <div className="pointer-events-none flex items-end justify-center">
-      {heroFanCards.map((card, index) => (
-        <motion.div
-          key={card.id}
-          className="relative -ml-[70px] shrink-0 first:ml-0 md:-ml-[clamp(82px,calc(5.004vw+43.922px),140px)]"
-          style={{ zIndex: card.zIndex }}
-          initial={{
-            opacity: 0,
-            scale: 0.88,
-            rotate: 0,
-            x: getHeroFanInitialX(index),
-            y: 0,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            rotate: card.rotate,
-            x: 0,
-            y:
-              isMobile && index === 1
-                ? MOBILE_CENTER_FAN_OFFSET
-                : card.offsetY,
-          }}
-          transition={{
-            duration: HERO_FAN_CARD_DURATION,
-            delay: index * HERO_FAN_CARD_STAGGER,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-        >
-          <Image
-            src={resolveAssetPath(card.filename)}
-            width={272}
-            height={430}
-            alt={card.alt}
-            priority={index === 0}
-            className={cn(
-              'rounded-[10px] object-cover shadow-xl',
-              MOBILE_CARD_CLASS[index],
-              'md:h-[clamp(254px,calc(15.2778vw+136.667px),430px)] md:w-[clamp(160px,calc(9.7222vw+85.333px),272px)]',
-            )}
-          />
-        </motion.div>
-      ))}
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <div className="pointer-events-none flex items-end justify-center">
+        {heroFanCards.map((card, index) => (
+          <m.div
+            key={card.id}
+            className="relative -ml-[70px] shrink-0 first:ml-0 md:-ml-[clamp(82px,calc(5.004vw+43.922px),140px)]"
+            style={{ zIndex: card.zIndex }}
+            initial={{
+              // Mobile: keep opaque for LCP; Desktop: fade in
+              opacity: isMobile ? 1 : 0,
+              scale: 0.88,
+              rotate: 0,
+              x: getHeroFanInitialX(index),
+              y: 0,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              rotate: card.rotate,
+              x: 0,
+              y:
+                isMobile && index === 1
+                  ? MOBILE_CENTER_FAN_OFFSET
+                  : card.offsetY,
+            }}
+            transition={{
+              duration: HERO_FAN_CARD_DURATION,
+              delay: index * HERO_FAN_CARD_STAGGER,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            <Image
+              src={resolveAssetPath(card.filename)}
+              width={272}
+              height={430}
+              alt={card.alt}
+              priority
+              sizes={FAN_SIZES}
+              className={cn(
+                'rounded-[10px] object-cover shadow-xl',
+                MOBILE_CARD_CLASS[index],
+                'md:h-[clamp(254px,calc(15.2778vw+136.667px),430px)] md:w-[clamp(160px,calc(9.7222vw+85.333px),272px)]',
+              )}
+            />
+          </m.div>
+        ))}
+      </div>
+    </LazyMotion>
   )
 }

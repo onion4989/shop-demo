@@ -12,7 +12,9 @@
     "db:seed": "npx prisma db execute --file prisma/seed.sql --schema prisma/schema.prisma",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@heroui/button": "^2.2.27",
@@ -62,6 +64,7 @@
   },
   "devDependencies": {
     "@heroui/theme": "^2.4.23",
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^20",
     "@types/react": "^18",
@@ -74,6 +77,8 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "prisma": "^5.22.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.12"
   }
 }

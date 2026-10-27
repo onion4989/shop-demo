@@ -12,7 +12,7 @@ import {
   HERO_MOBILE_LIMIT,
   HERO_MOBILE_QUERY,
 } from '@features/home/data/hero'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { useSyncExternalStore } from 'react'
 
 function subscribeMobile(onChange: () => void) {
@@ -85,48 +85,54 @@ export function HeroRoundItems({ items }: HeroRoundItemsProps) {
   const visibleItems = isMobile ? items.slice(0, HERO_MOBILE_LIMIT) : items
 
   return (
-    <div className="relative z-30 mx-auto flex w-full items-end justify-center gap-3 px-[50px] md:mb-6 md:w-fit md:max-w-none md:justify-center md:gap-5 md:px-0 lg:mb-8">
-      {visibleItems.map((item, index) => {
-        const itemDelay = HERO_ITEMS_START_DELAY + index * HERO_ITEM_STAGGER
-        const canOpen =
-          item.interactive !== false &&
-          Boolean(item.productId && item.title != null)
+    <LazyMotion features={domAnimation} strict>
+      <div className="relative z-30 mx-auto flex w-full items-end justify-center gap-3 px-[50px] md:mb-6 md:w-fit md:max-w-none md:justify-center md:gap-5 md:px-0 lg:mb-8">
+        {visibleItems.map((item, index) => {
+          const itemDelay = HERO_ITEMS_START_DELAY + index * HERO_ITEM_STAGGER
+          const canOpen =
+            item.interactive !== false &&
+            Boolean(item.productId && item.title != null)
 
-        return (
-          <motion.div
-            key={item.id}
-            className="relative size-20 shrink-0 md:size-[clamp(80px,calc(4.3403vw+46.667px),130px)]"
-            initial={{ opacity: 0, y: 28, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{
-              opacity: { duration: 0.35, ease: 'easeOut', delay: itemDelay },
-              y: { duration: HERO_ITEM_DURATION, ease: 'backOut', delay: itemDelay },
-              scale: {
-                duration: HERO_ITEM_DURATION,
-                ease: 'backOut',
-                delay: itemDelay,
-              },
-            }}
-          >
-            {canOpen ? (
-              <HeroRoundExpandablePhoto
-                src={item.src}
-                alt={item.alt}
-                title={item.title!}
-                productId={item.productId!}
-                categoryName={item.categoryName}
-                description={item.description ?? ''}
-                tags={item.tags ?? []}
-                price={item.price ?? ''}
-                ingredients={item.ingredients ?? ''}
-              />
-            ) : (
-              <HeroCircleThumb src={item.src} alt={item.alt} />
-            )}
-            <HeroBadgeMark label={item.badge.label} color={item.badge.color} />
-          </motion.div>
-        )
-      })}
-    </div>
+          return (
+            <m.div
+              key={item.id}
+              className="relative size-20 shrink-0 md:size-[90px] lg:size-[clamp(80px,calc(4.3403vw+46.667px),130px)]"
+              initial={{ opacity: 0, y: 28, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                opacity: { duration: 0.35, ease: 'easeOut', delay: itemDelay },
+                y: {
+                  duration: HERO_ITEM_DURATION,
+                  ease: 'backOut',
+                  delay: itemDelay,
+                },
+                scale: {
+                  duration: HERO_ITEM_DURATION,
+                  ease: 'backOut',
+                  delay: itemDelay,
+                },
+              }}
+            >
+              {canOpen ? (
+                <HeroRoundExpandablePhoto
+                  src={item.src}
+                  alt={item.alt}
+                  title={item.title!}
+                  productId={item.productId!}
+                  categoryName={item.categoryName}
+                  description={item.description ?? ''}
+                  tags={item.tags ?? []}
+                  price={item.price ?? ''}
+                  ingredients={item.ingredients ?? ''}
+                />
+              ) : (
+                <HeroCircleThumb src={item.src} alt={item.alt} />
+              )}
+              <HeroBadgeMark label={item.badge.label} color={item.badge.color} />
+            </m.div>
+          )
+        })}
+      </div>
+    </LazyMotion>
   )
 }

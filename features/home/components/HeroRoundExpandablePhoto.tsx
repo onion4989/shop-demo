@@ -9,7 +9,7 @@ const THUMB_CLASS =
   'relative block size-full overflow-hidden rounded-full border-3 border-white'
 
 const IMAGE_SIZES =
-  '(max-width: 767px) 80px, (max-width: 1024px) 130px, 130px'
+  '(max-width: 767px) 80px, (max-width: 1023px) 90px, 130px'
 
 type HeroCircleThumbProps = {
   src: string

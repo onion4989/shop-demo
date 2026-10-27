@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { LazyMotion, domAnimation, m, useInView } from 'framer-motion'
 import { useRef, useSyncExternalStore, type ReactNode } from 'react'
 
 const REDUCE_QUERY = '(prefers-reduced-motion: reduce)'
@@ -38,23 +38,25 @@ export function WordsPullSection({
 
   return (
     <section ref={sectionRef} className={className}>
-      <h2 className={titleClass}>
-        {words.map((word, i) => (
-          <span key={`${word}-${i}`}>
-            <span className="inline-block overflow-hidden align-bottom">
-              <motion.span
-                className="inline-block"
-                initial={reduce ? false : { y: 20, opacity: 0 }}
-                animate={shown ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                transition={{ duration: 0.5, delay: i * WORD_DELAY }}
-              >
-                {word}
-              </motion.span>
+      <LazyMotion features={domAnimation} strict>
+        <h2 className={titleClass}>
+          {words.map((word, i) => (
+            <span key={`${word}-${i}`}>
+              <span className="inline-block overflow-hidden align-bottom">
+                <m.span
+                  className="inline-block"
+                  initial={reduce ? false : { y: 20, opacity: 0 }}
+                  animate={shown ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                  transition={{ duration: 0.5, delay: i * WORD_DELAY }}
+                >
+                  {word}
+                </m.span>
+              </span>
+              {i < words.length - 1 ? ' ' : null}
             </span>
-            {i < words.length - 1 ? ' ' : null}
-          </span>
-        ))}
-      </h2>
+          ))}
+        </h2>
+      </LazyMotion>
       {children}
     </section>
   )

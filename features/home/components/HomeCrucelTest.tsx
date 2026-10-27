@@ -1,7 +1,7 @@
 import { getTopProducts, type TopProduct } from '@features/catalog/Loaders'
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import { MobileRankingList } from '@features/catalog/components/MobileRankingList'
-import { CrucelTiltTrack } from '@features/home/components/CrucelTiltTrack'
+import { CrucelTrackLazy } from '@features/home/components/CrucelTrackLazy'
 import { EmptyProductsMessage } from '@features/home/components/EmptyProductsMessage'
 import { UnavailableProductsMessage } from '@features/home/components/UnavailableProductsMessage'
 import { WordsPullSection } from '@features/home/components/WordsPullUp'
@@ -37,7 +37,7 @@ async function PopularProducts() {
         <MobileRankingList products={result.data} />
       </div>
       <div className="hidden md:block">
-        <CrucelTiltTrack items={result.data.map(toCrucelItem)} />
+        <CrucelTrackLazy items={result.data.map(toCrucelItem)} />
       </div>
     </>
   )

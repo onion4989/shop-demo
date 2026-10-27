@@ -6,7 +6,7 @@ import {
   HERO_MOBILE_QUERY,
 } from '@features/home/data/hero'
 import { cn } from '@/lib/utils'
-import { motion, useInView } from 'framer-motion'
+import { LazyMotion, domAnimation, m, useInView } from 'framer-motion'
 import { useRef, useSyncExternalStore } from 'react'
 
 function subscribeMobile(onChange: () => void) {
@@ -52,19 +52,21 @@ export function LettersPullUp({
   }
 
   return (
-    <div ref={ref} className="flex justify-center">
-      {letters.map((letter, i) => (
-        <motion.span
-          key={`${letter}-${i}`}
-          variants={pullupVariant}
-          initial="initial"
-          animate={isInView ? 'animate' : 'initial'}
-          custom={i}
-          className={cn(className)}
-        >
-          {letter === ' ' ? <span>&nbsp;</span> : letter}
-        </motion.span>
-      ))}
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <div ref={ref} className="flex justify-center">
+        {letters.map((letter, i) => (
+          <m.span
+            key={`${letter}-${i}`}
+            variants={pullupVariant}
+            initial="initial"
+            animate={isInView ? 'animate' : 'initial'}
+            custom={i}
+            className={cn(className)}
+          >
+            {letter === ' ' ? <span>&nbsp;</span> : letter}
+          </m.span>
+        ))}
+      </div>
+    </LazyMotion>
   )
 }
