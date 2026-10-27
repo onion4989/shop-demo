@@ -1,6 +1,7 @@
 import { flavorDisplayName } from '@features/catalog/flavorDisplayName'
 import type { TopProduct } from '@features/catalog/Loaders'
 import { HeroFanCards } from '@features/home/components/HeroFanCards'
+import { HeroLcpPreload } from '@features/home/components/HeroLcpPreload'
 import { LettersPullUp } from '@features/home/components/LettersPullUp'
 import {
   HeroRoundItems,
@@ -95,6 +96,7 @@ export async function Hero() {
 
   return (
     <section className="relative -mt-[100px] flex h-[400px] max-h-[400px] w-full flex-col overflow-hidden md:h-[clamp(600px,calc(26.0417vw+400px),900px)] md:max-h-none">
+      <HeroLcpPreload />
       <div className="relative z-0 flex min-h-0 flex-1 flex-col bg-[#F4B2BA] md:justify-start">
         <div className="relative mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-4 md:pt-[120px] lg:pt-[128px] xl:pt-[136px]">
           <div className="flex min-h-0 flex-1 items-center justify-center">
@@ -129,7 +131,9 @@ export async function Hero() {
       <img
         src="/assets/pages/top/hero/decorations/deco_top_under-wave.svg"
         alt=""
-        className="relative z-0 block w-full shrink-0"
+        width={1440}
+        height={130}
+        className="relative z-0 block h-auto w-full shrink-0"
       />
     </section>
   )

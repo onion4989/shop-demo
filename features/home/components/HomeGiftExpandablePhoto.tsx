@@ -123,13 +123,13 @@ export function HomeGiftExpandablePhoto({
   if (layout === 'mobile') {
     return (
       <div className="flex flex-col gap-1">
-        {photo}
-        <motion.p
-          className="text-[14px] leading-snug wrap-break-word text-[#070707]"
-          {...titleMotion}
-        >
+        {/* Fixed thumb + title row heights reduce gift-grid CLS */}
+        <div className="relative w-full shrink-0 overflow-hidden rounded-[10px]">
+          {photo}
+        </div>
+        <p className="line-clamp-2 min-h-[2.625rem] text-[14px] leading-snug wrap-break-word text-[#070707]">
           {title}
-        </motion.p>
+        </p>
       </div>
     )
   }

@@ -44,6 +44,10 @@ export function CrucelTrackLazy({ items }: CrucelTrackLazyProps) {
     }
   }, [isMd])
 
-  if (!isMd || !Track) return null
+  if (!isMd) return null
+  // Reserve tilt-card height while the chunk loads (avoids pushing Gift / CLS)
+  if (!Track) {
+    return <div className="min-h-[344px] w-full" aria-hidden />
+  }
   return <Track items={items} />
 }

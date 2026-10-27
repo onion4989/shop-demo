@@ -55,17 +55,31 @@
   ※カート追加・サイドパネル・商品ダイアログの動きに使うため。
 
 
-## 対応デバイスとブラウザ
+## 品質確認
 
-【デバイス/サイズ】
-・デスクトップ：1440 × 800
-・タブレット：768 × 1024
-・モバイル：390 × 844
+【品質管理】
+・`npm run lint` のエラー：0件
+・`npm run typecheck` のエラー：0件
+・Viewtest：完了
+・Playwright：完了
+・local 上での目視・動作確認：完了
+・Deploy 後の目視・動作確認：未完了
+・Lighthouse Desktop Performance：98
+・Lighthouse Mobile Performance：85
+・Accessibility：94
+・Best Practices：96
+・SEO：100
 
-【ブラウザ】
-・Microsoft Edge: Latest
-・Google Chrome: Latest
-・Safari（iOS のみ）: Latest
+【Microsoft Edge (Latest)】
+・デスクトップ：1440 × 800：未確認
+・タブレット：768 × 1024：未確認
+
+【Google Chrome (Latest)】
+・デスクトップ：1440 × 800：未確認
+・タブレット：768 × 1024：未確認
+
+【Safari（iOS・Latest）】
+・モバイル：390 × 844：未確認
 
 
 ## 設計上の工夫
@@ -88,39 +102,13 @@
  ※手順を出来る限り減らし、かつ、分かりやすいフローにしました。
 
 
-## 品質確認
-
-【品質管理】
-・`npm run lint` のエラーが 0 件であること
-・`npm run typecheck` のエラーが 0 件であること
-・Viewtest（コンポーネント／ロジック単位）が完了すること
-・Playwright（ブラウザ自動操作の通し確認）が完了すること
-・local 上での目視・動作確認が問題ないこと
-・Deploy 後に再度、目視・動作確認が問題ないこと
-・Lighthouse（Chrome・主要画面・Desktop / Mobile）で次を満たすこと
-・Performance 90+
-・Accessibility 90+
-・Best Practices 95+
-・SEO 90+（検索に載せる公開のとき）
-
-【確認ブラウザ】
-・Microsoft Edge (Latest)
-・Google Chrome (Latest)
-・Safari (Latest)
-
-【確認デバイス】
-・デスクトップ：1440 × 800
-・タブレット：768 × 1024
-・モバイル：390 × 844
-
-
 ## 作者
 
 【名前】
 ・Takashi Ogawa
 
 【開発期間】
-・実働 約 3 週間
+・実働 約 2 週間
 
 【その他】
 ・ポートフォリオ: https://portfolio.see-u-soon.design

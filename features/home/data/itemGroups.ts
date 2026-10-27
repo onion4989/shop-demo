@@ -10,6 +10,7 @@ export type ItemGroup = {
   folder: string
   tone: string
   wide?: boolean
+  comingSoon?: boolean
   items: Item[]
 }
 
@@ -63,6 +64,7 @@ export const HOME_ITEM_GROUPS: ItemGroup[] = [
     title: 'トッピング / Options',
     folder: 'options',
     tone: 'bg-[#E4C1DB]',
+    comingSoon: true,
     items: [
       { file: 'img_opt_topping.jpg', label: 'トッピングシュガー' },
       { file: 'img_opt_sugar.jpg', label: 'シュガースプレー' },

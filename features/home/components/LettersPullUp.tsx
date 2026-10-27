@@ -52,21 +52,33 @@ export function LettersPullUp({
   }
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div ref={ref} className="flex justify-center">
+    <>
+      {/* Mobile: static title (no letter pull-up) */}
+      <div className="flex justify-center md:hidden">
         {letters.map((letter, i) => (
-          <m.span
-            key={`${letter}-${i}`}
-            variants={pullupVariant}
-            initial="initial"
-            animate={isInView ? 'animate' : 'initial'}
-            custom={i}
-            className={cn(className)}
-          >
+          <span key={`m-${letter}-${i}`} className={cn(className)}>
             {letter === ' ' ? <span>&nbsp;</span> : letter}
-          </m.span>
+          </span>
         ))}
       </div>
-    </LazyMotion>
+
+      {/* md+: keep letter pull-up */}
+      <LazyMotion features={domAnimation} strict>
+        <div ref={ref} className="hidden justify-center md:flex">
+          {letters.map((letter, i) => (
+            <m.span
+              key={`d-${letter}-${i}`}
+              variants={pullupVariant}
+              initial="initial"
+              animate={isInView ? 'animate' : 'initial'}
+              custom={i}
+              className={cn(className)}
+            >
+              {letter === ' ' ? <span>&nbsp;</span> : letter}
+            </m.span>
+          ))}
+        </div>
+      </LazyMotion>
+    </>
   )
 }

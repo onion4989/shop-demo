@@ -154,9 +154,21 @@ function ItemCategory({
   const wideClass = group.wide ? 'lg:col-span-2' : undefined
   const cardGrid = (
     <div
-      className={`grid grid-cols-3 gap-x-4 gap-y-[18px] rounded-[15px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:rounded-[25px] md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0 ${group.tone}`}
+      className={`relative overflow-hidden rounded-[15px] md:rounded-[25px] ${group.tone}`}
     >
-      {cards}
+      <div className="grid grid-cols-3 gap-x-4 gap-y-[18px] px-4 py-6 md:flex md:flex-wrap md:gap-x-6 md:gap-y-8 md:px-7 md:py-8 md:min-h-[180px] lg:min-h-0">
+        {cards}
+      </div>
+      {group.comingSoon ? (
+        <div
+          className="absolute inset-0 z-10 flex items-center justify-center bg-black/60"
+          aria-label="準備中"
+        >
+          <span className="text-[18px] font-bold tracking-wide text-white md:text-[24px] lg:text-[28px]">
+            準備中
+          </span>
+        </div>
+      ) : null}
     </div>
   )
 

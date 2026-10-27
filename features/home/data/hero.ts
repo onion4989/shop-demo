@@ -45,6 +45,21 @@ export const HERO_ITEM_DURATION = 0.65
 export const HERO_MOBILE_QUERY = '(max-width: 767px)'
 export const HERO_MOBILE_LIMIT = 3
 
+/** Mobile LCP target (店舗外観). Only this fan gets priority. */
+export const HERO_FAN_LCP_INDEX = 0
+/** Visual center card index (アイスクリーム) for Mobile Y offset */
+export const HERO_FAN_CENTER_INDEX = 1
+export const HERO_FAN_SIZES =
+  '(max-width: 767px) 115px, (max-width: 1024px) 200px, 272px'
+export const HERO_FAN_MOBILE_CENTER_OFFSET = 16
+export const HERO_FAN_MOBILE_CARD_CLASS = [
+  'h-[175px] w-[110px]',
+  'h-[182px] w-[115px]',
+  'h-[175px] w-[110px]',
+] as const
+export const HERO_FAN_DESKTOP_CARD_CLASS =
+  'h-[clamp(254px,calc(15.2778vw+136.667px),430px)] w-[clamp(160px,calc(9.7222vw+85.333px),272px)]'
+
 export function getHeroTextDelay(count: number) {
   const last = Math.max(count - 1, 0)
   return (
@@ -56,6 +71,12 @@ export function getHeroFanInitialX(index: number) {
   if (index === 0) return 80
   if (index === 2) return -80
   return 0
+}
+
+export function getHeroFanMobileY(index: number, offsetY: number) {
+  return index === HERO_FAN_CENTER_INDEX
+    ? HERO_FAN_MOBILE_CENTER_OFFSET
+    : offsetY
 }
 
 export type HeroBadge = {

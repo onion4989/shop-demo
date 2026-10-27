@@ -13,6 +13,19 @@ const CRUCEL_LIMIT = 10
 const TITLE_CLASS =
   'mx-auto w-full max-w-[708px] px-4 pb-[20px] text-[16px] font-bold tracking-wider text-[#E4007E] md:max-w-[1200px] md:px-4 md:text-[24px] lg:px-0 lg:text-[36px]'
 
+/** Mobile: 3 cards (131px) + gaps (15px) + more button ≈ 463px. Desktop: tilt card 344px. */
+function PopularFallback() {
+  return (
+    <>
+      <div
+        className="mx-auto min-h-[463px] w-full max-w-[708px] px-4 md:hidden"
+        aria-hidden
+      />
+      <div className="hidden min-h-[344px] w-full md:block" aria-hidden />
+    </>
+  )
+}
+
 export function HomeCrucelTest() {
   return (
     <WordsPullSection
@@ -20,7 +33,7 @@ export function HomeCrucelTest() {
       titleClass={TITLE_CLASS}
       className="w-full"
     >
-      <Suspense fallback={null}>
+      <Suspense fallback={<PopularFallback />}>
         <PopularProducts />
       </Suspense>
     </WordsPullSection>
