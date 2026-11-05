@@ -16,7 +16,7 @@ import {
 } from '@lib/expandDialogCloser'
 import { useBodyScrollLock } from '@lib/useBodyScrollLock'
 import { cn } from '@lib/utils'
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import Image from 'next/image'
 import {
   type ReactNode,
@@ -576,6 +576,7 @@ export function ExpandableProductDialog({
 
       {isOpen && origin && motionAnimate
         ? createPortal(
+            <LazyMotion features={domAnimation} strict>
             <div
               className={cn(
                 'fixed inset-0 z-60 cursor-pointer',
@@ -586,7 +587,7 @@ export function ExpandableProductDialog({
               aria-labelledby={titleId}
               onClick={dismiss}
             >
-              <motion.div
+              <m.div
                 className="absolute inset-0 bg-black/60"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -594,7 +595,7 @@ export function ExpandableProductDialog({
                 }}
                 transition={{ duration: imageAnimDur, ease: EASE }}
               />
-              <motion.div
+              <m.div
                 className={cn(
                   'absolute overflow-hidden shadow-2xl',
                   cardHeightAuto &&
@@ -612,7 +613,7 @@ export function ExpandableProductDialog({
                 onAnimationComplete={handleCardAnimationComplete}
               >
                 <div className={cn('relative w-full', !cardHeightAuto && 'size-full')}>
-                  <motion.div
+                  <m.div
                     className={cn(
                       collapsingThumb
                         ? 'absolute inset-0 overflow-hidden'
@@ -646,7 +647,7 @@ export function ExpandableProductDialog({
                     )}
                   >
                     {showDialogTitle ? (
-                      <motion.span
+                      <m.span
                         id={titleId}
                         className={titleBadgeClass}
                         animate={
@@ -658,14 +659,14 @@ export function ExpandableProductDialog({
                         style={{ pointerEvents: isClosing ? 'none' : 'auto' }}
                       >
                         {title}
-                      </motion.span>
+                      </m.span>
                     ) : (
                       <span id={titleId} className="sr-only">
                         {title}
                       </span>
                     )}
                     {showDialogTitle ? (
-                      <motion.button
+                      <m.button
                         type="button"
                         disabled={!canAddToCart}
                         title={
@@ -724,12 +725,12 @@ export function ExpandableProductDialog({
                           aria-hidden
                         />
                         カートに入れる
-                      </motion.button>
+                      </m.button>
                     ) : null}
                   </div>
                 </div>
                 {isDesktop ? (
-                  <motion.div
+                  <m.div
                     className="overflow-hidden bg-white"
                     initial={false}
                     animate={{ height: showExpandedText ? 'auto' : 0 }}
@@ -743,9 +744,9 @@ export function ExpandableProductDialog({
                       ingredients={ingredients}
                       price={price}
                     />
-                  </motion.div>
+                  </m.div>
                 ) : (
-                  <motion.div
+                  <m.div
                     className="overflow-hidden bg-white"
                     initial={{ height: 0 }}
                     animate={{
@@ -774,11 +775,11 @@ export function ExpandableProductDialog({
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
-                  </motion.div>
+                  </m.div>
                   {collapsingThumb && thumbPreview ? (
-                    <motion.div
+                    <m.div
                       className="pointer-events-none absolute inset-0 overflow-hidden"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -786,11 +787,12 @@ export function ExpandableProductDialog({
                       aria-hidden
                     >
                       {thumbPreview}
-                    </motion.div>
+                    </m.div>
                   ) : null}
                 </div>
-              </motion.div>
-            </div>,
+              </m.div>
+            </div>
+            </LazyMotion>,
             document.body,
           )
         : null}
