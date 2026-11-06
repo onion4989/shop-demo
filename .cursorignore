@@ -31,7 +31,7 @@ pnpm-debug.log*
 
 # === 依存 ===
 **/node_modules/
-package-lock.json
+# package-lock.json は Dependabot 対応でエージェントが読むため除外しない
 pnpm-lock.yaml
 
 # === Agent 成果物 ===
