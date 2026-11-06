@@ -66,7 +66,7 @@
     "@types/react-dom": "^18",
     "baseline-browser-mapping": "^2.10.7",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^16.1.6",
+    "eslint-config-next": "^16.4.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
