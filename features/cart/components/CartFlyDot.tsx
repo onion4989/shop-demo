@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import { createPortal } from 'react-dom'
 
 const DOT_START = 48
@@ -86,58 +86,60 @@ export function CartFlyDot({
   } as const
 
   return createPortal(
-    <>
-      {showGhosts
-        ? GHOSTS.map((ghost, index) => (
-            <motion.div
-              key={index}
-              aria-hidden
-              className="pointer-events-none fixed z-80 rounded-full"
-              style={baseStyle}
-              initial={{ x: 0, y: 0, scale: ghost.scale, opacity: 0 }}
-              animate={{
-                x: pos.x,
-                y: pos.y,
-                scale: endScale * ghost.scale,
-                opacity: [0, ghost.opacity, ghost.opacity, 0],
-              }}
-              transition={{
-                duration: FLY_SEC,
-                delay: ghost.delay,
-                ease: 'easeInOut',
-                opacity: {
+    <LazyMotion features={domAnimation} strict>
+      <>
+        {showGhosts
+          ? GHOSTS.map((ghost, index) => (
+              <m.div
+                key={index}
+                aria-hidden
+                className="pointer-events-none fixed z-80 rounded-full"
+                style={baseStyle}
+                initial={{ x: 0, y: 0, scale: ghost.scale, opacity: 0 }}
+                animate={{
+                  x: pos.x,
+                  y: pos.y,
+                  scale: endScale * ghost.scale,
+                  opacity: [0, ghost.opacity, ghost.opacity, 0],
+                }}
+                transition={{
                   duration: FLY_SEC,
                   delay: ghost.delay,
-                  times: [0, 0.1, 0.85, 1],
-                  ease: 'easeOut',
-                },
-              }}
-            />
-          ))
-        : null}
-      <motion.div
-        aria-hidden
-        className="pointer-events-none fixed z-80 rounded-full"
-        style={baseStyle}
-        initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
-        animate={{
-          x: pos.x,
-          y: pos.y,
-          scale: endScale,
-          opacity: [1, 1, 0],
-        }}
-        transition={{
-          duration: FLY_SEC,
-          ease: 'easeInOut',
-          opacity: {
+                  ease: 'easeInOut',
+                  opacity: {
+                    duration: FLY_SEC,
+                    delay: ghost.delay,
+                    times: [0, 0.1, 0.85, 1],
+                    ease: 'easeOut',
+                  },
+                }}
+              />
+            ))
+          : null}
+        <m.div
+          aria-hidden
+          className="pointer-events-none fixed z-80 rounded-full"
+          style={baseStyle}
+          initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+          animate={{
+            x: pos.x,
+            y: pos.y,
+            scale: endScale,
+            opacity: [1, 1, 0],
+          }}
+          transition={{
             duration: FLY_SEC,
-            times: [0, 0.95, 1],
-            ease: 'easeOut',
-          },
-        }}
-        onAnimationComplete={onDone}
-      />
-    </>,
+            ease: 'easeInOut',
+            opacity: {
+              duration: FLY_SEC,
+              times: [0, 0.95, 1],
+              ease: 'easeOut',
+            },
+          }}
+          onAnimationComplete={onDone}
+        />
+      </>
+    </LazyMotion>,
     document.body,
   )
 }
